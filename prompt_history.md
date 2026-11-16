@@ -11,6 +11,15 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-16 18:33 WIB] — Anggota 4
+- **Model AI:** GLM-5.3-Flash Free (`opencode/glm-5.3-flash-free`) via OpenCode — agent: build
+- **Prompt:**
+  ```text
+  pilihan c
+  ini link figma make nya https://www.figma.com/make/xpI3m9AQS5hDLPVqD2RYcG/SmartFood-Home-Management-Dashboard?t=7ZvKXCZSX14vRvL8-1
+  ```
+- **Hasil:** `docs/design_system.md` dibuat dari desain Figma Make (diekstrak via MCP Figma: `index.css` + `App.tsx` dari source file Make): token warna/typografi/radius, pemetaan badge status, komponen inti, layout shell, navigasi per role, konvensi konten.
+
 ## [2026-11-16 18:05 WIB] — Anggota 4
 - **Model AI:** GLM-5.3-Flash Free (`opencode/glm-5.3-flash-free`) via OpenCode — agent: build
 - **Prompt:**
