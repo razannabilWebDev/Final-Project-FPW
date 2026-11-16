@@ -11,6 +11,14 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-16 19:35 WIB] — Anggota 4
+- **Model AI:** GLM-5.3-Flash Free (`opencode/glm-5.3-flash-free`) via OpenCode — agent: build
+- **Prompt:**
+  ```text
+  kerjakan, lalu aku mau kamu buat satu file docx yang berisi panduan lengkap untuk tim ku apa yg harus mereka lakukan sebelum mulai menulis kode program / prompt
+  ```
+- **Hasil:** `README.md` diganti dari boilerplate Laravel menjadi onboarding tim (setup, checklist Tahap 0–1, template prompt agent, aturan selaras, git workflow). `docs/panduan-tim.docx` dibuat (11 bagian: pembagian tugas, setup, dokumen wajib, checklist, D1–D10, aturan non-negotiable, panduan AI agent dengan contoh prompt baik/buruk, git, Definition of Done, peta koordinasi) — dihasilkan via python-docx.
+
 ## [2026-11-16 19:05 WIB] — Anggota 4
 - **Model AI:** GLM-5.3-Flash Free (`opencode/glm-5.3-flash-free`) via OpenCode — agent: build
 - **Prompt:**
