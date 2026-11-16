@@ -11,6 +11,15 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-16 19:42 WIB] — Anggota 4
+- **Model AI:** GLM-5.3-Flash Free (`opencode/glm-5.3-flash-free`) via OpenCode — agent: build
+- **Prompt:**
+  ```text
+  setiap melakukan sesuatu buat checklist dan masukkan ke file tasklist.md
+  eksekusi
+  ```
+- **Hasil:** `tasklist.md` dibuat di root repo dengan backfill seluruh pekerjaan sesi ini (7 blok, terbaru di atas, format checkbox). Konvensi checklist-per-sesi ditambahkan ke `AGENTS.md` (bagian "## Tasklist") agar agent sesi berikutnya mengikuti aturan yang sama. Batasan dicatat: tasklist.md = riwayat pekerjaan per sesi; status fase tetap di `docs/implementation-plan.md`.
+
 ## [2026-11-16 19:35 WIB] — Anggota 4
 - **Model AI:** GLM-5.3-Flash Free (`opencode/glm-5.3-flash-free`) via OpenCode — agent: build
 - **Prompt:**

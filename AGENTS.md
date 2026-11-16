@@ -46,6 +46,10 @@ SmartFood Home — Laravel web app for UMKM home-food businesses (sales, menu/re
 
 - Append every new user prompt to `prompt_history.md` (timestamp WIB, AI model, full text, result). Recover past prompts from the local OpenCode session DB when asked; entries from other team members' machines are added manually via the template in that file.
 
+## Tasklist
+
+- Every session that does work must append a checklist block to `tasklist.md` (newest first): timestamp WIB, member name, session title, then checkboxes `[x]` done / `[ ]` pending / `[~]` partial, and the commit hash if any. Keep it a per-session work log; phase status lives in `docs/implementation-plan.md` — do not duplicate it here.
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
