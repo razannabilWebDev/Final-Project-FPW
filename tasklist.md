@@ -10,6 +10,12 @@
 
 ---
 
+## [2026-11-16 19:42] — Anggota 4 — Tasklist konvensi
+
+- [x] Buat `tasklist.md` (root repo): riwayat pekerjaan per sesi, 7 blok backfill, terbaru di atas
+- [x] Tambah konvensi "## Tasklist" ke `AGENTS.md` (agent wajib masukkan checklist tiap sesi)
+- [x] Commit `9e3d065`
+
 ## [2026-11-16 19:35] — Anggota 4 — Onboarding tim: README + panduan docx
 
 - [x] Ganti `README.md` dari boilerplate Laravel menjadi onboarding tim (setup, checklist Tahap 0–1, template prompt agent, git workflow)
