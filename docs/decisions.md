@@ -15,9 +15,12 @@
 | D5 | Konversi satuan bahan | Simpan resep dalam **satuan dasar bahan** (`base_unit`) — konversi kg→gram, liter→ml dilakukan saat input resep via faktor konversi; tabel `unit_conversions` bila perlu | §6.4 | ⏳ Usulan — final bersama Anggota 2 & 3 |
 | D6 | Pembatalan & refund | Pembatalan setelah stok terpotong → **reversal stok sekali** (idempotent); refund dicatat sebagai penurunan pendapatan pada laporan (bukan penghapusan transaksi); transaksi tetap ada dengan status `cancelled` + history | §6.1 | ⏳ Usulan |
 | D7 | Format snapshot HPP & resep | `sale_items.hpp_snapshot` = **HPP per porsi** (decimal 12,2) dari versi resep aktif saat transaksi dikonfirmasi; resep ber-versi (`recipes.version`), snapshot mereferensikan versi yang dipakai | §6.4, §7.1 | ⏳ Usulan — final Anggota 2 |
-| D8 | Periode historis & metode prediksi | **Rata-rata bergerak harian per menu, window 28 hari** (diatur di `settings`/config); penjualan manual dikecualikan; data kurang → tampilkan status "data terbatas" | §6.9 | ⏳ Usulan — final Anggota 1 |
+| D8 | Periode historis & metode prediksi | **Rata-rata bergerak harian per menu, window 28 hari**; hanya `sales.type=menu` & `status=completed`; penjualan manual dikecualikan; < 7 hari data → status "data terbatas"; parameter di `config/forecast.php` (bukan tabel `settings`, yang pemiliknya belum ditetapkan) | §6.9 | ✅ Disetujui Anggota 1 (2026-11-18) |
 | D9 | Struktur kategori & data awal | Seed 8 kategori: pembelian bahan baku, listrik/air, gas, gaji, sewa, transportasi, perawatan, lainnya; Admin bisa tambah/ubah nama/nonaktifkan; terpakai → tidak boleh hard-delete | §6.8 | ⏳ Usulan — modul Anggota 4 |
 | D10 | Struktur route/service lintas modul | Lihat `docs/architecture.md` §3 (konvensi nama) + kontrak service stok Anggota 3 di `docs/database.md` §5 | §11 | ⏳ Usulan |
+| D11 | Kolom idempotensi penjualan | `stock_deducted_at` + `reversal_done_at` di tabel `sales` | `docs/database.md` usulan | ⚠️ Diterapkan sbg asumsi Anggota 1 (2026-11-18) — perlu konfirmasi A3 & A4 |
+| D12 | Format `transaction_code` | `TRX-YYYYMMDD-XXXX`, unique | `docs/database.md` usulan | ⚠️ Diterapkan sbg asumsi Anggota 1 (2026-11-18) — perlu konfirmasi A4 |
+| D13 | `settings` & `activity_logs` | Dibuat sesuai baseline; pemilik sementara Anggota 1 | `docs/database.md` §1 | ⚠️ Diterapkan, pemilik final belum ditetapkan tim |
 
 ## Catatan per keputusan (yang butuh koordinasi nyata)
 
@@ -29,8 +32,10 @@
   harga modal; ini kontrak paling rawan salah hitung.
 - **D6 (Anggota 3 & 4):** reversal = kebalikan deduksi, lewat service yang
   sama, idempotent, dalam transaksi yang sama dengan perubahan status.
-- **D8 (Anggota 1 & 4):** Anggota 4 menyediakan data penjualan; pastikan
-  format & pengecualian penjualan manual jelas sejak awal.
+- **D8 (Anggota 1 & 4) — FINAL:** Anggota 4 menyediakan query penjualan
+  `type=menu`, `status=completed` dengan tanggal `completed_at` dalam window;
+  manual dikecualikan. Parameter `window_days=28` dan `min_days=7` di
+  `config/forecast.php`. Kontrak ini dipakai saat modul prediksi dibangun.
 
 ## Tanda tangan keputusan
 
@@ -43,6 +48,9 @@
 | D5 | — | — |
 | D6 | — | — |
 | D7 | — | — |
-| D8 | — | — |
+| D8 | Anggota 1 (2026-11-18), dikonfirmasi pengguna | 2026-11-18 |
 | D9 | — | — |
 | D10 | — | — |
+| D11 | Anggota 1 (asumsi implementasi) | 2026-11-18 |
+| D12 | Anggota 1 (asumsi implementasi) | 2026-11-18 |
+| D13 | Anggota 1 (pemilik sementara) | 2026-11-18 |

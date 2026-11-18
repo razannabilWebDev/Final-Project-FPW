@@ -11,7 +11,7 @@ SmartFood Home — Laravel web app for UMKM home-food businesses (sales, menu/re
 
 ## Current state
 
-- Fresh Laravel 13 skeleton (PHP ^8.3, Blade + Tailwind CSS 4 + Vite 8). Only default `users`/`cache`/`jobs` migrations and a welcome route exist — all PRD modules are unbuilt.
+- Laravel 13 app (PHP ^8.3, Blade + Tailwind CSS 4 + Vite 8). Schema lengkap sesuai `docs/database.md` sudah punya migration dan seeder dummy (idempoten); auth/users/role sudah dibangun, modul lain belum. DB dev MySQL, test SQLite `:memory:`.
 - Build order per PRD §11: auth + roles/permissions → menus + ingredients → recipes/HPP → sales + stock deduction → purchases/verification → expenses + reports → production forecast. Don't build phases out of order or all at once.
 - Stack is fixed (PRD §9.1): Laravel monolith, Blade, Tailwind, session auth, Laravel Storage. No stack swaps, no paid/external integrations or AI services without approval.
 
@@ -42,9 +42,13 @@ SmartFood Home — Laravel web app for UMKM home-food businesses (sales, menu/re
 
 - Conventional commits (`feat(menu): ...`, `fix(report): ...`, `test(purchase): ...`), feature branches off `main`, no direct commits to `main` (TASK_INSTRUCTIONS §6).
 
-## Prompt log
+## Prompt log — mandatory per prompt
 
-- Append every new user prompt to `prompt_history.md` (timestamp WIB, AI model, full text, result). Recover past prompts from the local OpenCode session DB when asked; entries from other team members' machines are added manually via the template in that file.
+- **Every new user prompt must be appended to `prompt_history.md` immediately**, as its own new entry at the top — including short replies (`gas eksekusi`, `jalankan`, answers to questions, etc.). Never batch them at session end and never skip one.
+- Entry format: `## [YYYY-MM-DD HH:MM WIB] — <sender>` (newest first), `- **Model AI:** ...`, `- **Prompt:**` fenced `text` block with the **verbatim** user text, `- **Hasil:**` short result summary.
+- Strip `<system-reminder>` blocks and tool call/output dumps from the prompt text. Put answers given via the `question` tool in a separate `- **Jawaban via form pertanyaan:**` bullet — never inside the prompt block.
+- The author is the prompt sender; for sessions on this machine that is **Anggota 1** (older Anggota 4 entries stay as-is). Other members' prompts are added manually using the template at the bottom of that file.
+- A durable copy of this rule is recorded in `.ai/rules` via the Boost `record-rule` tool. Recover past prompts from the local OpenCode session DB when asked.
 
 ## Tasklist
 
