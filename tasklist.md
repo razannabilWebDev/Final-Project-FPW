@@ -10,6 +10,51 @@
 
 ---
 
+## [2026-11-21 21:23] — Anggota 2 — Tahap 1: Implementasi Master Menu
+
+- [x] Audit struktur & Git: branch `feature/member-2-menu-recipe`; kontrak tabel `menus` di `docs/database.md` sudah sesuai migration ada → **tidak ada migration baru**
+- [x] Konfirmasi permission final A1: `manage-menus` (Admin) + `auth`/`active`; tidak membuat gate/role alternatif
+- [x] Model `Menu` (cast `decimal:2`/boolean, scope `active`) + `MenuFactory`
+- [x] `MenuService` (create/update, upload & replace foto via Storage `public`, hapus foto lama, setActive) + `MenuPhotoUploadException`
+- [x] `StoreMenuRequest` & `UpdateMenuRequest` (validasi nama/deskripsi/harga/foto + `authorize()` manage-menus, pesan Bahasa Indonesia)
+- [x] `MenuController` (index, create, store, show, edit, update, setActive) dengan notifikasi sukses/gagal
+- [x] 7 route `menus.*` di `routes/web.php`: `index`/`show` = `auth`+`active`; `create`/`store`/`edit`/`update`/`status` = `can:manage-menus`
+- [x] 5 view Blade `menus/{index,create,edit,show,_form}` (Tailwind 4, format `Rp15.000`, badge status, konfirmasi nonaktif, error per field)
+- [x] `tests/Feature/MenuManagementTest.php`: 14 test / 70 assertion lulus (CRUD, harga, foto, validasi, status, 403 per role, tamper snapshot historis)
+- [x] Suite penuh: 54 test / 381 assertion lulus; `route:list --path=menus` sesuai; `vendor/bin/pint --dirty --format agent` passed
+- [x] Prompt lengkap dicatat di `prompt_history.md` (entri 21:17) dan hasil akhir dilengkapi; tasklist ini diperbarui
+- [ ] Menunggu persetujuan pengguna sebelum melanjutkan Tahap 2 (Resep/HPP)
+- [ ] Koordinasi D4/D5/D7 dengan A1/A3/A4 (di luar lingkup Master Menu)
+- [ ] Verifikasi symlink `public/storage` di dev lokal jika foto tidak tampil (test memakai `Storage::fake`)
+- [ ] Commit: tidak dilakukan (menunggu instruksi)
+
+## [2026-11-21 21:14] — Anggota 2 — Pencatatan prompt & finalisasi tasklist audit
+
+- [x] Periksa struktur/format `prompt_history.md` yang sudah ada; konvensi: terbaru di atas, blok `text`, model AI, timestamp WIB
+- [x] Pastikan prompt audit 21:07 sudah tercatat lengkap → tidak dibuat entri duplikat
+- [x] Tambah entri baru untuk prompt 21:14 di bagian paling bawah `prompt_history.md` (sesuai instruksi) dengan Modul, Tahap, Tujuan, Ringkasan instruksi, Ringkasan hasil audit, File yang diperiksa, Status
+- [x] Verifikasi isi `prompt_history.md` setelah edit; riwayat lama tetap utuh, template manual tidak dihapus
+- [x] Tandai pekerjaan audit yang benar-benar selesai; implementasi Menu/Resep sengaja **tidak** ditandai selesai
+- [x] Pertahankan format & riwayat `tasklist.md` (blok 21:07 dan entri lama tetap ada)
+- [x] Verifikasi `git status --short`: hanya `prompt_history.md` & `tasklist.md` yang berubah; tidak ada kode/migration/dokumen kontrak tersentuh
+- [ ] Menunggu persetujuan pengguna sebelum mulai coding Master Menu Tahap 1
+- [ ] Menunggu persetujuan tim atas D4 (valuasi harga modal), D5 (konversi satuan), D7 (format snapshot & versi resep)
+- [ ] Koordinasi kontrak service dengan A3 (bahan & HPP), A4 (snapshot HPP), dan A1 (nama route/service prediksi)
+- [ ] Commit: tidak dilakukan (menunggu instruksi)
+
+## [2026-11-21 21:07] — Anggota 2 — Audit & persiapan Menu/Resep (belum coding)
+
+- [x] Git: branch aktif `feature/member-2-menu-recipe`, up-to-date `origin/...`, working tree clean; tidak ada checkout/merge/reset/commit
+- [x] Baca `prd.md`, `TASK_INSTRUCTIONS.md`, `AGENTS.md`, `.ai/rules`, dan 7 dokumen `docs/` yang diminta
+- [x] Verifikasi struktur aktual: 1 model (User), 6 controller auth/users/dashboard, 13 migration, 1 route file, 13 blade, 4 FormRequest, 3 service/action, 11 test, 8 seeder
+- [x] Audit Menu: CRUD/harga/foto/nonaktif/historis/permission → seluruhnya belum diimplementasikan (baru schema + seeder)
+- [x] Audit Resep: relasi, takaran, HPP, konversi, versi, snapshot, batas Pengelola → baru schema + seeder; belum ada service/UI/test
+- [x] Audit integrasi A1/A3/A4, D4/D5/D7, serta urutan Tahap 1 vs Tahap 2 sesuai `implementation-plan.md`
+- [x] Susun laporan audit 12 bagian; catat prompt + checklist hanya di dua file log
+- [ ] Tunggu persetujuan pengguna sebelum coding atau membuat file modul apa pun
+- [ ] Koordinasi D4 (valuasi), D5 (konversi), D7 (format snapshot/versi) dengan A3/A4/A1
+- [ ] Commit: tidak dilakukan (sesuai instruksi audit)
+
 ## [2026-11-18 22:00] — Anggota 1 — Seluruh migration + seeder dummy
 
 - [x] Catat prompt 21:58 & 22:00 ke `prompt_history.md` (sesuai aturan baru)
