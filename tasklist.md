@@ -10,6 +10,16 @@
 
 ---
 
+## [2026-11-23 10:15] — Anggota 4 — Design system v2 dari screenshot Figma panel-per-panel
+
+- [x] Bandingkan `docs/design.md` vs `docs/design_system.md`; simpulkan Figma sebagai source of truth visual, `design_system.md` tetap dipakai untuk token/komponen
+- [x] Baca `docs/UI SmartFood Home.png` (contact sheet) + seluruh screenshot per panel di `docs/UI SmartFood Home/` (login, 10 halaman modul, modal & delete dialog)
+- [x] Catat temuan: spesifikasi login tidak ada di `design_system.md`; field modal mock bersifat generik dan tidak boleh menggantikan aturan bisnis PRD; `SmartFood Home Management Dashboard-3.png` kosong (export gagal)
+- [x] Buat `docs/design_system_v2.md`: token + `@theme` Tailwind 4, warna grafik, shell & pola tiap modul, spesifikasi login lengkap, komponen/modal, state wajib, aksesibilitas, catatan mock vs PRD, riwayat versi
+- [x] Catat sesi ini ke `prompt_history.md` + `tasklist.md`
+- [~] Menunggu koordinasi tim: tinjau/koordinasi penggantian `design_system.md` oleh v2 (aset bersama, TASK_INSTRUCTIONS §6.4) — file lama sengaja tidak ditimpa
+- [ ] Commit `docs/design_system_v2.md` + log (belum di-commit; user yang commit)
+
 ## [2026-11-16 19:42] — Anggota 4 — Tasklist konvensi
 
 - [x] Buat `tasklist.md` (root repo): riwayat pekerjaan per sesi, 7 blok backfill, terbaru di atas

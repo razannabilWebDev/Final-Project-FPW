@@ -11,6 +11,28 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-23 10:15 WIB] — Anggota 4
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  aku telah menambahkan file @docs/design.md sebagai acuan design yang baru, sebelum itu bisakah kamu bandingkan dengan file @docs/design_system.md dan menurutmu kamu lebih merekomendasikan memakai yang mana
+
+  tetapi ketika menggunakan file design_system.md untuk membuat halaman login malah desainnya berbeda dengan di figma
+
+  bisakah kamu membaca gambar? kalau bisa aku akan upload gambar full figma nya di folder
+
+  analisis gambarnya @docs/UI SmartFood Home.png
+
+  analisis folder @docs/UI SmartFood Home\ disitu aku sudah melakukan ss per panel
+
+  lakukan ke seluruh halaman jangan hanya login
+
+  ya buat file design barun yang mutakhir
+
+  ya catat
+  ```
+- **Hasil:** Analisis perbandingan `docs/design.md` vs `docs/design_system.md` dilakukan; direkomendasikan memakai Figma sebagai source of truth visual + `design_system.md` untuk token/komponen (bukan mengganti palet ke `#102F6B`). Membaca `docs/UI SmartFood Home.png` (contact sheet, terlalu kecil) lalu seluruh screenshot per panel di `docs/UI SmartFood Home/` (login, dashboard, Kelola Pengguna, Menu, Resep, Stok, Pembelian, Penjualan, Biaya, Laporan, Rekomendasi, semua modal + delete dialog; `SmartFood Home Management Dashboard-3.png` putih polos/export gagal). Dibuat file baru `docs/design_system_v2.md` — design system mutakhir: token lengkap (+ warna grafik & `--color-accent-light`), spesifikasi login penuh (badge pill, eyebrow sparkle, headline two-tone, foto + 2 kartu overlay, dropdown "Masuk sebagai", info box akses, footer), pola tiap modul, spesifikasi modal Tambah/Edit/Detail/Hapus, state wajib, aksesibilitas, dan catatan pemisahan field modal mock generik vs aturan bisnis PRD (Anggota 4). File lama sengaja tidak ditimpa (aset bersama, koordinasi TASK_INSTRUCTIONS §6.4). Entri dicatat ke `prompt_history.md` + `tasklist.md` atas permintaan user.
+
 ## [2026-11-16 19:42 WIB] — Anggota 4
 - **Model AI:** GLM-5.3-Flash Free (`opencode/glm-5.3-flash-free`) via OpenCode — agent: build
 - **Prompt:**
