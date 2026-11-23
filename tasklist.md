@@ -20,7 +20,7 @@
 - [x] Blade sales (index/create/show) + komponen icon/stat-card/empty-state; layout sementara `layouts.sales`
 - [x] `SaleFactory` + `SalesTest` (7 skenario: manual tanpa item, snapshot multi-item, deduksi/reversal idempoten, stok kurang gagal, completed_at, guest)
 - [x] Pint + test 8/8 lulus (33 assertion)
-- [ ] Commit (hash menyusul)
+- [x] Commit `e1e6847` (branch `feature/member-4-setup`)
 - [~] Integrasi: ganti stub dengan service resmi Anggota 2 (HPP) & Anggota 3 (stok); samakan gate dengan `AuthServiceProvider` Anggota 1 saat merge
 
 ## [2026-11-23 10:15] — Anggota 4 — Design system v2 dari screenshot Figma panel-per-panel
