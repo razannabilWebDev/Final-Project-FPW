@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\UserRole;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -64,5 +65,26 @@ class DashboardRoleTest extends TestCase
     public function test_guest_is_redirected_to_login(): void
     {
         $this->get(route('dashboard'))->assertRedirect(route('login'));
+    }
+
+    public function test_pengelola_dashboard_renders_purchase_dates(): void
+    {
+        $pengelola = User::factory()->state(['role' => UserRole::Pengelola])->create();
+
+        DB::table('purchases')->insert([
+            'purchase_code' => 'PUR-001',
+            'purchase_date' => '2026-11-23',
+            'supplier_name' => 'Toko Berkah',
+            'status' => 'pending',
+            'total' => 150000,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $this->actingAs($pengelola)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSee('PUR-001')
+            ->assertSee('23 Nov 2026');
     }
 }
