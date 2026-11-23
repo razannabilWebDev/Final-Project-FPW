@@ -4,8 +4,14 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\ProfitReportController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\StockAdjustmentController;
+use App\Http\Controllers\StockMovementController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WasteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => auth()->check()
@@ -33,12 +39,33 @@ Route::middleware(['auth', 'active'])->group(function (): void {
         Route::put('/{user}', [UserController::class, 'update'])->name('update');
         Route::patch('/{user}/status', [UserController::class, 'setActive'])->name('status');
     });
+
+    Route::get('/bahan-baku', [IngredientController::class, 'index'])->name('ingredients.index');
+
+    Route::middleware('can:manage-ingredients')->prefix('bahan-baku')->name('ingredients.')->group(function (): void {
+        Route::get('/create', [IngredientController::class, 'create'])->name('create');
+        Route::post('/', [IngredientController::class, 'store'])->name('store');
+        Route::get('/{ingredient}/edit', [IngredientController::class, 'edit'])->name('edit');
+        Route::put('/{ingredient}', [IngredientController::class, 'update'])->name('update');
+        Route::patch('/{ingredient}/status', [IngredientController::class, 'setActive'])->name('status');
+    });
+
+    Route::middleware('can:manage-stock')->prefix('stok')->name('stock.')->group(function (): void {
+        Route::get('/pergerakan', [StockMovementController::class, 'index'])->name('movements');
+    });
+
+    Route::middleware('can:update-stock-physical')->prefix('stok')->name('stock.')->group(function (): void {
+        Route::get('/penyesuaian', [StockAdjustmentController::class, 'create'])->name('adjustments.create');
+        Route::post('/penyesuaian', [StockAdjustmentController::class, 'store'])->name('adjustments.store');
+    });
+
+    Route::middleware('can:record-waste')->prefix('stok')->name('stock.')->group(function (): void {
+        Route::get('/susut', [WasteController::class, 'create'])->name('waste.create');
+        Route::post('/susut', [WasteController::class, 'store'])->name('waste.store');
+    });
 });
 
-// Placeholder agar middleware auth memiliki tujuan redirect (diganti Anggota 1 saat integrasi).
-Route::get('/login', fn () => 'Login')->name('login');
-
-Route::middleware(['auth'])->group(function (): void {
+Route::middleware(['auth', 'active'])->group(function (): void {
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
     Route::get('/sales/create', [SaleController::class, 'create'])
         ->name('sales.create')->middleware('can:create-sales');
@@ -47,4 +74,24 @@ Route::middleware(['auth'])->group(function (): void {
     Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
     Route::post('/sales/{sale}/status', [SaleController::class, 'updateStatus'])
         ->name('sales.update-status')->middleware('can:update-sale-status');
+});
+
+Route::middleware(['auth', 'active', 'can:manage-expenses'])->group(function (): void {
+    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
+    Route::post('/expenses', [ExpenseController::class, 'store'])->name('expenses.store');
+    Route::put('/expenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
+    Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
+
+    Route::post('/expense-categories', [ExpenseController::class, 'storeCategory'])->name('expense-categories.store');
+    Route::put('/expense-categories/{expense_category}', [ExpenseController::class, 'updateCategory'])->name('expense-categories.update');
+    Route::delete('/expense-categories/{expense_category}', [ExpenseController::class, 'destroyCategory'])->name('expense-categories.destroy');
+});
+
+Route::middleware(['auth', 'active', 'can:view-reports'])->group(function (): void {
+    Route::get('/reports/profit', [ProfitReportController::class, 'index'])->name('reports.profit');
+});
+
+Route::middleware(['auth', 'active', 'can:export-reports'])->group(function (): void {
+    Route::get('/reports/profit/export/excel', [ProfitReportController::class, 'exportExcel'])->name('reports.profit.excel');
+    Route::get('/reports/profit/export/pdf', [ProfitReportController::class, 'exportPdf'])->name('reports.profit.pdf');
 });

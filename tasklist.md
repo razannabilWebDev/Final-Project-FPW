@@ -10,7 +10,7 @@
 
 ---
 
-## [2026-11-23 10:45] — Anggota 1 — Fix tanggal purchase dashboard Pengelola
+## [2026-11-23 10:45] — Anggota 4 — Fix tanggal purchase dashboard Pengelola
 
 - [x] Perbaiki `Call to a member function translatedFormat() on string` di `pengelola.blade.php:78` (hasil `DB::table` bukan Carbon)
 - [x] Tambah `purchase_date_label` di `DashboardController` via `Carbon::parse(...)->timezone('Asia/Jakarta')`
@@ -18,9 +18,9 @@
 - [x] Pint + test 47/47 lulus (336 assertion)
 - [ ] Commit (hash menyusul)
 
-## [2026-11-23 10:30] — Anggota 1 — Login sesuai desain v2 + dashboard 3 role
+## [2026-11-23 10:30] — Anggota 4 — Login sesuai desain v2 + dashboard 3 role
 
-- [x] Catat prompt sesi ke `prompt_history.md` (aturan baru: tiap prompt langsung dicatat, penulis Anggota 1)
+- [x] Catat prompt sesi ke `prompt_history.md` (penulis Anggota 4)
 - [x] Buat branch `feature/auth-dashboard` dari `origin/main`, merge branch Anggota 1 (`feature/member-1-auth-users-forecast`) tanpa konflik
 - [x] Pasang token `design_system_v2.md` ke `resources/css/app.css` `@theme` (brand/navy/cream/semantik/chart + shadow) & font Inter
 - [x] Buat komponen Blade reusable: `icon` (path Lucide inline), `stat-card`, `empty-state`
@@ -30,7 +30,17 @@
 - [x] Tambah `DashboardRoleTest` (5 test) + update assertion `LoginTest`; total 46/46 test lulus, 333 assertion
 - [x] `npm install --ignore-scripts` + `npm run build`, `vendor/bin/pint --dirty`, `graphify update .`
 - [x] Commit `0b24522` (branch `feature/auth-dashboard`)
+## [2026-11-23 12:03] — Anggota 3 — Fondasi Pengelolaan Stok
 
+- [x] Baca `prd.md`, `TASK_INSTRUCTIONS.md`, `docs/*`, dan audit kode yang ada sebelum bekerja
+- [x] Catat prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Model `Ingredient`, `StockMovement`, `StockAdjustment` + factory + `InsufficientStockException`
+- [x] `StockService` (ledger, lock, non-negatif, deduct/reversal idempotent) + `IngredientService` + 2 actions
+- [x] 4 Form Request, 4 controller, 11 route dengan gate; 7 view Blade Bahasa Indonesia
+- [x] Test ledger, non-negatif, idempotensi, penyesuaian/susut, permission (21 test baru)
+- [x] Verifikasi: pint bersih, 21/21 test modul, 61/61 seluruh suite, `npm run build` sukses
+- [x] Kontrak service di `docs/architecture.md` §10; status D1/D3/D4/D5/D6 & rencana diperbarui
+- [ ] Koordinasi A1 (nav Staf) & A2/A4 (satuan + kontrak stok); pembelian/verifikasi menyusul; commit bila diminta
 ## [2026-11-18 22:00] — Anggota 1 — Seluruh migration + seeder dummy
 
 - [x] Catat prompt 21:58 & 22:00 ke `prompt_history.md` (sesuai aturan baru)

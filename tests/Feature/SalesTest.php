@@ -7,67 +7,11 @@ use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class SalesTest extends TestCase
 {
     use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        // Tabel pendukung (milik A2/A3) dibuat manual di test karena belum ada di branch ini.
-        Schema::create('menus', function ($table): void {
-            $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->decimal('selling_price', 12, 2);
-            $table->string('image_path')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
-        });
-        Schema::create('ingredients', function ($table): void {
-            $table->id();
-            $table->string('name');
-            $table->string('base_unit');
-            $table->decimal('current_stock', 12, 3)->default(0);
-            $table->decimal('minimum_stock', 12, 3)->default(0);
-            $table->decimal('average_cost', 12, 2)->default(0);
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
-        });
-        Schema::create('recipes', function ($table): void {
-            $table->id();
-            $table->foreignId('menu_id')->constrained('menus');
-            $table->text('notes')->nullable();
-            $table->unsignedInteger('version')->default(1);
-            $table->timestamps();
-        });
-        Schema::create('recipe_items', function ($table): void {
-            $table->id();
-            $table->foreignId('recipe_id')->constrained('recipes');
-            $table->foreignId('ingredient_id')->constrained('ingredients');
-            $table->decimal('quantity', 12, 3);
-            $table->string('unit');
-            $table->timestamps();
-        });
-        Schema::create('stock_movements', function ($table): void {
-            $table->id();
-            $table->foreignId('ingredient_id')->constrained('ingredients');
-            $table->string('movement_type');
-            $table->decimal('quantity_in', 12, 3)->default(0);
-            $table->decimal('quantity_out', 12, 3)->default(0);
-            $table->decimal('balance_before', 12, 3);
-            $table->decimal('balance_after', 12, 3);
-            $table->string('reference_type')->nullable();
-            $table->unsignedBigInteger('reference_id')->nullable();
-            $table->string('note')->nullable();
-            $table->foreignId('created_by')->nullable();
-            $table->timestamp('created_at')->nullable();
-        });
-    }
 
     private function actingUser(string $role = 'admin'): User
     {
@@ -89,7 +33,7 @@ class SalesTest extends TestCase
         ]);
 
         $sale = Sale::firstOrFail();
-        $response->assertRedirect(route('sales.show', $sale));
+        $response->assertRedirect(route('sales.index', ['modal' => 'detail-sale-modal', 'id' => $sale->id]));
         $this->assertSame('manual', $sale->type);
         $this->assertSame('125000.00', (string) $sale->total);
         $this->assertCount(0, $sale->items);
@@ -235,5 +179,18 @@ class SalesTest extends TestCase
     public function test_guest_cannot_access_sales(): void
     {
         $this->get(route('sales.index'))->assertRedirect();
+    }
+
+    public function test_sale_detail_returns_partial_for_modal(): void
+    {
+        $this->actingUser();
+        $sale = Sale::factory()->create();
+
+        $response = $this->get(route('sales.show', $sale));
+
+        $response->assertOk()
+            ->assertSee($sale->transaction_code)
+            ->assertDontSee('<html', false)
+            ->assertDontSee('layouts.app', false);
     }
 }
