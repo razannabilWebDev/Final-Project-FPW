@@ -11,6 +11,15 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-23 11:00 WIB] — Anggota 4
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  kembali ke tugas utama ku sebagai anggota 4, apa yang akan dikerjakan dahulu
+  ```
+- **Jawaban via form pertanyaan:** Penjualan dulu; pakai usulan default D1/D2/D3/D6/D11/D12; lanjut di branch `feature/member-4-setup`; stub boleh langsung memakai tabel; penulis log Anggota 4.
+- **Hasil:** Rencana modul Penjualan disusun lalu dieksekusi: enum `SaleStatus`/`PaymentMethod`, model `Sale`/`SaleItem`/`SaleStatusHistory`, migration `sales`, stub service HPP & stok (`DefaultRecipeCostService`, `DefaultStockService`) yang memakai tabel dengan idempotensi & ledger, `SaleService` (snapshot, status history, deduksi D1, completed D2, reversal D6), FormRequest, `SaleController`, route, Blade sales (index/create/show) + komponen, factory & `SalesTest` (7 skenario). Pint + test 8/8 lulus (33 assertion).
+
 ## [2026-11-23 10:15 WIB] — Anggota 4
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**

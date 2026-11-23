@@ -10,6 +10,19 @@
 
 ---
 
+## [2026-11-23 11:00] — Anggota 4 — Modul Pencatatan Penjualan (fase 1)
+
+- [x] Kembali ke modul Anggota 4; prioritaskan Penjualan, pakai usulan default D1/D2/D3/D6/D11/D12, branch `feature/member-4-setup`
+- [x] Enum `SaleStatus`, `PaymentMethod`; model `Sale`, `SaleItem`, `SaleStatusHistory`; migration `sales` (+ FK menus kondisional)
+- [x] Stub service: `RecipeCostService`/`DefaultRecipeCostService` (HPP dari recipe_items × average_cost) & `StockService`/`DefaultStockService` (deduct/reversal idempoten + ledger `stock_movements`, cek non-negatif)
+- [x] `SaleService`: transaksi DB, snapshot nama/harga/HPP, `transaction_code TRX-YYYYMMDD-XXXX`, history status, D1 potong sekali, D2 completed_at, D6 reversal sekali
+- [x] FormRequest `StoreSaleRequest`/`UpdateSaleStatusRequest`, `SaleController`, route `sales.*` dengan gate
+- [x] Blade sales (index/create/show) + komponen icon/stat-card/empty-state; layout sementara `layouts.sales`
+- [x] `SaleFactory` + `SalesTest` (7 skenario: manual tanpa item, snapshot multi-item, deduksi/reversal idempoten, stok kurang gagal, completed_at, guest)
+- [x] Pint + test 8/8 lulus (33 assertion)
+- [ ] Commit (hash menyusul)
+- [~] Integrasi: ganti stub dengan service resmi Anggota 2 (HPP) & Anggota 3 (stok); samakan gate dengan `AuthServiceProvider` Anggota 1 saat merge
+
 ## [2026-11-23 10:15] — Anggota 4 — Design system v2 dari screenshot Figma panel-per-panel
 
 - [x] Bandingkan `docs/design.md` vs `docs/design_system.md`; simpulkan Figma sebagai source of truth visual, `design_system.md` tetap dipakai untuk token/komponen
