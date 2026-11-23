@@ -33,7 +33,7 @@ class SalesTest extends TestCase
         ]);
 
         $sale = Sale::firstOrFail();
-        $response->assertRedirect(route('sales.show', $sale));
+        $response->assertRedirect(route('sales.index', ['modal' => 'detail-sale-modal', 'id' => $sale->id]));
         $this->assertSame('manual', $sale->type);
         $this->assertSame('125000.00', (string) $sale->total);
         $this->assertCount(0, $sale->items);
@@ -179,5 +179,18 @@ class SalesTest extends TestCase
     public function test_guest_cannot_access_sales(): void
     {
         $this->get(route('sales.index'))->assertRedirect();
+    }
+
+    public function test_sale_detail_returns_partial_for_modal(): void
+    {
+        $this->actingUser();
+        $sale = Sale::factory()->create();
+
+        $response = $this->get(route('sales.show', $sale));
+
+        $response->assertOk()
+            ->assertSee($sale->transaction_code)
+            ->assertDontSee('<html', false)
+            ->assertDontSee('layouts.app', false);
     }
 }

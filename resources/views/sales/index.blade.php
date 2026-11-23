@@ -20,15 +20,15 @@
         <x-stat-card label="Diproses" :value="number_format($sales->getCollection()->where('status', 'processing')->count(), 0, ',', '.')" icon="trending" tone="blue" />
     </div>
 
-    <div class="rounded-2xl border border-[#ecece8] bg-white p-5 shadow-sm">
+    <div class="rounded-2xl border border-line bg-white p-5 shadow-card">
         <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
             <div>
                 <h2 class="text-sm font-bold text-[#142d70]">Daftar Pesanan</h2>
                 <p class="mt-0.5 text-[11px] text-slate-500">Menampilkan {{ $sales->count() }} dari {{ $sales->total() }} transaksi</p>
             </div>
             @can('create-sales')
-                <a href="{{ route('sales.create') }}"
-                    class="flex items-center gap-2 rounded-lg bg-[#2563eb] px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-200 transition hover:bg-[#1d4ed8]">
+                <a href="{{ route('sales.create') }}" id="open-create-sale"
+                    class="flex items-center gap-2 rounded-lg bg-brand px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-200 transition hover:bg-brand-hover">
                     <x-icon name="plus" :size="15" :stroke="2.4" />
                     Input Pesanan
                 </a>
@@ -41,22 +41,22 @@
                     <x-icon name="search" :size="16" />
                 </span>
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari data..."
-                    class="h-10 w-full rounded-lg border border-[#dfe3e8] pl-9 pr-3 text-sm outline-none focus:border-[#2563eb] focus:ring-4 focus:ring-blue-100">
+                    class="h-10 w-full rounded-lg border border-line-input pl-9 pr-3 text-sm outline-none focus:border-brand focus:ring-4 focus:ring-[#dbeafe]">
             </div>
-            <select name="status" class="h-10 rounded-lg border border-[#dfe3e8] bg-white px-3 text-sm outline-none focus:border-[#2563eb]">
+            <select name="status" class="h-10 rounded-lg border border-line-input bg-white px-3 text-sm outline-none focus:border-brand">
                 <option value="">Semua status</option>
                 @foreach ($statuses as $status)
                     <option value="{{ $status->value }}" @selected(request('status') === $status->value)>{{ $status->label() }}</option>
                 @endforeach
             </select>
-            <button type="submit" class="h-10 rounded-lg border border-[#dfe3e8] bg-white px-4 text-xs font-bold text-[#374151]">Filter</button>
+            <button type="submit" class="h-10 rounded-lg border border-line-input bg-white px-4 text-xs font-bold text-[#374151]">Filter</button>
         </form>
 
         @if ($sales->isNotEmpty())
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs">
                     <thead>
-                        <tr class="border-b border-[#ecece8] bg-[#f8fafc] text-[10px] font-bold uppercase tracking-wide text-slate-500">
+                        <tr class="border-b border-line bg-head-bg text-[10px] font-bold uppercase tracking-wide text-slate-500">
                             <th class="px-3 py-3">ID Transaksi</th>
                             <th class="px-3 py-3">Tanggal</th>
                             <th class="px-3 py-3">Pesanan</th>
@@ -75,7 +75,7 @@
                                     default => 'bg-[#fef3c7] text-[#b45309]',
                                 };
                             @endphp
-                            <tr class="border-b border-[#f0f1f2] last:border-0">
+                            <tr class="border-b border-line last:border-0">
                                 <td class="px-3 py-3 font-bold text-[#142d70]">{{ $sale->transaction_code }}</td>
                                 <td class="px-3 py-3 text-slate-500">{{ $sale->created_at->translatedFormat('d M Y, H.i') }}</td>
                                 <td class="px-3 py-3 text-slate-600">{{ $sale->type === 'manual' ? 'Penjualan manual' : $sale->items->count().' item' }}</td>
@@ -83,9 +83,10 @@
                                 <td class="px-3 py-3 text-slate-500">{{ $sale->payment_method->label() }}</td>
                                 <td class="px-3 py-3"><span class="rounded-full px-2.5 py-1 text-[10px] font-bold {{ $tone }}">{{ $sale->status->label() }}</span></td>
                                 <td class="px-3 py-3">
-                                    <a href="{{ route('sales.show', $sale) }}" class="text-[#2563eb] hover:text-[#1d4ed8]" aria-label="Lihat detail">
+                                    <button type="button" class="open-detail text-brand hover:text-brand-hover" aria-label="Lihat detail"
+                                            data-url="{{ route('sales.show', $sale) }}">
                                         <x-icon name="eye" :size="16" />
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach
@@ -97,4 +98,81 @@
             <x-empty-state icon="receipt" title="Belum ada transaksi" description="Penjualan yang dicatat akan tampil di sini." />
         @endif
     </div>
+
+    {{-- Modal: Input Pesanan --}}
+    @can('create-sales')
+        <x-modal id="create-sale-modal" title="Tambah Pesanan" icon="plus" size="lg">
+            @include('sales.partials.create-form')
+            <x-slot:footer>
+                <button type="button" class="modal-close rounded-lg border border-line-input bg-white px-4 py-2.5 text-xs font-bold text-[#374151]">Batal</button>
+                <button type="submit" form="sale-form" class="flex items-center gap-2 rounded-lg bg-brand px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-200 hover:bg-brand-hover">
+                    <x-icon name="check" :size="14" :stroke="2.4" />
+                    Simpan Pesanan
+                </button>
+            </x-slot:footer>
+        </x-modal>
+    @endcan
+
+    {{-- Modal: Detail Transaksi --}}
+    <x-modal id="detail-sale-modal" title="Detail Transaksi" icon="receipt" size="lg">
+        <div id="detail-sale-content">
+            <x-empty-state icon="receipt" title="Memuat detail..." description="Harap tunggu." />
+        </div>
+        <x-slot:footer>
+            <button type="button" class="modal-close rounded-lg border border-line-input bg-white px-4 py-2.5 text-xs font-bold text-[#374151]">Tutup</button>
+        </x-slot:footer>
+    </x-modal>
+
+    <script>
+        (function () {
+            const openCreate = document.getElementById('open-create-sale');
+            const createModal = document.getElementById('create-sale-modal');
+            if (openCreate && createModal) {
+                openCreate.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    createModal.openModal();
+                });
+            }
+
+            const detailModal = document.getElementById('detail-sale-modal');
+            const detailContent = document.getElementById('detail-sale-content');
+
+            document.querySelectorAll('.open-detail').forEach(function (button) {
+                button.addEventListener('click', async function () {
+                    detailContent.innerHTML = '<div class="py-10 text-center text-xs text-slate-500">Memuat detail...</div>';
+                    detailModal.openModal();
+                    try {
+                        const response = await fetch(button.dataset.url, {
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                        });
+                        detailContent.innerHTML = await response.text();
+                    } catch (error) {
+                        detailContent.innerHTML = '<div class="py-10 text-center text-xs text-danger">Gagal memuat detail.</div>';
+                    }
+                });
+            });
+
+            // Tutup semua modal dengan Escape.
+            document.addEventListener('keydown', function (event) {
+                if (event.key !== 'Escape') return;
+                document.querySelectorAll('.modal-root:not(.hidden)').forEach(function (modal) {
+                    modal.closeModal();
+                });
+            });
+
+            // Auto-open modal detail setelah redirect sukses menyimpan penjualan.
+            @if(request()->query('modal') === 'detail-sale-modal' && request()->filled('id'))
+                (async function () {
+                    const url = @json(route('sales.index')) + '/{{ request()->query('id') }}';
+                    detailModal.openModal();
+                    try {
+                        const response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                        detailContent.innerHTML = await response.text();
+                    } catch (error) {
+                        detailContent.innerHTML = '<div class="py-10 text-center text-xs text-danger">Gagal memuat detail.</div>';
+                    }
+                })();
+            @endif
+        })();
+    </script>
 @endsection

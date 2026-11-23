@@ -12,6 +12,15 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-23 11:35 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  saya ingin agar input pesanan dan detail transaksi berbentuk popup bukan halaman baru
+  ```
+- **Jawaban via form pertanyaan:** Detail = hapus halaman penuh, /sales/{id} selalu partial (modal-only); Input Pesanan = sediakan fallback halaman penuh bila JS mati.
+- **Hasil:** Eksekusi: komponen `x-modal` (overlay blur, header/footer, Escape, focus trap), partial `sales.partials.create-form` & `sales.partials.detail`, index menaruh modal create (auto-open via `?modal=create` saat validasi gagal) + modal detail (fetch partial), `SaleController@show` selalu return partial, hapus `sales/show.blade.php`, update test. Verifikasi via browser.
+
 ## [2026-11-23 11:20 WIB] — Anggota 1
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**

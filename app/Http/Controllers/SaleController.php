@@ -49,13 +49,15 @@ class SaleController extends Controller
             return back()->withInput()->with('error', 'Penjualan gagal disimpan: '.$e->getMessage());
         }
 
-        return redirect()->route('sales.show', $sale)
+        return redirect()->route('sales.index', ['modal' => 'detail-sale-modal', 'id' => $sale->id])
             ->with('success', 'Penjualan berhasil dicatat.');
     }
 
-    public function show(Sale $sale): View
+    public function show(Sale $sale): string
     {
-        return view('sales.show', compact('sale'));
+        $sale->loadMissing('items', 'statusHistories');
+
+        return view('sales.partials.detail', compact('sale'))->render();
     }
 
     public function updateStatus(UpdateSaleStatusRequest $request, Sale $sale): RedirectResponse
