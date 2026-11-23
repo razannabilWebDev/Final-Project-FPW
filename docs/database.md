@@ -183,3 +183,12 @@ disebut eksplisit.
 Semua seeder **idempoten** (dicek oleh kunci unik) dan ledger stok konsisten (`SUM(in) - SUM(out) = current_stock`).
 
 ⚠️ Kredensial di atas adalah **dummy untuk development**. Ganti password/email sebelum produksi; jangan commit kredensial asli.
+
+## 7. Keputusan implementasi Anggota 3 (2026-11-23)
+
+- `current_stock` hanya ditulis oleh `App\Services\StockService` (masuk, keluar, penyesuaian, susut, reversal). Seeder dummy lama tetap memakai query builder dan tidak diubah.
+- Setiap perubahan stok menulis `stock_movements` dengan `balance_before`/`balance_after`; movement bertipe `purchase_in`, `sale_out`, `waste`, `adjustment`, atau `reversal`.
+- Idempotensi penjualan memakai pasangan `reference_type='Sale'` + `reference_id` + `movement_type`. Kolom `sales.stock_deducted_at` dan `sales.reversal_done_at` tetap milik Anggota 4.
+- Tidak ada tabel `unit_conversions`; semua kuantitas dan harga modal bahan berada dalam `base_unit` bahan (D5, menunggu konfirmasi Anggota 2).
+- `average_cost` diperbarui dengan rata-rata tertimbang saat stok masuk dengan `unit_cost` (D4).
+- Stok awal bahan baru dicatat sebagai movement `adjustment` dengan `reference_type='Ingredient'`, bukan update kolom langsung.
