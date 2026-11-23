@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProfitReportExport;
 use App\Services\ProfitReportService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ProfitReportController extends Controller
 {
@@ -28,6 +33,30 @@ class ProfitReportController extends Controller
             'label' => $label,
             'period' => $request->string('period')->toString(),
         ]));
+    }
+
+    public function exportExcel(Request $request): BinaryFileResponse
+    {
+        [$start, $end, $label] = $this->period($request);
+
+        return Excel::download(
+            new ProfitReportExport($this->reports, $start, $end),
+            'laporan-keuntungan-'.now()->format('Ymd_His').'.xlsx',
+        );
+    }
+
+    public function exportPdf(Request $request): Response
+    {
+        [$start, $end, $label] = $this->period($request);
+
+        $data = array_merge($this->reports->summarize($start, $end), [
+            'label' => $label,
+            'topMenus' => $this->reports->topMenus($start, $end),
+        ]);
+
+        return Pdf::loadView('reports.pdf', $data)
+            ->setPaper('a4', 'portrait')
+            ->download('laporan-keuntungan-'.now()->format('Ymd_His').'.pdf');
     }
 
     /**

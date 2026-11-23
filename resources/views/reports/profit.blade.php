@@ -13,20 +13,18 @@
             <h1 class="text-[22px] font-extrabold tracking-tight text-[#172033]">Laporan Keuntungan</h1>
             <p class="mt-1 text-sm text-slate-500">Analisis kesehatan dan pertumbuhan keuangan.</p>
         </div>
-        <div class="flex flex-wrap items-center gap-2">
-            <button type="button" disabled title="Menunggu keputusan dependency tim"
-                    class="flex items-center gap-2 rounded-lg border border-line-input bg-white px-3 py-2 text-xs font-bold text-slate-400 cursor-not-allowed">
-                <x-icon name="receipt" :size="14" /> Cetak
-            </button>
-            <button type="button" disabled title="Menunggu keputusan dependency tim"
-                    class="flex items-center gap-2 rounded-lg border border-line-input bg-white px-3 py-2 text-xs font-bold text-slate-400 cursor-not-allowed">
-                PDF
-            </button>
-            <button type="button" disabled title="Menunggu keputusan dependency tim"
-                    class="flex items-center gap-2 rounded-lg border border-line-input bg-white px-3 py-2 text-xs font-bold text-slate-400 cursor-not-allowed">
-                Excel
-            </button>
-        </div>
+        @can('export-reports')
+            <div class="flex flex-wrap items-center gap-2">
+                <a href="{{ route('reports.profit.pdf', request()->query()) }}" target="_blank"
+                   class="flex items-center gap-2 rounded-lg border border-line-input bg-white px-3 py-2 text-xs font-bold text-[#374151] hover:border-brand">
+                    <x-icon name="receipt" :size="14" /> Cetak / PDF
+                </a>
+                <a href="{{ route('reports.profit.excel', request()->query()) }}"
+                   class="flex items-center gap-2 rounded-lg bg-brand px-3 py-2 text-xs font-bold text-white shadow-lg shadow-blue-200 hover:bg-brand-hover">
+                    Excel
+                </a>
+            </div>
+        @endcan
     </div>
 
     {{-- Filter periode: tabs + date range --}}

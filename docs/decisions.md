@@ -21,6 +21,7 @@
 | D11 | Kolom idempotensi penjualan | `stock_deducted_at` + `reversal_done_at` di tabel `sales` | `docs/database.md` usulan | ⚠️ Diterapkan sbg asumsi Anggota 1 (2026-11-18) — perlu konfirmasi A3 & A4 |
 | D12 | Format `transaction_code` | `TRX-YYYYMMDD-XXXX`, unique | `docs/database.md` usulan | ⚠️ Diterapkan sbg asumsi Anggota 1 (2026-11-18) — perlu konfirmasi A4 |
 | D13 | `settings` & `activity_logs` | Dibuat sesuai baseline; pemilik sementara Anggota 1 | `docs/database.md` §1 | ⚠️ Diterapkan, pemilik final belum ditetapkan tim |
+| D14 | Dependency ekspor laporan | `maatwebsite/excel` (Excel) + `barryvdh/laravel-dompdf` (PDF); gate `export-reports` (Admin) | PRD §2.1.14 | ✅ Disetujui tim (2026-11-23) |
 
 ## Catatan per keputusan (yang butuh koordinasi nyata)
 
@@ -57,7 +58,7 @@
 | D8 | Anggota 1 (2026-11-18), dikonfirmasi pengguna | 2026-11-18 |
 | D9 | — | — |
 | D10 | — | — |
-| D11 | Anggota 1 (asumsi implementasi) | 2026-11-18 |
+| D11 | Anggota 1 (asumsi), dipakai adapter A4→A3 | 2026-11-18 / 2026-11-23 |
 | D12 | Anggota 1 (asumsi implementasi) | 2026-11-18 |
 | D13 | Anggota 1 (pemilik sementara) | 2026-11-18 |
 | D1, D3, D4, D5, D6 | Anggota 3 (usulan implementasi, belum final tim) | 2026-11-23 |

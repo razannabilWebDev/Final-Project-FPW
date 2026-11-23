@@ -38,19 +38,19 @@
 - **Anggota 4 (modul kami):**
   - [x] Pencatatan penjualan: transaksi berbasis menu (multi-item) + penjualan manual — commit `e1e6847`
   - [x] Update status transaksi + `sale_status_histories` — commit `e1e6847`
-  - [~] Deduksi stok saat status pemicu + reversal saat pembatalan: **logika & idempotensi sudah ada** (`SaleService` + `DefaultStockService`, commit `e1e6847`), tapi masih pakai **stub**; perlu diganti service asli Anggota 3
+  - [x] Deduksi stok saat status pemicu + reversal saat pembatalan: sudah memakai service asli Anggota 3 via `Member3StockServiceAdapter` (idempoten, ledger, lock, non-negatif) — commit `0ff3a94` + integrasi
   - [x] Biaya operasional: kategori + pengeluaran (filter ganda: date range + harian/bulanan/tahunan) — commit `76054ed`
   - [x] Laporan keuntungan: pendapatan − HPP (snapshot) − biaya; manual ditandai "HPP tidak tersedia" (bukan 0) — commit `20253ea`
-  - [ ] Ekspor PDF/Excel — **tombol sengaja disabled**, menunggu keputusan dependency tim (baris 16)
+  - [x] Ekspor PDF/Excel — aktif via Maatwebsite Excel + DomPDF (keputusan tim 2026-11-23), tombol PDF/Excel di laporan
   - Boleh memakai stub/kontrak data bila dependensi (menu/HPP/service stok) belum siap (§8 Tahap 2) — **sedang dipakai** untuk `RecipeCostService` & `StockService`
 
 ### Catatan koordinasi Anggota 4 (2026-11-23)
 
 - Branch kerja: `feature/member-4-setup` (sudah di-push, 65 test lulus). Sudah me-merge fondasi auth Anggota 1.
-- **Perlu Anggota 2:** ganti `DefaultRecipeCostService` dengan service HPP/resep asli (signature: `costPerPortion(int $menuId): string`, `ingredientsPerPortion(int $menuId): array` di `app/Services/Contracts/RecipeCostService.php`).
-- **Perlu Anggota 3:** ganti `DefaultStockService` dengan service stok terpusat (signature: `deductForSale(int $saleId, array $items, ?int $userId): void`, `reverseForSale(int $saleId, ?int $userId): void` di `app/Services/Contracts/StockService.php`). Idempotensi memakai `sales.stock_deducted_at` & `sales.reversal_done_at` (D11).
-- **Perlu keputusan tim:** dependency ekspor PDF/Excel (baris 16) sebelum tombol di laporan diaktifkan.
-- **Perlu koordinasi merge:** `feature/member-4-setup` → `develop`/`main` setelah kontrak di atas disepakati.
+- **Selesai — Anggota 3:** branch `feature/member-3-stock-purchases` sudah di-merge; `Member3StockServiceAdapter` menjembatani service stok asli ke kontrak `StockService` (idempotensi ledger A3 + flag `sales.stock_deducted_at`/`reversal_done_at` dari adapter).
+- **Koordinasi Anggota 2:** HPP dihitung oleh `DefaultRecipeCostService` (versi resep terbaru × `average_cost`, D4/D7). Bila A2 membuat service HPP resmi, ganti binding di `AppServiceProvider` — kontrak `RecipeCostService` tidak berubah.
+- **Selesai — ekspor:** dependency `maatwebsite/excel` + `barryvdh/laravel-dompdf` dipasang (keputusan tim 2026-11-23); tombol PDF/Excel aktif dengan gate `export-reports`.
+- **Perlu koordinasi merge:** `feature/member-4-setup` → `develop`/`main` (develop masih perlu merge commit Biaya/Laporan/integrasi).
 
 ## Tahap 3 — Integrasi (TASK_INSTRUCTIONS §8)
 

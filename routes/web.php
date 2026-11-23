@@ -90,3 +90,8 @@ Route::middleware(['auth', 'active', 'can:manage-expenses'])->group(function ():
 Route::middleware(['auth', 'active', 'can:view-reports'])->group(function (): void {
     Route::get('/reports/profit', [ProfitReportController::class, 'index'])->name('reports.profit');
 });
+
+Route::middleware(['auth', 'active', 'can:export-reports'])->group(function (): void {
+    Route::get('/reports/profit/export/excel', [ProfitReportController::class, 'exportExcel'])->name('reports.profit.excel');
+    Route::get('/reports/profit/export/pdf', [ProfitReportController::class, 'exportPdf'])->name('reports.profit.pdf');
+});

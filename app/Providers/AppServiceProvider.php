@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\Adapters\Member3StockServiceAdapter;
 use App\Services\Contracts\RecipeCostService;
 use App\Services\Contracts\StockService;
 use App\Services\DefaultRecipeCostService;
-use App\Services\DefaultStockService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,9 +15,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Stub sementara; diganti implementasi Anggota 2 & 3 saat integrasi.
+        // HPP: implementasi final Anggota 4 (perlu koordinasi Anggota 2).
         $this->app->bind(RecipeCostService::class, DefaultRecipeCostService::class);
-        $this->app->bind(StockService::class, DefaultStockService::class);
+
+        // Stok: adapter ke service terpusat Anggota 3 (idempoten, ledger, lock).
+        $this->app->bind(StockService::class, Member3StockServiceAdapter::class);
     }
 
     /**

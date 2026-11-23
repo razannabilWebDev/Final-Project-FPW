@@ -146,4 +146,25 @@ class ProfitReportTest extends TestCase
             ->assertSee('Belum ada penjualan')
             ->assertViewHas('netProfit', 0.0);
     }
+
+    public function test_admin_can_export_excel_and_pdf(): void
+    {
+        $this->actingUser();
+
+        $this->get(route('reports.profit.excel'))
+            ->assertOk()
+            ->assertHeader('content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+        $this->get(route('reports.profit.pdf'))
+            ->assertOk()
+            ->assertHeader('content-type', 'application/pdf');
+    }
+
+    public function test_pengelola_cannot_export_report(): void
+    {
+        $this->actingUser(UserRole::Pengelola);
+
+        $this->get(route('reports.profit.excel'))->assertForbidden();
+        $this->get(route('reports.profit.pdf'))->assertForbidden();
+    }
 }
