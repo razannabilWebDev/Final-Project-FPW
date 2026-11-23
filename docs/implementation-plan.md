@@ -34,31 +34,39 @@
 - **Anggota 2:** resep & HPP per porsi, snapshot/versi resep
 - **Anggota 3:** pembelian + verifikasi → stok masuk, stok susut/rusak, penyesuaian stok fisik
 - **Anggota 4 (modul kami):**
-  - [ ] Pencatatan penjualan: transaksi berbasis menu (multi-item) + penjualan manual
-  - [ ] Update status transaksi + `sale_status_histories`
-  - [ ] Deduksi stok saat status pemicu (panggil service Anggota 3) + reversal saat pembatalan
-  - [ ] Biaya operasional: kategori + pengeluaran
-  - [ ] Laporan keuntungan: pendapatan bersih − HPP (snapshot) − biaya operasional; penjualan manual ditandai "HPP tidak tersedia" (bukan 0)
-  - [ ] Ekspor PDF/Excel (setelah dependency disepakati)
-  - Boleh memakai stub/kontrak data bila dependensi (menu/HPP/service stok) belum siap (§8 Tahap 2)
+  - [x] Pencatatan penjualan: transaksi berbasis menu (multi-item) + penjualan manual — commit `e1e6847`
+  - [x] Update status transaksi + `sale_status_histories` — commit `e1e6847`
+  - [~] Deduksi stok saat status pemicu + reversal saat pembatalan: **logika & idempotensi sudah ada** (`SaleService` + `DefaultStockService`, commit `e1e6847`), tapi masih pakai **stub**; perlu diganti service asli Anggota 3
+  - [x] Biaya operasional: kategori + pengeluaran (filter ganda: date range + harian/bulanan/tahunan) — commit `76054ed`
+  - [x] Laporan keuntungan: pendapatan − HPP (snapshot) − biaya; manual ditandai "HPP tidak tersedia" (bukan 0) — commit `20253ea`
+  - [ ] Ekspor PDF/Excel — **tombol sengaja disabled**, menunggu keputusan dependency tim (baris 16)
+  - Boleh memakai stub/kontrak data bila dependensi (menu/HPP/service stok) belum siap (§8 Tahap 2) — **sedang dipakai** untuk `RecipeCostService` & `StockService`
+
+### Catatan koordinasi Anggota 4 (2026-11-23)
+
+- Branch kerja: `feature/member-4-setup` (sudah di-push, 65 test lulus). Sudah me-merge fondasi auth Anggota 1.
+- **Perlu Anggota 2:** ganti `DefaultRecipeCostService` dengan service HPP/resep asli (signature: `costPerPortion(int $menuId): string`, `ingredientsPerPortion(int $menuId): array` di `app/Services/Contracts/RecipeCostService.php`).
+- **Perlu Anggota 3:** ganti `DefaultStockService` dengan service stok terpusat (signature: `deductForSale(int $saleId, array $items, ?int $userId): void`, `reverseForSale(int $saleId, ?int $userId): void` di `app/Services/Contracts/StockService.php`). Idempotensi memakai `sales.stock_deducted_at` & `sales.reversal_done_at` (D11).
+- **Perlu keputusan tim:** dependency ekspor PDF/Excel (baris 16) sebelum tombol di laporan diaktifkan.
+- **Perlu koordinasi merge:** `feature/member-4-setup` → `develop`/`main` setelah kontrak di atas disepakati.
 
 ## Tahap 3 — Integrasi (TASK_INSTRUCTIONS §8)
 
-1. [ ] Auth & permission di semua modul
-2. [ ] Menu & resep ↔ master bahan
-3. [ ] Penjualan ↔ menu, HPP, service stok
-4. [ ] Pembelian ↔ stok masuk
-5. [ ] Biaya & penjualan → laporan keuntungan
-6. [ ] Penjualan + resep + stok → rekomendasi produksi
+1. [~] Auth & permission di semua modul — gate tersedia & dipakai Sales/Expense/Report; modul A2/A3 belum diverifikasi
+2. [ ] Menu & resep ↔ master bahan (Anggota 2)
+3. [~] Penjualan ↔ menu, HPP, service stok — stub aktif, menunggu service A2/A3
+4. [ ] Pembelian ↔ stok masuk (Anggota 3)
+5. [x] Biaya & penjualan → laporan keuntungan — commit `20253ea`
+6. [ ] Penjualan + resep + stok → rekomendasi produksi (Anggota 1)
 
 ## Tahap 4 — Pengujian Sistem
 
-- [ ] Login 3 role; pembatasan akses (403)
-- [ ] Transaksi multi-item → stok berkurang sesuai resep
-- [ ] Pembatalan → reversal stok (idempotent)
-- [ ] Pembelian → verifikasi → stok masuk
-- [ ] Biaya operasional & laporan keuntungan benar
-- [ ] Rekomendasi produksi (abaikan penjualan manual)
+- [x] Login 3 role; pembatasan akses (403) — AuthTest/PermissionTest Anggota 1 + ExpenseTest/ProfitReportTest
+- [~] Transaksi multi-item → stok berkurang sesuai resep — sudah di-test dengan stub (SalesTest), perlu test ulang dengan service A3
+- [~] Pembatalan → reversal stok (idempotent) — sudah di-test dengan stub (SalesTest), perlu test ulang dengan service A3
+- [ ] Pembelian → verifikasi → stok masuk (Anggota 3)
+- [x] Biaya operasional & laporan keuntungan benar — ExpenseTest + ProfitReportTest
+- [ ] Rekomendasi produksi (abaikan penjualan manual) — kontrak D8 final, implementasi Anggota 1
 
 ## Tahap 5 — Stabilitas & Dokumentasi
 
