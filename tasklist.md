@@ -10,6 +10,19 @@
 
 ---
 
+## [2026-11-23 10:30] — Anggota 1 — Login sesuai desain v2 + dashboard 3 role
+
+- [x] Catat prompt sesi ke `prompt_history.md` (aturan baru: tiap prompt langsung dicatat, penulis Anggota 1)
+- [x] Buat branch `feature/auth-dashboard` dari `origin/main`, merge branch Anggota 1 (`feature/member-1-auth-users-forecast`) tanpa konflik
+- [x] Pasang token `design_system_v2.md` ke `resources/css/app.css` `@theme` (brand/navy/cream/semantik/chart + shadow) & font Inter
+- [x] Buat komponen Blade reusable: `icon` (path Lucide inline), `stat-card`, `empty-state`
+- [x] Login 2 panel sesuai §5 desain v2: branding navy + badge pill + headline two-tone + foto & kartu overlay; panel form dengan password toggle, "Lupa password?", info box akses; dropdown "Masuk sebagai" sengaja dihilangkan (role dari akun)
+- [x] `DashboardController`: ringkas data per role dari tabel existing (aman via `Schema::hasTable`), pilih view admin/pengelola/staf
+- [x] 3 view dashboard sesuai PRD §8.3: Admin (KPI keuangan, grafik, menu terlaris, stok menipis, pembelian, rekomendasi), Pengelola (aktivitas penjualan, pesanan, pembelian, stok, menu, estimasi — tanpa data keuangan), Staf (aksi cepat, pesanan, stok fisik, nota, estimasi)
+- [x] Tambah `DashboardRoleTest` (5 test) + update assertion `LoginTest`; total 46/46 test lulus, 333 assertion
+- [x] `npm install --ignore-scripts` + `npm run build`, `vendor/bin/pint --dirty`, `graphify update .`
+- [x] Commit `0b24522` (branch `feature/auth-dashboard`)
+
 ## [2026-11-18 22:00] — Anggota 1 — Seluruh migration + seeder dummy
 
 - [x] Catat prompt 21:58 & 22:00 ke `prompt_history.md` (sesuai aturan baru)
