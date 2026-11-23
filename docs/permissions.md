@@ -1,9 +1,8 @@
 # Permission Contract — SmartFood Home
 
-> **STATUS: DRAFT — usulan Anggota 4 selaku konsumen. FINAL SAY: Anggota 1**
-> (pemilik modul autentikasi/role, TASK_INSTRUCTIONS §3.1). Anggota lain
-> menggunakan mekanisme Anggota 1 dan tidak membuat sistem role alternatif
-> (§4.3). Implementasi tidak boleh dimulai sebelum dokumen ini disepakati.
+> **STATUS: FINAL (2026-11-18) — ditetapkan Anggota 1** (pemilik modul
+> autentikasi/role, TASK_INSTRUCTIONS §3.1). Anggota lain wajib menggunakan
+> mekanisme ini dan tidak membuat sistem role alternatif (§4.3).
 
 ## 1. Sumber Kebenaran
 
@@ -27,23 +26,36 @@ Middleware (register oleh Anggota 1):
 | `role:admin,pengelola` | Admin atau Pengelola |
 | `auth` | semua role yang login (bawaan Laravel) |
 
-Gate/Policy (usulan nama):
+Middleware tambahan (Anggota 1): `active` — memeriksa `users.is_active`;
+akun yang dinonaktifkan di-logout otomatis dan diarahkan ke halaman login.
 
-| Gate | Keterangan |
-|---|---|
-| `manage-users` | tambah/edit/nonaktifkan akun |
-| `manage-menus` | CRUD menu, harga jual, foto produk |
-| `manage-recipes` | takaran resep; harga modal resep = `admin,pengelola` |
-| `view-recipes` | `admin,pengelola` (Staf tidak melihat resep — PRD §3.2) |
-| `manage-ingredients` | master stok |
-| `record-waste` | catat stok susut/rusak = `admin,staf` (Pengelola **tidak** — PRD §3.2) |
-| `verify-purchases` | verifikasi pembelian = `admin,pengelola` |
-| `create-purchases` | input nota belanja = `admin,staf` |
-| `update-sale-status` | update status transaksi = semua role |
-| `manage-expenses` | catat/kelola biaya operasional = **hanya Admin** |
-| `view-reports` | dashboard keuangan & laporan laba = **hanya Admin** |
-| `export-reports` | unduh/cetak laporan PDF/Excel = hanya Admin |
-| `manage-forecast` | analisis & penyesuaian prediksi = hanya Admin |
+Gate final — didefinisikan terpusat di `app/Providers/AuthServiceProvider.php`:
+
+| Gate | Role diizinkan | Keterangan |
+|---|---|---|
+| `manage-users` | Admin | tambah/edit/nonaktifkan akun |
+| `manage-menus` | Admin | CRUD menu, harga jual, foto produk |
+| `manage-recipes` | Admin | takaran & komposisi resep |
+| `manage-recipe-costs` | Admin, Pengelola | harga modal resep (**gate baru**, koordinasi A2) |
+| `view-recipes` | Admin, Pengelola | Staf tidak melihat resep — PRD §3.2 |
+| `manage-ingredients` | Admin | master bahan baku |
+| `manage-stock` | Admin, Pengelola | memantau/mengelola persediaan (**gate baru**, koordinasi A3) |
+| `update-stock-physical` | semua role | update stok fisik harian |
+| `record-waste` | Admin, Staf | Pengelola **tidak** — PRD §3.2 |
+| `create-purchases` | Admin, Staf | input nota belanja & foto struk |
+| `verify-purchases` | Admin, Pengelola | verifikasi pembelian |
+| `view-sales-summary` | Admin, Pengelola | rekap/analisis & pesanan masuk (**gate baru**, koordinasi A4) |
+| `create-sales` | semua role | input pesanan/penjualan |
+| `update-sale-status` | semua role | update status transaksi |
+| `manage-expenses` | Admin | catat/kelola biaya operasional |
+| `view-reports` | Admin | dashboard keuangan & laporan laba |
+| `export-reports` | Admin | unduh/cetak laporan PDF/Excel |
+| `manage-forecast` | Admin | analisis & penyesuaian prediksi |
+| `view-forecast` | semua role | lihat estimasi porsi harian (read-only, **gate baru**) |
+
+Catatan: gate yang berbasis role juga menolak akun nonaktif (`is_active = false`).
+`can:manage-users` dipakai pada route group `users.*`; gate lain dipasang oleh
+pemilik modul masing-masing melalui `can:` atau `@can`.
 
 ## 4. Matriks → Gate (dari PRD §3.2)
 
@@ -85,8 +97,10 @@ Gate/Policy (usulan nama):
 5. Anggota lain **tidak boleh** membuat sistem role alternatif; kebutuhan permission baru diajukan ke Anggota 1.
 6. Semua aksi laporan (keuangan, laba, ekspor) adalah Admin-only — jaga modul Laporan Keuntungan (Anggota 4) tetap ketat.
 
-## 6. Tugas Anggota 1 (tindak lanjut)
+## 6. Tugas Anggota 1 (status)
 
-- [ ] Konfirmasi/ubah daftar middleware alias & gate di §3.
-- [ ] Implementasi + seed role (koordinasi seed akun awal per §5.2).
-- [ ] Umumkan ke tim begitu middleware tersedia supaya Anggota 2/3/4 bisa memasang di route masing-masing.
+- [x] Konfirmasi/ubah daftar middleware alias & gate di §3 (2026-11-18).
+- [x] Implementasi middleware `role`, `active`, dan ke-19 gate di `AuthServiceProvider`.
+- [ ] Seed akun Admin awal — **koordinasi seed akun awal per §5.2 masih terbuka**.
+- [x] Umumkan ke tim: alias `role`/`active` dan gate di §3 siap dipakai Anggota 2/3/4.
+- [ ] Anggota 2/3/4: pasang gate pada route modul masing-masing; laporkan bila butuh gate baru.
