@@ -88,8 +88,10 @@
                 @endif
             </div>
             @if ($summary['forecast'])
-                <p class="mt-6 text-center text-3xl font-extrabold text-[#142d70]">{{ number_format((float) ($summary['forecast']->predicted_quantity ?? 0), 0, ',', '.') }}</p>
-                <p class="mt-1 text-center text-[11px] text-slate-500">total porsi</p>
+                <p class="mt-6 text-center text-3xl font-extrabold text-[#142d70]">{{ number_format((float) $summary['forecast_portions'], 0, ',', '.') }}</p>
+                <p class="mt-1 text-center text-[11px] text-slate-500">
+                    total porsi @if ($summary['forecast']->data_status === 'terbatas') · data terbatas @endif
+                </p>
             @else
                 <div class="mt-6">
                     <x-empty-state icon="sparkles" title="Belum ada estimasi" description="Rekomendasi produksi akan tampil setelah data penjualan tersedia." />

@@ -29,7 +29,9 @@ class UserController extends Controller
 
     public function store(StoreUserRequest $request): RedirectResponse
     {
-        $this->users->create($request->validated());
+        /** @var User $actor */
+        $actor = $request->user();
+        $this->users->create($request->validated(), $actor);
 
         return redirect()->route('users.index')->with('success', 'Akun pengguna berhasil ditambahkan.');
     }

@@ -2,18 +2,21 @@
 
 namespace App\Services;
 
+use App\Actions\Audit\LogActivityAction;
 use App\Models\User;
 use App\UserRole;
 use Illuminate\Support\Facades\DB;
 
 class UserService
 {
+    public function __construct(private readonly LogActivityAction $logActivity) {}
+
     /**
      * @param  array{name: string, email: string, password: string, role: string}  $data
      */
-    public function create(array $data): User
+    public function create(array $data, User $actor): User
     {
-        return DB::transaction(function () use ($data): User {
+        return DB::transaction(function () use ($data, $actor): User {
             $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
@@ -22,6 +25,14 @@ class UserService
 
             $user->role = UserRole::from($data['role']);
             $user->save();
+
+            $this->logActivity->execute(
+                $actor,
+                'user.created',
+                User::class,
+                $user->id,
+                ['role' => $user->role->value],
+            );
 
             return $user;
         });
@@ -38,7 +49,9 @@ class UserService
             abort(403, 'Anda tidak dapat mengubah role akun sendiri.');
         }
 
-        DB::transaction(function () use ($user, $data, $role): void {
+        $previousRole = $user->role->value;
+
+        DB::transaction(function () use ($user, $actor, $data, $role, $previousRole): void {
             $user->name = $data['name'];
             $user->email = $data['email'];
             $user->role = $role;
@@ -48,6 +61,16 @@ class UserService
             }
 
             $user->save();
+
+            if ($previousRole !== $role->value) {
+                $this->logActivity->execute(
+                    $actor,
+                    'user.role_changed',
+                    User::class,
+                    $user->id,
+                    ['old_role' => $previousRole, 'new_role' => $role->value],
+                );
+            }
         });
 
         return $user;
@@ -59,8 +82,22 @@ class UserService
             abort(403, 'Anda tidak dapat menonaktifkan akun sendiri.');
         }
 
-        $user->is_active = $isActive;
-        $user->save();
+        $previousState = $user->is_active;
+
+        DB::transaction(function () use ($user, $actor, $isActive, $previousState): void {
+            $user->is_active = $isActive;
+            $user->save();
+
+            if ($previousState !== $isActive) {
+                $this->logActivity->execute(
+                    $actor,
+                    $isActive ? 'user.activated' : 'user.deactivated',
+                    User::class,
+                    $user->id,
+                    ['old_is_active' => $previousState, 'new_is_active' => $isActive],
+                );
+            }
+        });
 
         return $user;
     }

@@ -87,6 +87,13 @@ class DashboardController extends Controller
             ? DB::table('production_forecasts')->orderByDesc('id')->first()
             : null;
 
+        $forecastPortions = ($forecast !== null && $table('production_forecast_items'))
+            ? (float) DB::table('production_forecast_items')
+                ->where('forecast_id', $forecast->id)
+                ->selectRaw('SUM(COALESCE(adjusted_quantity, predicted_quantity)) as total')
+                ->value('total')
+            : 0.0;
+
         return [
             'revenue' => $salesCompleted,
             'hpp' => $hppTotal,
@@ -102,6 +109,7 @@ class DashboardController extends Controller
             'purchasesVerification' => $purchasesVerification,
             'topMenus' => $topMenus,
             'forecast' => $forecast,
+            'forecast_portions' => $forecastPortions,
         ];
     }
 

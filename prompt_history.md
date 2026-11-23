@@ -12,6 +12,47 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-23 22:13 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  simpan semua history promptnya ke dalam prompt_history.md
+  ```
+- **Hasil:** Audit kelengkapan riwayat prompt: ditemukan 2 prompt sesi ini belum tercatat ("fungsi audit log itu buat apa?" dan prompt ini), 1 jawaban form pertanyaan pada entri 19:50 belum dicatat, serta entri 10:45 (Anggota 1) kehilangan isi setelah edit bersama. Semua ditambahkan/dipulihkan di file ini.
+
+## [2026-11-23 22:05 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  fungsi audit log itu buat apa?
+  ```
+- **Hasil:** Dijelaskan bahwa audit log adalah jejak permanen (*append-only*) "siapa melakukan apa, kapan, pada data apa" untuk akuntabilitas dan keamanan (PRD §9.3, TASK §3.1, D13). Contoh aksi yang sudah dicatat: `user.created`, `user.role_changed`, `user.activated/deactivated`, `user.password_changed`. Belum ada halaman penampil log; A3/A4 menyusul setelah koordinasi. Tidak ada file yang diubah (mode rencana).
+
+## [2026-11-23 21:46 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  kerjakan sekarang
+  ```
+- **Hasil:** Eksekusi selesai. (1) Audit log A1: `LogActivityAction` + integrasi `UserService`/`ChangePasswordAction`, `ActivityLogTest` 9 test/33 assertion. (2) Rekomendasi Produksi: `config/forecast.php`, model `ProductionForecast`/`ProductionForecastItem`, 3 Action prediksi, `ForecastIngredientService` (memakai kontrak `RecipeCostService` A4), controller + 3 route + view, dashboard Admin diperbaiki, `MovingAverageTest` 3 test + `ForecastTest` 7 test. Dokumen D8/D13/D15, architecture, permissions, implementation-plan diperbarui. `composer install` dijalankan untuk memasang dependency ekspor yang sudah dideklarasikan A4. `composer test` akhir: **117/117 lulus (618 assertion)**; pint & `npm run build` sukses.
+
+## [2026-11-23 21:40 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  sekarang apakah sudah bisa lanjut ke audit log dan rekomendari produksi?
+  ```
+- **Jawaban via form pertanyaan:** Urutan = audit log dulu lalu forecast; lingkup audit = A1 saja dulu; strategi resep forecast = baca tabel `recipes`/`recipe_items` yang sudah di-seed sebagai kontrak sementara sampai modul A2 merge.
+- **Hasil:** Dinyatakan bisa: audit log bagian A1 mandiri (D13 pemilik final masih terbuka untuk A3/A4); forecast sudah didukung modul A4 (sales) & A3 (stok) yang telah merge, sedangkan A2 (menu/resep) belum merge. Rencana akhir disusun, belum dieksekusi (mode rencana).
+
+## [2026-11-23 21:30 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  apakah audit log nya sudah di lakukan juga?
+  ```
+- **Hasil:** Dicek: belum diimplementasikan — tidak ada kode yang menulis ke `activity_logs`; hanya tabel + seeder dummy. `tasklist.md` masih menandai "Audit log menyusul". Dijelaskan dasar kebutuhannya (PRD §9.3, TASK §3.1, D13).
+
 ## [2026-11-23 20:17 WIB] — Anggota 1
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**
@@ -26,6 +67,7 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
   ```text
   coba jalankan pengujian, email ku razannabilannadif@gmail.com
   ```
+- **Jawaban via form pertanyaan:** (1) Boleh perbaiki `.env` lokal lalu jalankan ulang test; (2) setelah test lulus, lanjut implementasi fitur lupa password sekarang.
 - **Hasil:** Setelah izin, `.env` lokal diperbaiki (kutip `MAIL_PASSWORD`, betulkan `MAIL_FROM_NAME`); `composer test` baseline 47/47 lulus. Fitur lupa password diimplementasikan: FR-AUTH-06 + D14, `User::CanResetPassword` + notifikasi Bahasa Indonesia, 2 Action, 2 Form Request, controller, 4 route guest, 2 view, link login. Tabel `password_reset_tokens` ternyata sudah ada di migration `users` Laravel 13, sehingga migration baru dihapus. `ForgotPasswordTest` 10 test/27 assertion; total 57/57 lulus (363 assertion), pint & npm build sukses. Email `razannabilannadif@gmail.com` dipakai sebagai penerima uji: `ForgotPasswordTest` memakai `Notification::fake()`, dan uji koneksi SMTP sungguhan via `Mail::raw()` berhasil (`Illuminate\Mail\SentMessage`). Koreksi panduan sebelumnya: Laravel 13/Symfony Mailer menolak `MAIL_SCHEME=tls`; untuk port 587 pakai `MAIL_SCHEME=smtp` (STARTTLS), port 465 pakai `smtps`. `.env` lokal sudah disesuaikan.
 
 ## [2026-11-23 19:45 WIB] — Anggota 1
@@ -70,6 +112,16 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 - **Hasil:** Audit modul A1: auth/users/dashboard/migration/seeder selesai (47 test lulus); yang belum = Rekomendasi Produksi (4 butir checklist §10 + FR-PRED-01…07: belum ada config/forecast.php, model, service, controller/route, view, test; kartu dashboard salah baca `predicted_quantity` dari header). Juga tercatat: koordinasi kontrak A2/A3/A4, audit aktivitas belum dicatat, dokumen status perlu diperbarui, branch `main` stale.
 
 ## [2026-11-23 10:45 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  Error
+  resources\views\dashboard\pengelola.blade.php:78
+  Call to a member function translatedFormat() on string
+  ```
+- **Jawaban via form pertanyaan:** (mode rencana) direkomendasikan parse string tanggal dengan Carbon; setelah keluar mode rencana user memerintahkan "jalankan".
+- **Hasil:** Perbaikan: `DashboardController` menambahkan `purchase_date_label` hasil `Carbon::parse(...)->timezone('Asia/Jakarta')->translatedFormat('d M Y')` untuk hasil `DB::table('purchases')`; view Pengelola memakai label tersebut. Tambah `DashboardRoleTest::test_pengelola_dashboard_renders_purchase_dates` untuk meng-cover baris yang error. `vendor/bin/pint --dirty`, test 47/47 lulus (336 assertion).
+
 ## [2026-11-23 12:55 WIB] — Anggota 4
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**
