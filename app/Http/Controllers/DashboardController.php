@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
@@ -56,7 +57,19 @@ class DashboardController extends Controller
             ? DB::table('purchases')->where('status', 'pending')->count()
             : 0;
         $purchasesVerification = $table('purchases')
-            ? DB::table('purchases')->whereIn('status', ['pending', 'approved'])->limit(5)->get()
+            ? DB::table('purchases')
+                ->whereIn('status', ['pending', 'approved'])
+                ->limit(5)
+                ->get()
+                ->map(function (object $purchase): object {
+                    $purchase->purchase_date_label = $purchase->purchase_date
+                        ? Carbon::parse($purchase->purchase_date)
+                            ->timezone('Asia/Jakarta')
+                            ->translatedFormat('d M Y')
+                        : '-';
+
+                    return $purchase;
+                })
             : collect();
 
         $topMenus = ($table('sale_items') && $table('sales'))

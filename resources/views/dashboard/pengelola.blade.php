@@ -75,7 +75,7 @@
                 <div class="flex items-center justify-between border-b border-line py-2.5 last:border-0">
                     <div>
                         <p class="text-xs font-bold text-[#374151]">{{ $purchase->purchase_code }}</p>
-                        <p class="text-[10px] text-slate-500">{{ $purchase->supplier_name ?? '-' }} · {{ $purchase->purchase_date?->translatedFormat('d M Y') }}</p>
+                        <p class="text-[10px] text-slate-500">{{ $purchase->supplier_name ?? '-' }} · {{ $purchase->purchase_date_label }}</p>
                     </div>
                     @php
                         $tone = match ($purchase->status) { 'approved' => 'bg-[#dcfce7] text-[#15803d]', 'rejected' => 'bg-[#fee2e2] text-[#b91c1c]', default => 'bg-[#fef3c7] text-[#b45309]' };

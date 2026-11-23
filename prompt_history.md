@@ -12,6 +12,17 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-23 10:45 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  Error
+  resources\views\dashboard\pengelola.blade.php:78
+  Call to a member function translatedFormat() on string
+  ```
+- **Jawaban via form pertanyaan:** (mode rencana) direkomendasikan parse string tanggal dengan Carbon; setelah keluar mode rencana user memerintahkan "jalankan".
+- **Hasil:** Perbaikan: `DashboardController` menambahkan `purchase_date_label` hasil `Carbon::parse(...)->timezone('Asia/Jakarta')->translatedFormat('d M Y')` untuk hasil `DB::table('purchases')`; view Pengelola memakai label tersebut. Tambah `DashboardRoleTest::test_pengelola_dashboard_renders_purchase_dates` untuk meng-cover baris yang error. `vendor/bin/pint --dirty`, test 47/47 lulus (336 assertion).
+
 ## [2026-11-23 10:20 WIB] — Anggota 1
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**

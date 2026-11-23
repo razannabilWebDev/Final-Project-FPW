@@ -10,6 +10,14 @@
 
 ---
 
+## [2026-11-23 10:45] — Anggota 1 — Fix tanggal purchase dashboard Pengelola
+
+- [x] Perbaiki `Call to a member function translatedFormat() on string` di `pengelola.blade.php:78` (hasil `DB::table` bukan Carbon)
+- [x] Tambah `purchase_date_label` di `DashboardController` via `Carbon::parse(...)->timezone('Asia/Jakarta')`
+- [x] Tambah test regresi `test_pengelola_dashboard_renders_purchase_dates`
+- [x] Pint + test 47/47 lulus (336 assertion)
+- [ ] Commit (hash menyusul)
+
 ## [2026-11-23 10:30] — Anggota 1 — Login sesuai desain v2 + dashboard 3 role
 
 - [x] Catat prompt sesi ke `prompt_history.md` (aturan baru: tiap prompt langsung dicatat, penulis Anggota 1)
