@@ -12,6 +12,27 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-23 12:03 WIB] — Anggota 3
+- **Model AI:** Hy4 Flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  sekarang coba kerjakan
+  ```
+- **Hasil:** Fondasi stok selesai: model + factory (`Ingredient`, `StockMovement`, `StockAdjustment`), `StockService` (ledger, lock, non-negatif, deduct/reversal idempotent), `IngredientService`, 2 actions, 4 Form Request, 4 controller, 11 route dengan gate, 7 view Blade, dan 3 file test (21 test baru). Verifikasi: 21/21 test modul, 61/61 test seluruh suite, `pint` bersih, `npm run build` sukses. Kontrak service dicatat di `docs/architecture.md` §10 + `docs/decisions.md` (D1/D3/D4/D5/D6), status `docs/implementation-plan.md` dan `docs/database.md` diperbarui. Pembelian/verifikasi ditunda; koordinasi A1 (nav Staf), A2 (satuan), A4 (pemicu & flag) masih terbuka. Belum commit.
+
+## [2026-11-23 12:02 WIB] — Anggota 3
+- **Model AI:** Hy4 Flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  Saya adalah Anggota 3 di proyek ini. Modul saya: Pengelolaan Stok dan Pembelian Bahan Baku (TASK_INSTRUCTIONS §3.3).
+  Baca prd.md, TASK_INSTRUCTIONS.md, dan docs/ sebelum bekerja.
+  Batasi pekerjaan ke modul saya; jangan menyentuh tabel, file, atau
+  service milik anggota lain tanpa koordinasi. Ikuti konvensi di
+  docs/architecture.md dan AGENTS.md.
+  ```
+- **Jawaban via form pertanyaan:** cakupan = fondasi stok dulu; satuan = base unit saja tanpa tabel konversi; kontrak service = A4 kirim kebutuhan bahan & A4 pemilik flag idempotensi; pemicu potong stok = saat `processing`; nav Staf = koordinasikan ke Anggota 1.
+- **Hasil:** Audit dokumen & kode selesai; rencana bertahap fondasi stok disajikan (model/service, HTTP/UI, test, kontrak docs). Tidak ada file diubah pada tahap rencana.
+
 ## [2026-11-18 22:00 WIB] — Anggota 1
 - **Model AI:** Hy4 Flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**

@@ -10,6 +10,18 @@
 
 ---
 
+## [2026-11-23 12:03] — Anggota 3 — Fondasi Pengelolaan Stok
+
+- [x] Baca `prd.md`, `TASK_INSTRUCTIONS.md`, `docs/*`, dan audit kode yang ada sebelum bekerja
+- [x] Catat prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Model `Ingredient`, `StockMovement`, `StockAdjustment` + factory + `InsufficientStockException`
+- [x] `StockService` (ledger, lock, non-negatif, deduct/reversal idempotent) + `IngredientService` + 2 actions
+- [x] 4 Form Request, 4 controller, 11 route dengan gate; 7 view Blade Bahasa Indonesia
+- [x] Test ledger, non-negatif, idempotensi, penyesuaian/susut, permission (21 test baru)
+- [x] Verifikasi: pint bersih, 21/21 test modul, 61/61 seluruh suite, `npm run build` sukses
+- [x] Kontrak service di `docs/architecture.md` §10; status D1/D3/D4/D5/D6 & rencana diperbarui
+- [ ] Koordinasi A1 (nav Staf) & A2/A4 (satuan + kontrak stok); pembelian/verifikasi menyusul; commit bila diminta
+
 ## [2026-11-18 22:00] — Anggota 1 — Seluruh migration + seeder dummy
 
 - [x] Catat prompt 21:58 & 22:00 ke `prompt_history.md` (sesuai aturan baru)

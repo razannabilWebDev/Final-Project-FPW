@@ -22,8 +22,8 @@
 - [x] Role + middleware/policy dari `docs/permissions.md` (Anggota 1 — 19 gate, alias `role`/`active`)
 - [x] Kelola Pengguna: CRUD + nonaktifkan akun oleh Admin (Anggota 1 — guard self-role/self-deactivate)
 - [ ] Master menu + harga jual (Anggota 2)
-- [ ] Master bahan baku + satuan/konversi (Anggota 3)
-- [ ] Service stok terpusat + `stock_movements` ledger (Anggota 3)
+- [x] Master bahan baku + satuan dasar (Anggota 3 — 2026-11-23; tanpa tabel konversi, D5 menunggu A2)
+- [x] Service stok terpusat + `stock_movements` ledger (Anggota 3 — 2026-11-23; deduct/reversal untuk A4)
 - [x] Migration semua tabel dari `docs/database.md`, urut dependensi FK (Anggota 1, 2026-11-18)
 - [x] Seeder dummy lengkap & idempoten + test konsistensi ledger (`DatabaseSchemaTest`, 40 test lulus)
 - [ ] Layout dasar + komponen umum (card, badge, DataTable, modal, toast)
@@ -33,6 +33,8 @@
 - **Anggota 1:** kelola pengguna, rekomendasi produksi
 - **Anggota 2:** resep & HPP per porsi, snapshot/versi resep
 - **Anggota 3:** pembelian + verifikasi → stok masuk, stok susut/rusak, penyesuaian stok fisik
+  - [x] Fondasi selesai (CRUD bahan, ledger, penyesuaian, susut/rusak, service stok, 21 test baru)
+  - [ ] Pembelian + verifikasi masih tertunda; koordinasi nav Staf dengan Anggota 1
 - **Anggota 4 (modul kami):**
   - [ ] Pencatatan penjualan: transaksi berbasis menu (multi-item) + penjualan manual
   - [ ] Update status transaksi + `sale_status_histories`
