@@ -21,7 +21,7 @@
 - [x] 3 view dashboard sesuai PRD §8.3: Admin (KPI keuangan, grafik, menu terlaris, stok menipis, pembelian, rekomendasi), Pengelola (aktivitas penjualan, pesanan, pembelian, stok, menu, estimasi — tanpa data keuangan), Staf (aksi cepat, pesanan, stok fisik, nota, estimasi)
 - [x] Tambah `DashboardRoleTest` (5 test) + update assertion `LoginTest`; total 46/46 test lulus, 333 assertion
 - [x] `npm install --ignore-scripts` + `npm run build`, `vendor/bin/pint --dirty`, `graphify update .`
-- [ ] Commit (hash menyusul)
+- [x] Commit `0b24522` (branch `feature/auth-dashboard`)
 
 ## [2026-11-18 22:00] — Anggota 1 — Seluruh migration + seeder dummy
 
