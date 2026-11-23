@@ -21,6 +21,7 @@
 | D11 | Kolom idempotensi penjualan | `stock_deducted_at` + `reversal_done_at` di tabel `sales` | `docs/database.md` usulan | ⚠️ Diterapkan sbg asumsi Anggota 1 (2026-11-18) — perlu konfirmasi A3 & A4 |
 | D12 | Format `transaction_code` | `TRX-YYYYMMDD-XXXX`, unique | `docs/database.md` usulan | ⚠️ Diterapkan sbg asumsi Anggota 1 (2026-11-18) — perlu konfirmasi A4 |
 | D13 | `settings` & `activity_logs` | Dibuat sesuai baseline; pemilik sementara Anggota 1 | `docs/database.md` §1 | ⚠️ Diterapkan, pemilik final belum ditetapkan tim |
+| D14 | Alur lupa password (FR-AUTH-06) | Email via broker Laravel (dev `log`, test `array`, produksi SMTP); akun nonaktif ditolak dengan pesan generik; token 60 menit & sekali pakai | Persetujuan tim 2026-11-23; PRD §5.1 | ✅ Disetujui tim (2026-11-23) |
 | D14 | Dependency ekspor laporan | `maatwebsite/excel` (Excel) + `barryvdh/laravel-dompdf` (PDF); gate `export-reports` (Admin) | PRD §2.1.14 | ✅ Disetujui tim (2026-11-23) |
 
 ## Catatan per keputusan (yang butuh koordinasi nyata)
@@ -43,6 +44,15 @@
   `type=menu`, `status=completed` dengan tanggal `completed_at` dalam window;
   manual dikecualikan. Parameter `window_days=28` dan `min_days=7` di
   `config/forecast.php`. Kontrak ini dipakai saat modul prediksi dibangun.
+- **D14 (Anggota 1) — FINAL:** Lupa password memakai broker bawaan Laravel.
+  email tidak dikenal/akun nonaktif dibalas dengan pesan generik yang sama
+  seperti email terdaftar; kredensial SMTP produksi disimpan di environment,
+  bukan repository. Laravel 13/Symfony Mailer hanya menerima `MAIL_SCHEME=smtp`
+  (port 587, STARTTLS) atau `smtps` (port 465) — **`tls` tidak didukung**.
+  `APP_NAME` wajib `"SmartFood Home"` (di `.env`/`.env.example`): header mail
+  Laravel menampilkan logo hanya jika nama aplikasi persis `Laravel`.
+  Route reset sengaja `guest`; `password.update` tetap dipakai untuk ganti
+  password setelah login, sehingga aksi reset memakai `password.reset.store`.
 
 ## Tanda tangan keputusan
 
@@ -61,4 +71,5 @@
 | D11 | Anggota 1 (asumsi), dipakai adapter A4→A3 | 2026-11-18 / 2026-11-23 |
 | D12 | Anggota 1 (asumsi implementasi) | 2026-11-18 |
 | D13 | Anggota 1 (pemilik sementara) | 2026-11-18 |
+| D14 | Anggota 1 + persetujuan tim | 2026-11-23 |
 | D1, D3, D4, D5, D6 | Anggota 3 (usulan implementasi, belum final tim) | 2026-11-23 |

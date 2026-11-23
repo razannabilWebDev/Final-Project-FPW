@@ -10,6 +10,24 @@
 
 ---
 
+## [2026-11-23 19:50] — Anggota 1 — Audit modul + fitur lupa password
+
+- [x] Catat 6 prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Audit modul A1: auth/users/dashboard selesai; Rekomendasi Produksi belum ada; kontrak A2/A3/A4 perlu koordinasi
+- [x] Analisis lupa password vs audit log; keputusan tim dicatat (email+SMTP produksi, akun nonaktif ditolak generik, FR-AUTH-06 + D14)
+- [x] Panduan pembuatan Gmail App Password + variabel `.env` produksi diberikan ke user
+- [x] Perbaiki `.env` lokal (kutip `MAIL_PASSWORD`, `MAIL_FROM_NAME`) setelah izin; `composer test` baseline 47/47 lulus
+- [x] FR-AUTH-06 + D14 didokumentasikan di PRD & decision log
+- [x] Implementasi: `User` `CanResetPassword` + notifikasi ID, 2 Action, 2 Form Request, controller, 4 route guest, 2 view, link login
+- [x] Migration terpisah tidak diperlukan — tabel `password_reset_tokens` sudah ada di migration `users` bawaan Laravel 13
+- [x] Test `ForgotPasswordTest` (10 test/27 assertion) + `composer test` 57/57 lulus (363 assertion); pint & npm build sukses
+- [x] Uji SMTP sungguhan via `Mail::raw()` ke `razannabilannadif@gmail.com` berhasil; koreksi `MAIL_SCHEME=tls` → `smtp` (Laravel 13/Symfony tidak mendukung `tls`)
+- [x] Hapus logo Laravel di email reset: `APP_NAME="SmartFood Home"` di `.env` + `.env.example`; assertion render HTML di test; D14 diperbarui; 10/10 lulus
+- [ ] Commit (hash menyusul)
+- [ ] Audit log menyusul (D13: pemilik final belum ditetapkan)
+- [ ] Rekomendasi Produksi menyusul (butuh kontrak A2/A3/A4)
+
+## [2026-11-23 10:45] — Anggota 1 — Fix tanggal purchase dashboard Pengelola
 ## [2026-11-23 10:45] — Anggota 4 — Fix tanggal purchase dashboard Pengelola
 
 - [x] Perbaiki `Call to a member function translatedFormat() on string` di `pengelola.blade.php:78` (hasil `DB::table` bukan Carbon)

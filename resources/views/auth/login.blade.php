@@ -47,13 +47,13 @@
         @enderror
     </div>
 
-    <div class="flex items-center justify-between gap-3">
-        <label class="flex items-center gap-2 text-xs text-[#4b5563]">
-            <input type="checkbox" name="remember" value="1" class="h-4 w-4 rounded border-slate-300 text-brand focus:ring-blue-200">
-            Ingat saya
-        </label>
-        <a href="#" class="text-xs font-bold text-brand hover:text-brand-hover">Lupa password?</a>
-    </div>
+        <div class="flex items-center justify-between gap-3">
+            <label class="flex items-center gap-2 text-xs text-[#4b5563]">
+                <input type="checkbox" name="remember" value="1" class="h-4 w-4 rounded border-slate-300 text-brand focus:ring-blue-200">
+                Ingat saya
+            </label>
+            <a href="{{ route('password.request') }}" class="text-xs font-bold text-brand hover:text-brand-hover">Lupa password?</a>
+        </div>
 
     <button type="submit"
         class="flex h-[49px] w-full items-center justify-center gap-2 rounded-[10px] bg-brand px-4 text-sm font-bold text-white shadow-lg shadow-blue-200 transition hover:-translate-y-px hover:bg-brand-hover focus:outline-none focus:ring-4 focus:ring-blue-200">

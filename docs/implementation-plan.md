@@ -21,6 +21,7 @@
 - [x] Auth: login, logout, ganti password (Anggota 1 — 2026-11-18, 33 test lulus)
 - [x] Role + middleware/policy dari `docs/permissions.md` (Anggota 1 — 19 gate, alias `role`/`active`)
 - [x] Kelola Pengguna: CRUD + nonaktifkan akun oleh Admin (Anggota 1 — guard self-role/self-deactivate)
+- [x] Lupa password: reset link via email + notifikasi Bahasa Indonesia (Anggota 1 — FR-AUTH-06/D14, 10 test baru)
 - [ ] Master menu + harga jual (Anggota 2)
 - [x] Master bahan baku + satuan dasar (Anggota 3 — 2026-11-23; tanpa tabel konversi, D5 menunggu A2)
 - [x] Service stok terpusat + `stock_movements` ledger (Anggota 3 — 2026-11-23; deduct/reversal untuk A4)

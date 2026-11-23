@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\ProfitReportController;
@@ -17,6 +18,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', fn () => auth()->check()
     ? redirect()->route('dashboard')
     : redirect()->route('login'))->name('home');
+
+Route::middleware('guest')->group(function (): void {
+    Route::get('/lupa-password', [ForgotPasswordController::class, 'showRequestForm'])->name('password.request');
+    Route::post('/lupa-password', [ForgotPasswordController::class, 'sendResetLink'])
+        ->name('password.email')
+        ->middleware('throttle:5,1');
+    Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [ForgotPasswordController::class, 'reset'])
+        ->name('password.reset.store')
+        ->middleware('throttle:5,1');
+});
 
 Route::get('/login', [LoginController::class, 'show'])->name('login');
 Route::post('/login', [LoginController::class, 'store'])
