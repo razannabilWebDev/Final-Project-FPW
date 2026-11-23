@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -44,4 +45,15 @@ Route::middleware(['auth', 'active'])->group(function (): void {
     Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
     Route::post('/sales/{sale}/status', [SaleController::class, 'updateStatus'])
         ->name('sales.update-status')->middleware('can:update-sale-status');
+});
+
+Route::middleware(['auth', 'active', 'can:manage-expenses'])->group(function (): void {
+    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
+    Route::post('/expenses', [ExpenseController::class, 'store'])->name('expenses.store');
+    Route::put('/expenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
+    Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
+
+    Route::post('/expense-categories', [ExpenseController::class, 'storeCategory'])->name('expense-categories.store');
+    Route::put('/expense-categories/{expense_category}', [ExpenseController::class, 'updateCategory'])->name('expense-categories.update');
+    Route::delete('/expense-categories/{expense_category}', [ExpenseController::class, 'destroyCategory'])->name('expense-categories.destroy');
 });

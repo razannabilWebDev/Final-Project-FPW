@@ -12,6 +12,15 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-23 11:50 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  untuk format filter periode kalau bisa buat keduanya, bisa date range bisa harian/bulanan/tahunan
+  ```
+- **Jawaban via form pertanyaan:** Biaya Operasional dulu; kategori dikelola penuh via UI; filter periode mendukung date range DAN period tabs harian/bulanan/tahunan.
+- **Hasil:** Eksekusi modul Biaya Operasional: model Expense/ExpenseCategory, ExpenseService (kategori terpakai tidak bisa dihapus), FormRequest + controller dengan gate manage-expenses (Admin only), route expenses.* & expense-categories.*, tampilan KPI + tabel + modal (x-modal) dengan filter periode ganda, test 403/desimal/kategori terpakai/filter/empty state.
+
 ## [2026-11-23 11:35 WIB] — Anggota 1
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**
