@@ -7,67 +7,11 @@ use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class SalesTest extends TestCase
 {
     use RefreshDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        // Tabel pendukung (milik A2/A3) dibuat manual di test karena belum ada di branch ini.
-        Schema::create('menus', function ($table): void {
-            $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->decimal('selling_price', 12, 2);
-            $table->string('image_path')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
-        });
-        Schema::create('ingredients', function ($table): void {
-            $table->id();
-            $table->string('name');
-            $table->string('base_unit');
-            $table->decimal('current_stock', 12, 3)->default(0);
-            $table->decimal('minimum_stock', 12, 3)->default(0);
-            $table->decimal('average_cost', 12, 2)->default(0);
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
-        });
-        Schema::create('recipes', function ($table): void {
-            $table->id();
-            $table->foreignId('menu_id')->constrained('menus');
-            $table->text('notes')->nullable();
-            $table->unsignedInteger('version')->default(1);
-            $table->timestamps();
-        });
-        Schema::create('recipe_items', function ($table): void {
-            $table->id();
-            $table->foreignId('recipe_id')->constrained('recipes');
-            $table->foreignId('ingredient_id')->constrained('ingredients');
-            $table->decimal('quantity', 12, 3);
-            $table->string('unit');
-            $table->timestamps();
-        });
-        Schema::create('stock_movements', function ($table): void {
-            $table->id();
-            $table->foreignId('ingredient_id')->constrained('ingredients');
-            $table->string('movement_type');
-            $table->decimal('quantity_in', 12, 3)->default(0);
-            $table->decimal('quantity_out', 12, 3)->default(0);
-            $table->decimal('balance_before', 12, 3);
-            $table->decimal('balance_after', 12, 3);
-            $table->string('reference_type')->nullable();
-            $table->unsignedBigInteger('reference_id')->nullable();
-            $table->string('note')->nullable();
-            $table->foreignId('created_by')->nullable();
-            $table->timestamp('created_at')->nullable();
-        });
-    }
 
     private function actingUser(string $role = 'admin'): User
     {

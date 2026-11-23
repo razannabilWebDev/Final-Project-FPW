@@ -4,8 +4,8 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => auth()->check()
@@ -35,10 +35,7 @@ Route::middleware(['auth', 'active'])->group(function (): void {
     });
 });
 
-// Placeholder agar middleware auth memiliki tujuan redirect (diganti Anggota 1 saat integrasi).
-Route::get('/login', fn () => 'Login')->name('login');
-
-Route::middleware(['auth'])->group(function (): void {
+Route::middleware(['auth', 'active'])->group(function (): void {
     Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
     Route::get('/sales/create', [SaleController::class, 'create'])
         ->name('sales.create')->middleware('can:create-sales');

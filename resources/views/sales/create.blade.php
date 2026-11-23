@@ -1,4 +1,4 @@
-@extends('layouts.sales')
+@extends('layouts.app')
 
 @section('title', 'Input Pesanan')
 
