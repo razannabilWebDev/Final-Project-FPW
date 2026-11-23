@@ -12,6 +12,63 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-23 20:17 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  hapus logo laravel pada saat prngiriman atur ulang kata sandi di email
+  ```
+- **Hasil:** Akar masalah: header mail bawaan Laravel merender logo hanya ketika `config('app.name')` persis `Laravel`. `APP_NAME` di `.env` dan `.env.example` diubah menjadi `"SmartFood Home"`, sehingga header email memakai nama aplikasi tanpa logo Laravel. `ForgotPasswordTest` diperkuat dengan assertion pada HTML hasil render: tidak mengandung `notification-logo` dan memuat `SmartFood Home`; 10/10 test lulus. `docs/decisions.md` D14 diperbarui dengan catatan `APP_NAME`. Tidak ada template vendor yang di-publish/diubah.
+
+## [2026-11-23 19:50 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  coba jalankan pengujian, email ku razannabilannadif@gmail.com
+  ```
+- **Hasil:** Setelah izin, `.env` lokal diperbaiki (kutip `MAIL_PASSWORD`, betulkan `MAIL_FROM_NAME`); `composer test` baseline 47/47 lulus. Fitur lupa password diimplementasikan: FR-AUTH-06 + D14, `User::CanResetPassword` + notifikasi Bahasa Indonesia, 2 Action, 2 Form Request, controller, 4 route guest, 2 view, link login. Tabel `password_reset_tokens` ternyata sudah ada di migration `users` Laravel 13, sehingga migration baru dihapus. `ForgotPasswordTest` 10 test/27 assertion; total 57/57 lulus (363 assertion), pint & npm build sukses. Email `razannabilannadif@gmail.com` dipakai sebagai penerima uji: `ForgotPasswordTest` memakai `Notification::fake()`, dan uji koneksi SMTP sungguhan via `Mail::raw()` berhasil (`Illuminate\Mail\SentMessage`). Koreksi panduan sebelumnya: Laravel 13/Symfony Mailer menolak `MAIL_SCHEME=tls`; untuk port 587 pakai `MAIL_SCHEME=smtp` (STARTTLS), port 465 pakai `smtps`. `.env` lokal sudah disesuaikan.
+
+## [2026-11-23 19:45 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  sebelum menulis kode berikan aku langkah langkah yang dimulai dari membuat email baru hingga mendapatkan app mail name untuk melengkapkannya di env
+  ```
+- **Hasil:** Langkah disusun: buat akun Gmail khusus produksi → aktifkan Verifikasi 2 Langkah → buat App Password 16 digit di `myaccount.google.com/apppasswords` → isi `MAIL_*` di environment produksi (`smtp.gmail.com`, port 587, `MAIL_SCHEME=tls`, `MAIL_USERNAME`/`MAIL_FROM_ADDRESS` = email, `MAIL_PASSWORD` = App Password, `MAIL_FROM_NAME` = "SmartFood Home", `APP_URL` = HTTPS domain produksi) → verifikasi dengan `Mail::raw()` via tinker. Ditekankan: secret tidak boleh di-commit; dev/test tetap `MAIL_MAILER=log` + `Notification::fake()`.
+
+## [2026-11-23 19:40 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  tim saya sudah setuju untuk membuat fitur lupa passworrd
+  ```
+- **Jawaban via form pertanyaan:** (1) Kanal = Email + SMTP produksi; (2) akun nonaktif = tolak dengan pesan generik; (3) dokumentasi = tambah FR-AUTH-06 di `prd.md` + D14 di `docs/decisions.md` (disetujui tim, 2026-11-23).
+- **Hasil:** Rencana final fitur lupa password disusun: dokumentasi keputusan → migration `password_reset_tokens` → `User` `CanResetPassword` + notifikasi ID → 4 route guest + Action/Form Request → 2 view + update link login → test → pint/build/test → commit. Belum dieksekusi karena masih mode rencana.
+
+## [2026-11-23 19:35 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  kalau ke fitur ini dulu gimana?  Lupa password & audit log
+  ```
+- **Hasil:** Dianalisis: audit log layak didahulukan (ADA di PRD §9.3, D13, ruang lingkup A1, tanpa modul lain); lupa password tidak ada di PRD §5.1 (hanya mock di desain v2) sehingga perlu persetujuan tim + keputusan kanal email dan perilaku akun nonaktif sebelum coding.
+
+## [2026-11-23 19:30 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  dependensi A4 itu apa? dan ada di bagian anggota berapa?
+  ```
+- **Hasil:** Dijelaskan: dependensi A4 = data penjualan (`sales.type=menu`, `status=completed`, `completed_at` dalam window 28 hari, `sale_items.menu_id`/`quantity`; manual dikecualikan). Pemilik data = Anggota 4 (`TASK_INSTRUCTIONS.md` §3.4, §5.1); aturan konsumsi = §4.1/§4.3; kontrak teknis = D8 di `docs/decisions.md`; aturan bisnis = PRD §6.9. Modul penjualan belum ada di branch ini.
+
+## [2026-11-23 19:25 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  aku mau lanjut ke pengerjaan anggota 1, apa saja yang belum tuntas di kerjakan?
+  ```
+- **Hasil:** Audit modul A1: auth/users/dashboard/migration/seeder selesai (47 test lulus); yang belum = Rekomendasi Produksi (4 butir checklist §10 + FR-PRED-01…07: belum ada config/forecast.php, model, service, controller/route, view, test; kartu dashboard salah baca `predicted_quantity` dari header). Juga tercatat: koordinasi kontrak A2/A3/A4, audit aktivitas belum dicatat, dokumen status perlu diperbarui, branch `main` stale.
+
 ## [2026-11-23 10:45 WIB] — Anggota 1
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**
