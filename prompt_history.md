@@ -12,6 +12,15 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-23 11:20 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  pada saat ke localhost:8000/login tampilan yang muncul hanya text login tidak ada ui lainnya
+  ```
+- **Jawaban via form pertanyaan:** Gabungkan branch Anggota 1; pakai migrasi sales Anggota 1 (hapus migrasi sales saya).
+- **Hasil:** Diagnosis: `/login` di `feature/member-4-setup` hanya placeholder `fn () => 'Login'`; penyebab lain migrasi sales masih pending. Eksekusi: merge `origin/feature/member-1-auth-users-forecast`, hapus placeholder login, pakai migrasi sales Anggota 1, bersihkan benturan (TestCase gate, route, komponen, layout sales → `layouts.app`), jalankan migrate + test, verifikasi tampilan login & sales.
+
 ## [2026-11-23 10:45 WIB] — Anggota 1
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**
