@@ -10,6 +10,61 @@
 
 ---
 
+## [2026-11-23 10:45] — Anggota 1 — Fix tanggal purchase dashboard Pengelola
+
+- [x] Perbaiki `Call to a member function translatedFormat() on string` di `pengelola.blade.php:78` (hasil `DB::table` bukan Carbon)
+- [x] Tambah `purchase_date_label` di `DashboardController` via `Carbon::parse(...)->timezone('Asia/Jakarta')`
+- [x] Tambah test regresi `test_pengelola_dashboard_renders_purchase_dates`
+- [x] Pint + test 47/47 lulus (336 assertion)
+- [ ] Commit (hash menyusul)
+
+## [2026-11-23 10:30] — Anggota 1 — Login sesuai desain v2 + dashboard 3 role
+
+- [x] Catat prompt sesi ke `prompt_history.md` (aturan baru: tiap prompt langsung dicatat, penulis Anggota 1)
+- [x] Buat branch `feature/auth-dashboard` dari `origin/main`, merge branch Anggota 1 (`feature/member-1-auth-users-forecast`) tanpa konflik
+- [x] Pasang token `design_system_v2.md` ke `resources/css/app.css` `@theme` (brand/navy/cream/semantik/chart + shadow) & font Inter
+- [x] Buat komponen Blade reusable: `icon` (path Lucide inline), `stat-card`, `empty-state`
+- [x] Login 2 panel sesuai §5 desain v2: branding navy + badge pill + headline two-tone + foto & kartu overlay; panel form dengan password toggle, "Lupa password?", info box akses; dropdown "Masuk sebagai" sengaja dihilangkan (role dari akun)
+- [x] `DashboardController`: ringkas data per role dari tabel existing (aman via `Schema::hasTable`), pilih view admin/pengelola/staf
+- [x] 3 view dashboard sesuai PRD §8.3: Admin (KPI keuangan, grafik, menu terlaris, stok menipis, pembelian, rekomendasi), Pengelola (aktivitas penjualan, pesanan, pembelian, stok, menu, estimasi — tanpa data keuangan), Staf (aksi cepat, pesanan, stok fisik, nota, estimasi)
+- [x] Tambah `DashboardRoleTest` (5 test) + update assertion `LoginTest`; total 46/46 test lulus, 333 assertion
+- [x] `npm install --ignore-scripts` + `npm run build`, `vendor/bin/pint --dirty`, `graphify update .`
+- [x] Commit `0b24522` (branch `feature/auth-dashboard`)
+
+## [2026-11-18 22:00] — Anggota 1 — Seluruh migration + seeder dummy
+
+- [x] Catat prompt 21:58 & 22:00 ke `prompt_history.md` (sesuai aturan baru)
+- [x] Buat 10 migration baru (18 tabel): menus, ingredients, expense_categories, recipes, stock, purchases, sales, expenses, forecasts, settings/activity_logs
+- [x] Buat seeder lengkap & idempoten: users, master data, resep, stok/pembelian, penjualan/biaya, forecast, activity log
+- [x] Tambah `DatabaseSchemaTest` (skema SQLite, seed 2x tanpa duplikat, konsistensi ledger, snapshot & reversal)
+- [x] Update `docs/database.md`, `docs/decisions.md` (D11–D13), `docs/implementation-plan.md`, `AGENTS.md`
+- [x] Jalankan pint + `composer test`: 40/40 test lulus, 311 assertion
+- [x] Jalankan `php artisan migrate` + `php artisan db:seed` pada DB dev MySQL; seed diulang sekali, jumlah baris tetap; ledger 8 bahan konsisten
+- [ ] Commit: belum (menunggu instruksi)
+
+## [2026-11-18 21:32] — Anggota 1 — Aturan pencatatan prompt
+
+- [x] Catat prompt pengguna sebagai entri teratas baru di `prompt_history.md` (teks verbatim + hasil)
+- [x] Perkuat `AGENTS.md §Prompt log` jadi aturan wajib per-prompt: format, teks utuh, buang system-reminder/output tool, jawaban form di bullet terpisah, penulis = Anggota 1
+- [x] Rekam rule durable via `laravel-boost_record-rule` → `.ai/rules/prompt-history-md.md`
+- [x] Rapikan entri 21:15: anotasi `[jawaban form pertanyaan]` dipindah keluar dari blok prompt
+- [x] Perbaiki konvensi penulis di `prompt_history.md`: sesi terkini = Anggota 1, riwayat lama tetap Anggota 4
+- [x] Verifikasi entri + rule; tidak ada perubahan PHP sehingga pint/test tidak diperlukan
+- [ ] Commit: belum (menunggu instruksi)
+
+## [2026-11-18 21:15] — Anggota 1 — Autentikasi & Kelola Pengguna (fondasi role/permission)
+
+- [x] Branch `feature/member-1-auth-users-forecast` dibuat dari `main`
+- [x] Migration baru `add_role_and_status_to_users_table` (tidak mengedit migration lama); enum `UserRole`; update `User` + factory (state admin/pengelola/inactive)
+- [x] `AuthServiceProvider`: 19 gate terpusat sesuai PRD §3.2; middleware `role` + `active` dan alias terdaftar
+- [x] Login/logout/ganti password: Form Request, `AttemptLoginAction`, `ChangePasswordAction`, throttling `5,1`
+- [x] Kelola Pengguna: CRUD akun oleh Admin (create Pengelola/Staf/Admin lain, edit, aktif/nonaktif) + guard self-role & self-deactivate
+- [x] Layout auth + app shell minimal (role-filtered nav, responsive), view login/password/users/dashboard/403
+- [x] Verifikasi: 33/33 test lulus, `vendor/bin/pint --dirty`, `npm run build`, `php artisan route:list`
+- [x] Update dokumen kontrak: permission final, D8 final, enum role final, phase status
+- [~] Rekomendasi Produksi ditunda: menunggu kontrak penjualan (A4), resep (A2), stok (A3)
+- [~] Perlu koordinasi tim: gate baru `manage-recipe-costs`, `manage-stock`, `view-sales-summary`, `view-forecast`; nama route modul lain di layout; file bersama `bootstrap/app.php`
+- [ ] Commit: belum (menunggu instruksi)
 ## [2026-11-23 11:00] — Anggota 4 — Modul Pencatatan Penjualan (fase 1)
 
 - [x] Kembali ke modul Anggota 4; prioritaskan Penjualan, pakai usulan default D1/D2/D3/D6/D11/D12, branch `feature/member-4-setup`

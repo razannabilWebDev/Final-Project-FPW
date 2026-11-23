@@ -18,12 +18,14 @@
 
 ## Tahap 1 — Fondasi Bersama (TASK_INSTRUCTIONS §8)
 
-- [ ] Auth: login, logout, ganti password (Anggota 1)
-- [ ] Role + middleware/policy dari `docs/permissions.md` (Anggota 1)
+- [x] Auth: login, logout, ganti password (Anggota 1 — 2026-11-18, 33 test lulus)
+- [x] Role + middleware/policy dari `docs/permissions.md` (Anggota 1 — 19 gate, alias `role`/`active`)
+- [x] Kelola Pengguna: CRUD + nonaktifkan akun oleh Admin (Anggota 1 — guard self-role/self-deactivate)
 - [ ] Master menu + harga jual (Anggota 2)
 - [ ] Master bahan baku + satuan/konversi (Anggota 3)
 - [ ] Service stok terpusat + `stock_movements` ledger (Anggota 3)
-- [ ] Migration semua tabel dari `docs/database.md`, urut kepemilikan
+- [x] Migration semua tabel dari `docs/database.md`, urut dependensi FK (Anggota 1, 2026-11-18)
+- [x] Seeder dummy lengkap & idempoten + test konsistensi ledger (`DatabaseSchemaTest`, 40 test lulus)
 - [ ] Layout dasar + komponen umum (card, badge, DataTable, modal, toast)
 
 ## Tahap 2 — Pengembangan Paralel (boleh mulai setelah kontrak disepakati)
