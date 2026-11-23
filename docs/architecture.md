@@ -74,5 +74,11 @@
 |---|---|---|
 | Signature service stok (deduksi/reversal) | Anggota 3 | Anggota 4 |
 | Format HPP & konversi satuan | Anggota 2 (+3) | Anggota 4 (snapshot) |
-| Middleware/gate final | Anggota 1 | Semua |
+| ~~Middleware/gate final~~ ✅ Selesai (2026-11-18): 19 gate di `AuthServiceProvider`, alias `role`/`active` di `bootstrap/app.php` | Anggota 1 | Semua |
 | Format `transaction_code` | Anggota 4 (diusulkan di `docs/database.md`) | Anggota 1 (prediksi) |
+
+### Konvensi tambahan yang sudah tersedia (Anggota 1, 2026-11-18)
+
+- Route auth/users: `login`, `login.store`, `logout`, `password.edit`, `password.update`, `dashboard`, `users.{index,create,store,edit,update,status}`.
+- Layout bersama: `layouts.auth` (halaman login) dan `layouts.app` (sidebar role-filtered). Navigasi memakai `Route::has()` sehingga tidak error sebelum modul lain terpasang; nama route modul lain mengikuti konvensi §3 (`menus.index`, `recipes.index`, `ingredients.index`, `purchases.index`, `sales.index`, `expenses.index`, `reports.profit`, `forecast.index`) — koordinasikan bila berbeda.
+- Gate baru di luar usulan awal: `manage-recipe-costs`, `manage-stock`, `view-sales-summary`, `view-forecast` (lihat `docs/permissions.md` §3).
