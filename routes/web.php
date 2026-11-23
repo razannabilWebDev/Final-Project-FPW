@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ProfitReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -56,4 +57,8 @@ Route::middleware(['auth', 'active', 'can:manage-expenses'])->group(function ():
     Route::post('/expense-categories', [ExpenseController::class, 'storeCategory'])->name('expense-categories.store');
     Route::put('/expense-categories/{expense_category}', [ExpenseController::class, 'updateCategory'])->name('expense-categories.update');
     Route::delete('/expense-categories/{expense_category}', [ExpenseController::class, 'destroyCategory'])->name('expense-categories.destroy');
+});
+
+Route::middleware(['auth', 'active', 'can:view-reports'])->group(function (): void {
+    Route::get('/reports/profit', [ProfitReportController::class, 'index'])->name('reports.profit');
 });
