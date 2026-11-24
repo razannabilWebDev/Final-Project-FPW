@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Ingredient;
+use App\Models\StockMovement;
 use App\Models\User;
 use App\UserRole;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -82,6 +83,27 @@ class StockManagementTest extends TestCase
         ])->assertForbidden();
 
         $this->assertSame('10.000', $ingredient->fresh()->current_stock);
+    }
+
+    public function test_movement_history_can_be_filtered_by_type(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $ingredient = Ingredient::factory()->create();
+        StockMovement::factory()->create([
+            'ingredient_id' => $ingredient->id,
+            'movement_type' => 'waste',
+        ]);
+        StockMovement::factory()->create([
+            'ingredient_id' => $ingredient->id,
+            'movement_type' => 'purchase_in',
+        ]);
+
+        $this->actingAs($admin)
+            ->get(route('stock.movements', ['movement_type' => 'waste']))
+            ->assertOk()
+            ->assertViewHas('selectedType', 'waste')
+            ->assertSee('Susut/Rusak')
+            ->assertViewHas('movements', fn ($movements): bool => $movements->total() === 1);
     }
 
     public function test_waste_above_available_stock_redirects_with_error_and_keeps_stock(): void

@@ -78,6 +78,54 @@
 - [x] Test `MenuManagementTest` untuk filter, statistik, dan alur modal (19/19 lulus)
 - [x] Verifikasi: pint bersih, `npm run build` sukses; full suite 115/116 (1 failure lama: `maatwebsite/excel` belum di-install di vendor); graphify CLI tidak tersedia
 - [x] Commit `2bc4cfb`
+## [2026-11-24 21:21] — Anggota 3 — Backfill log prompt sesi tanya-jawab
+
+- [x] Audit `prompt_history.md`: 6 prompt Plan mode terakhir belum tercatat (mode build sudah di-backfill sebelumnya)
+- [x] Tambah 6 entri teratas dengan teks prompt verbatim + hasil ringkas (21:04–21:21 WIB)
+- [x] Catat keputusan: pencarian pembelian tetap berdasarkan kode & supplier saja; supplier bukan master data; verifikasi via modal detail pembelian
+- [x] Catat status commit: 3 commit lokal, branch ahead 3, belum di-push
+- [x] Tambah blok checklist sesi ini
+- [x] Commit log: `docs(prompt): backfill plan-mode prompts`
+- [ ] Tidak ada perubahan kode; tidak perlu test/pint/build
+
+## [2026-11-24 18:06] — Anggota 3 — Modul Pembelian Bahan Baku
+
+- [x] Catat 2 prompt sesi ini ke `prompt_history.md`
+- [x] Commit pekerjaan stok sebelumnya: `0b3605f`
+- [x] Enum `PurchaseStatus` + model/factory `Purchase`, `PurchaseItem`
+- [x] `PurchaseService`: create multi-item (decimal, kode unik `PUR-YYYYMMDD-XXXX`) + verify idempoten; setuju → `StockService::recordIn` (ledger + `average_cost`), tolak → alasan wajib & stok tetap; semuanya dalam DB transaction + lock
+- [x] 2 Form Request + `PurchaseController` + 5 route dengan gate `manage-stock` / `create-purchases` / `verify-purchases`
+- [x] UI design v2: 3 KPI, tabel riwayat + search/filter + badge, modal input multi-item dengan unggah nota, modal detail + verifikasi, bukti nota privat
+- [x] **Rekap/detail/bukti nota khusus Admin & Pengelola**; Staf hanya input dan diarahkan ke dashboard setelah simpan
+- [x] `PurchaseTest`: 7 test (input+nota, rekap 403 Staf, setuju→ledger, tolak→stok tetap, verifikasi ganda, gate, kode urut)
+- [x] Dokumentasi: `docs/architecture.md` §11 (kontrak), `docs/implementation-plan.md` Tahap 2–4, `docs/decisions.md` D15 (asumsi)
+- [x] Verifikasi: 7/7 test pembelian, 106/108 suite penuh (2 gagal pre-existing di luar modul), pint bersih, `npm run build` sukses
+- [x] Commit `e2a73d6` (feat(purchase): add purchase input and verification)
+- [ ] Konfirmasi tim D15 (format kode pembelian) & D5 (satuan dasar)
+
+## [2026-11-24 17:50] — Anggota 3 — Fix toggle status bahan baku
+
+- [x] Catat 2 prompt sesi ini ke `prompt_history.md`
+- [x] Diagnosis: JS modal mengirim state target `0` ke hidden input `is_active`, padahal `setActive()` membalik nilai (mengira state saat ini) → nonaktif jadi aktif
+- [x] Perbaiki `resources/views/ingredients/index.blade.php`: kirim `button.dataset.active` (state saat ini)
+- [x] Pastikan controller & test lama tidak diubah (konvensi `is_active` = state saat ini dipertahankan)
+- [x] Verifikasi: 17/17 test modul stok lulus (75 assertion)
+- [x] Commit `0b3605f` (feat(stock): align stock UI with design system v2)
+
+## [2026-11-24 17:06] — Anggota 3 — Penyesuaian visual modul stok ke design_system_v2
+
+- [x] Catat 3 prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Audit view stok + screenshot Figma `-7.png` (stok), `-8.png` (pembelian), `-13.png`/`-19.png` (modal) dan konfirmasi field mock tidak disalin (PRD §7)
+- [x] `IngredientController@index`: filter `search` + `status`, 4 angka KPI dari DB, `withQueryString()`, kirim `$units`
+- [x] `StockMovementController@index`: filter `movement_type`, 3 angka KPI, `withQueryString()`
+- [x] Rewrite `ingredients/index.blade.php`: header, KPI, toolbar search/filter, tabel badge status, aksi ikon, footer pagination, empty state
+- [x] Modal Tambah/Ubah/Detail Bahan + konfirmasi perubahan status via `<x-modal>`; route lama tetap ada
+- [x] `_form.blade.php` diberi prefix ID unik; create/edit standalone ikut dirapikan
+- [x] Rapikan `stock/movements`, `stock/adjustments`, `stock/waste` (header, toolbar, input, tombol, empty state)
+- [x] Tambah 3 test regresi: filter stok, KPI dari data nyata, filter jenis pergerakan
+- [x] Verifikasi: 17/17 test modul, pint bersih, `npm run build` sukses; suite penuh 99/101 (2 gagal pre-existing di luar modul)
+- [x] Commit `0b3605f` (feat(stock): align stock UI with design system v2)
+- [x] Pembelian + verifikasi dikerjakan di sesi berikutnya
 
 ## [2026-11-23 19:50] — Anggota 1 — Audit modul + fitur lupa password
 

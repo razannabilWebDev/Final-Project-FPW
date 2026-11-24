@@ -106,6 +106,96 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 - **Hasil:** Akar masalah: modal Tambah dan Ubah sama-sama merender `<form id="menu-form">`, sehingga tombol "Simpan Perubahan" dengan `form="menu-form"` terikat ke form Tambah pertama di DOM. Rencana perbaikan disusun: ID form/field unik per modal, tombol footer diarahkan ke form masing-masing, + test regresi.
 
 ## [2026-11-24 16:39 WIB] — Anggota 2
+## [2026-11-24 21:21 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  oke, catat semua prompt yang aku lakukan dan tambahkan juga blok checklist nya
+  ```
+- **Hasil:** Selesai — backfill 6 prompt Plan mode ke entri teratas `prompt_history.md` (teks verbatim + hasil ringkas) dan tambah blok checklist baru di `tasklist.md`. Tidak ada perubahan kode; perubahan hanya dokumentasi/log sesi.
+
+## [2026-11-24 21:19 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  apakah semua prompt yang aku kirim sudah kamu catat di prompt_history.md termasuk mode plan dan mode build?
+  ```
+- **Hasil:** Audit: prompt mode build sudah tercatat, tetapi 6 prompt terakhir dari sesi tanya-jawab Plan mode belum. Daftar prompt yang hilang disampaikan ke user; disarankan backfill setelah pindah ke agent build karena Plan mode melarang penulisan file.
+
+## [2026-11-24 21:16 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  code yang sekarang apakah sudah di commit semua?
+  ```
+- **Hasil:** Cek `git status`: bersih, tidak ada modified/untracked. 3 commit lokal (`0b3605f`, `e2a73d6`, `3c71243`), branch `feature/member-3-stock-purchases` ahead 3 dari origin — sudah ter-commit tapi belum di-push.
+
+## [2026-11-24 21:13 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  status menunggu verifikasi, ditolak, atau disetujui untuk memverifikasinya itu dimana?
+  ```
+- **Hasil:** Dijelaskan alur verifikasi: buka `/pembelian` (Admin/Pengelola) → klik ikon mata pada baris berstatus Menunggu Verifikasi → modal Detail Pembelian → section "Verifikasi Pembelian" dengan tombol **Setujui** dan **Tolak** + alasan wajib. Tombol hanya muncul untuk status `pending`; verifikasi kedua ditolak backend. Staf tidak punya akses rekap/detail.
+
+## [2026-11-24 21:10 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  di modul ku kan ada supplier, tambah atau hapus atau edit suppliernya ada dimana?
+  ```
+- **Hasil:** Dijelaskan bahwa supplier bukan master data: PRD §7 hanya punya kolom `supplier_name` di `purchases`, tanpa tabel/route CRUD. Ditambahkan dengan mengetik di modal Input Pembelian; saran berasal dari `distinct supplier_name`. Tidak ada edit/hapus supplier, dan pembelian sengaja immutable agar histori tidak berubah. Opsi perbaikan (master supplier atau edit saat `pending`) memerlukan keputusan tim.
+
+## [2026-11-24 21:07 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  oke, berdasarkan nama supplier dan kode saja
+  ```
+- **Hasil:** Diputuskan tidak mengubah kode: filter pencarian tetap hanya `purchase_code` dan `supplier_name`. Opsi kosmetik placeholder "Cari kode atau supplier..." ditawarkan tetapi tidak diimplementasikan.
+
+## [2026-11-24 21:04 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  kenapa fitur pencarian di modul pembelian bahan baku dicari berdasarkan kode nya bukan nama bahan nya?
+  ```
+- **Hasil:** Dijelaskan bahwa `PurchaseController::index()` hanya mencari `purchase_code`/`supplier_name`; nama bahan ada di `purchase_items` → `ingredients` sehingga perlu `whereHas`. Ini keputusan implementasi, bukan aturan PRD. Di usulkan penambahan `orWhereHas('items.ingredient', ...)` + test, lalu user memutuskan tetap kode & supplier saja.
+
+## [2026-11-24 18:06 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  kerjakan mulai dari commit dahulu, rekap benar benar khusus admin/pengelola
+  ```
+- **Jawaban via form pertanyaan:** (dari sesi rencana sebelumnya) cakupan lanjutan = modul Pembelian Bahan Baku Anggota 3; rekap pembelian benar-benar khusus Admin/Pengelola, Staf tidak bisa melihat.
+- **Hasil:** Selesai. Commit awal `0b3605f` (`feat(stock): align stock UI with design system v2`). Modul pembelian dibangun: enum `PurchaseStatus`, model+factory `Purchase`/`PurchaseItem`, `PurchaseService` (create + verify idempoten, stok masuk hanya saat setuju, `average_cost` via `StockService::recordIn`), 2 Form Request, `PurchaseController`, 5 route dengan gate existing, UI design v2 (3 KPI, tabel, modal input multi-item + upload nota, modal detail/verifikasi, bukti nota privat), dan `PurchaseTest` (7 test/47 assertion). Rekap/detail/nota **khusus Admin & Pengelola**; Staf hanya input lalu kembali ke dashboard. Kontrak dicatat di `docs/architecture.md` §11; D15 (format `PUR-YYYYMMDD-XXXX`) masih asumsi menunggu konfirmasi tim. Verifikasi: 7/7 test pembelian, 106/108 suite penuh (2 gagal pre-existing di luar modul), pint bersih, `npm run build` sukses. Commit `e2a73d6` (`feat(purchase): add purchase input and verification`).
+
+## [2026-11-24 18:03 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  berdasarkan TASK_INSTRUCTION.md apa yang akan selanjutnya kamu kerjakan?
+  ```
+- **Hasil:** Rencana: lanjut ke modul Pembelian Bahan Baku (§3.3/§10 TASK_INSTRUCTIONS, PRD §4.4/§6.6): model/service, input+upload nota, verifikasi idempoten dengan stok masuk hanya saat disetujui, UI design v2, test, dan dokumentasi. Open point: format `purchase_code`, D5 satuan, dan akses rekap.
+
+## [2026-11-24 17:50 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  kerjakan perbaikan yang perlu dilakukan
+  ```
+- **Hasil:** Selesai — `resources/views/ingredients/index.blade.php` baris JS `statusForm` kini mengirim `button.dataset.active` (state saat ini), bukan state target, sehingga `IngredientController::setActive()` melakukan toggle dengan benar: sampah pada bahan aktif → "Bahan baku berhasil dinonaktifkan.", centang pada bahan nonaktif → "Bahan baku berhasil diaktifkan." Data tetap tersimpan sesuai aturan no-hard-delete PRD. Verifikasi: 17/17 test modul stok lulus (75 assertion). Belum commit.
+
+## [2026-11-24 17:48 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  di tabel daftar bahan baku kan ada fitur hapus dengan icon berbentuk tempat sampah, tapi ketika aku coba hapus salah satu data, info yang muncul malah menampilkan pesan "Bahan baku berhasil diaktifkan" dan data nya masih ada
+  ```
+- **Hasil:** Diagnosis: JS modal mengirim state target (`0`) sedangkan `setActive()` membalik `is_active` (mengira yang dikirim state saat ini), sehingga nonaktif menjadi aktif. Perbaikan: kirim `button.dataset.active`. Data memang tetap ada karena aturan PRD tidak ada hard delete — tombol sampah berarti nonaktifkan.
+
+## [2026-11-24 17:06 WIB] — Anggota 3
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**
   ```text
@@ -125,6 +215,24 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
   ```
 - **Jawaban via form pertanyaan:** (1) Scope = hanya modul Pengelolaan Menu yang dibuat pengguna; (2) perubahan kecil di controller diizinkan untuk data pendukung UI; (3) form mengikuti scope modul menu; (4) mock peran = label statis dari akun; (5) aksi Tambah/Ubah/Detail/Hapus menu = modal sesuai Figma; (6) shell sidebar/topbar boleh disentuh secara minimal.
 - **Hasil:** AuditUI: token v2 & login sudah sesuai, gap pada grid kartu menu, komponen bersama, shell, dan modal. Rencana final disusun untuk modul menu saja (tanpa kategori mock karena tabel `menus` tidak punya kolom `category`), menunggu perintah eksekusi.
+- **Hasil:** Selesai — 7 view modul stok disesuaikan dengan `design_system_v2.md`: header 22px, 4 KPI + 3 KPI riwayat, toolbar search/filter, badge status ber-teks, aksi ikon 29px, modal Tambah/Ubah/Detail/Konfirmasi status, empty state, dan pagination. Controller `IngredientController`/`StockMovementController` ditambah filter+KPI; 3 test regresi baru. Verifikasi: 17/17 test modul lulus, `pint` bersih, `npm run build` sukses. Suite penuh 99/101 (2 kegagalan pre-existing di luar modul: notifikasi forgot-password & paket `maatwebsite/excel` belum terpasang). Shell bersama tidak diubah. Belum commit.
+
+## [2026-11-24 17:05 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  aku sudah melakukan merge dari branch develop dan telah melakukan pull, bisakah kamu sesuaikan tampilan dari modul yang aku bangun agar sesuai dengan design terbaru yang mengacu pada  @docs/design_system_v2.md dan @docs/UI SmartFood Home\
+  ```
+- **Jawaban via form pertanyaan:** cakupan = hanya halaman stok yang sudah ada; shell bersama `layouts/app.blade.php` tidak diubah; form Tambah/Ubah Bahan dijadikan modal dengan route lama tetap dipertahankan.
+- **Hasil:** Rencana disusun dan disetujui: rewrite `ingredients/index.blade.php` (4 KPI, toolbar search/filter, tabel badge status, aksi ikon, modal detail/nonaktif), samakan `stock/movements`, `stock/adjustments`, `stock/waste`, tambah filter+KPI di controller, tanpa menyentuh service/migration/gate/ file anggota lain.
+
+## [2026-11-24 17:04 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  apa saja yang sudah kamu kerjakan di proyek ini dalam modul Anggota 3 modul Pengelolaan Stok dan Pembelian Bahan Baku?
+  ```
+- **Hasil:** Audit riwayat: fondasi stok selesai (model, `StockService` ledger/idempoten, actions, 4 controller, 11 route, 7 view, 21 test, commit `d7185bc`); pembelian + verifikasi masih tertunda; integrasi dengan A4 sudah aktif lewat `Member3StockServiceAdapter`.
 
 ## [2026-11-23 20:17 WIB] — Anggota 1
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode

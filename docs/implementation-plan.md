@@ -35,7 +35,7 @@
 - **Anggota 2:** resep & HPP per porsi, snapshot/versi resep
 - **Anggota 3:** pembelian + verifikasi → stok masuk, stok susut/rusak, penyesuaian stok fisik
   - [x] Fondasi selesai (CRUD bahan, ledger, penyesuaian, susut/rusak, service stok, 21 test baru)
-  - [ ] Pembelian + verifikasi masih tertunda; koordinasi nav Staf dengan Anggota 1
+  - [x] Pembelian + verifikasi selesai (2026-11-24): input multi-item + unggah nota oleh Admin/Staf, verifikasi sekali oleh Admin/Pengelola, stok masuk hanya saat disetujui, penolakan wajib alasan, rekap khusus Admin/Pengelola — commit `0b3605f` (visual) + commit pembelian menyusul
 - **Anggota 4 (modul kami):**
   - [x] Pencatatan penjualan: transaksi berbasis menu (multi-item) + penjualan manual — commit `e1e6847`
   - [x] Update status transaksi + `sale_status_histories` — commit `e1e6847`
@@ -66,7 +66,7 @@
 1. [~] Auth & permission di semua modul — gate tersedia & dipakai Sales/Expense/Report/Menu/Resep (A2 terverifikasi 2026-11-24); modul A3 pembelian masih tertunda
 2. [x] Menu & resep ↔ master bahan (Anggota 2 — 2026-11-24: resep, versi, HPP `average_cost` × takaran `base_unit`, contract `RecipeCostService` A2 menggantikan stub A4)
 3. [~] Penjualan ↔ menu, HPP, service stok — stub aktif, menunggu service A2/A3
-4. [ ] Pembelian ↔ stok masuk (Anggota 3)
+4. [x] Pembelian ↔ stok masuk (Anggota 3) — verifikasi memanggil `StockService::recordIn` (ledger `purchase_in` + `average_cost`)
 5. [x] Biaya & penjualan → laporan keuntungan — commit `20253ea`
 6. [ ] Penjualan + resep + stok → rekomendasi produksi (Anggota 1)
 
@@ -75,7 +75,7 @@
 - [x] Login 3 role; pembatasan akses (403) — AuthTest/PermissionTest Anggota 1 + ExpenseTest/ProfitReportTest
 - [~] Transaksi multi-item → stok berkurang sesuai resep — sudah di-test dengan stub (SalesTest), perlu test ulang dengan service A3
 - [~] Pembatalan → reversal stok (idempotent) — sudah di-test dengan stub (SalesTest), perlu test ulang dengan service A3
-- [ ] Pembelian → verifikasi → stok masuk (Anggota 3)
+- [x] Pembelian → verifikasi → stok masuk (Anggota 3) — `PurchaseTest` (7 test: input+nota, rekap 403 untuk Staf, setuju→ledger, tolak→stok tetap, verifikasi ganda, gate, kode urut)
 - [x] Biaya operasional & laporan keuntungan benar — ExpenseTest + ProfitReportTest
 - [ ] Rekomendasi produksi (abaikan penjualan manual) — kontrak D8 final, implementasi Anggota 1
 

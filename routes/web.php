@@ -10,6 +10,7 @@ use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfitReportController;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\StockMovementController;
@@ -123,6 +124,20 @@ Route::middleware(['auth', 'active'])->group(function (): void {
     Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
     Route::post('/sales/{sale}/status', [SaleController::class, 'updateStatus'])
         ->name('sales.update-status')->middleware('can:update-sale-status');
+});
+
+Route::middleware(['auth', 'active', 'can:manage-stock'])->group(function (): void {
+    Route::get('/pembelian', [PurchaseController::class, 'index'])->name('purchases.index');
+    Route::get('/pembelian/{purchase}', [PurchaseController::class, 'show'])->name('purchases.show');
+    Route::get('/pembelian/{purchase}/nota', [PurchaseController::class, 'receipt'])->name('purchases.receipt');
+});
+
+Route::middleware(['auth', 'active', 'can:create-purchases'])->group(function (): void {
+    Route::post('/pembelian', [PurchaseController::class, 'store'])->name('purchases.store');
+});
+
+Route::middleware(['auth', 'active', 'can:verify-purchases'])->group(function (): void {
+    Route::post('/pembelian/{purchase}/verifikasi', [PurchaseController::class, 'verify'])->name('purchases.verify');
 });
 
 Route::middleware(['auth', 'active', 'can:manage-expenses'])->group(function (): void {

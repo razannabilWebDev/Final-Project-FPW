@@ -99,3 +99,16 @@
 - D5: tidak ada tabel `unit_conversions`; semua kuantitas disimpan dalam `base_unit` bahan. Anggota 2 wajib mengonversi takaran resep ke `base_unit` sebelum memanggil service.
 - D4: `average_cost` diperbarui dengan rata-rata tertimbang ketika `recordIn` menerima `unit_cost` (dipakai saat verifikasi pembelian oleh Anggota 3).
 - Penyesuaian fisik menyimpan `system_quantity`, `physical_quantity`, `difference`, `reason`, `created_by`, lalu satu movement `adjustment` dengan `reference_type='StockAdjustment'`.
+
+## 11. Kontrak modul pembelian (Anggota 3, 2026-11-24)
+
+- Route: `purchases.index` (`/pembelian`, gate `manage-stock`), `purchases.show`, `purchases.receipt`, `purchases.store` (gate `create-purchases`), `purchases.verify` (gate `verify-purchases`).
+- **Keputusan 2026-11-24:** rekap, detail, dan bukti nota pembelian **khusus Admin & Pengelola**. Staf hanya menginput; setelah simpan diarahkan ke dashboard dengan toast sukses (tidak diberi akses rekap).
+- `PurchaseService::create(array $data, User $actor): Purchase` — minimal satu item; `subtotal = quantity × unit_cost` (decimal 12,3 × 12,2 → 12,2), `total` = jumlah subtotal, status awal `pending`.
+- `purchase_code`: `PUR-YYYYMMDD-XXXX` (tanggal `Asia/Jakarta`), urut dan unik — asumsi implementasi mengikuti pola `TRX-...` (D12), menunggu konfirmasi tim.
+- D5: `items.*.unit` wajib sama dengan `ingredient.base_unit`; tidak ada tabel konversi satuan.
+- `PurchaseService::verify(Purchase $purchase, bool $approve, ?string $note, User $actor): Purchase` — hanya boleh dari status `pending`, baris di-`lockForUpdate`, seluruh proses dalam satu `DB::transaction`.
+  - Disetujui: tiap item memanggil `StockService::recordIn(... referenceType='Purchase', referenceId=$purchase->id, unitCost=...)`; `verified_by`/`verified_at` ditulis.
+  - Ditolak: `rejection_note` wajib; **tidak ada pergerakan stok**; `verified_by`/`verified_at` tetap ditulis.
+  - Verifikasi kedua kali ditolak (idempoten) — tidak ada stok masuk ganda.
+- Bukti nota disimpan di disk privat `local` (`purchases/receipts`) dan hanya dapat diakses lewat `purchases.receipt` oleh Admin/Pengelola.
