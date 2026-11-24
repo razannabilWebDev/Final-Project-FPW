@@ -16,7 +16,7 @@
 - [x] Format takaran di form edit & detail resep (2.000 → 2)
 - [x] Test regresi tampilan takaran
 - [x] Verifikasi: pint bersih, 13/13 test resep, build sukses, full suite 130/131 (failure lama: excel)
-- [x] Commit `8588b89`
+- [x] Commit `2bc4cfb`
 
 ## [2026-11-24 20:52] — Anggota 2 — Resep: hapus, tambah bahan, dropdown satuan
 
@@ -27,7 +27,7 @@
 - [x] Route destroy + aksi hapus + modal konfirmasi Figma
 - [x] Test regresi (tambah bahan, dropdown, hapus, permission) — 12/12 lulus
 - [x] Verifikasi: migrate dijalankan, pint bersih, build sukses, full suite 129/130 (failure lama: excel)
-- [x] Commit `8588b89`
+- [x] Commit `2bc4cfb`
 
 ## [2026-11-24 17:41] — Anggota 2 — Tahap 2: Pengelolaan Resep & HPP
 
@@ -40,7 +40,7 @@
 - [x] Test: HPP, versi, snapshot, permission, konversi satuan (10/10 lulus)
 - [x] Dokumen: finalisasi D4/D5/D7 + interpretasi FR-RECIPE-03, update implementation-plan
 - [x] Verifikasi: pint bersih, build sukses, full suite 127/128 (1 failure lama: excel)
-- [x] Commit `8588b89`
+- [x] Commit `2bc4cfb`
 
 ## [2026-11-24 17:27] — Anggota 2 — Koreksi penulis prompt history
 
@@ -56,7 +56,7 @@
 - [x] Mode form eksplisit (`$isEdit`) di partial form & `_form`, kirim dari semua pemanggil
 - [x] Test regresi: index fresh tidak merender form edit di modal Tambah
 - [x] Verifikasi: pint bersih, 20/20 test menu, render HTML benar, build sukses, full suite 117/118 (1 failure lama: excel)
-- [x] Commit `8588b89`
+- [x] Commit `2bc4cfb`
 
 ## [2026-11-24 17:00] — Anggota 2 — Fix edit menu via modal tidak menyimpan
 
@@ -65,7 +65,7 @@
 - [x] Tombol submit footer diarahkan ke form masing-masing + JS busy handler
 - [x] Test regresi alur edit modal
 - [x] Verifikasi: pint bersih, `MenuManagementTest` 20/20, build sukses, full suite 117/118 (1 failure lama: `maatwebsite/excel` belum di-install)
-- [x] Commit `8588b89`
+- [x] Commit `2bc4cfb`
 
 ## [2026-11-24 16:39] — Anggota 2 — UI Pengelolaan Menu sesuai design system v2
 
@@ -77,7 +77,7 @@
 - [x] Modal Tambah/Ubah/Detail/Konfirmasi + form 48px & upload sesuai batas backend
 - [x] Test `MenuManagementTest` untuk filter, statistik, dan alur modal (19/19 lulus)
 - [x] Verifikasi: pint bersih, `npm run build` sukses; full suite 115/116 (1 failure lama: `maatwebsite/excel` belum di-install di vendor); graphify CLI tidak tersedia
-- [x] Commit `8588b89`
+- [x] Commit `2bc4cfb`
 
 ## [2026-11-23 19:50] — Anggota 1 — Audit modul + fitur lupa password
 

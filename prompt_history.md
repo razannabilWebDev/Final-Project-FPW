@@ -18,7 +18,7 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
   ```text
   lakukan commit
   ```
-- **Hasil:** Commit `8588b89` dibuat di branch `feature/member-2-menu-recipe` (`feat(menu,recipe): UI menu v2 dan modul resep dengan HPP berversi`, 42 file). Log prompt & tasklist diperbarui dengan hash sebelum amandemen.
+- **Hasil:** Commit `2bc4cfb` dibuat di branch `feature/member-2-menu-recipe` (`feat(menu,recipe): UI menu v2 dan modul resep dengan HPP berversi`, 42 file). Log prompt & tasklist diperbarui dengan hash sebelum amandemen.
 
 ## [2026-11-24 21:31 WIB] — Anggota 2
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
@@ -26,7 +26,7 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
   ```text
   takarannya jangan ditambahkan .000
   ```
-- **Hasil:** Selesai. Takaran di form edit dan panel detail resep kini membuang nol desimal berlebih (`2.000` → `2`, `2.500` → `2.5`); penyimpanan tetap `decimal(12,3)` dan kontrak HPP tidak berubah. Test regresi ditambahkan. Verifikasi: pint bersih, `RecipeManagementTest` 13/13, build sukses, full suite 130/131 (failure lama: excel). Sudah di-commit sebagai `8588b89`.
+- **Hasil:** Selesai. Takaran di form edit dan panel detail resep kini membuang nol desimal berlebih (`2.000` → `2`, `2.500` → `2.5`); penyimpanan tetap `decimal(12,3)` dan kontrak HPP tidak berubah. Test regresi ditambahkan. Verifikasi: pint bersih, `RecipeManagementTest` 13/13, build sukses, full suite 130/131 (failure lama: excel). Sudah di-commit sebagai `2bc4cfb`.
 
 ## [2026-11-24 20:52 WIB] — Anggota 2
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
@@ -34,7 +34,7 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
   ```text
   kerjakan
   ```
-- **Hasil:** Selesai. Tombol "Tambah Bahan" diperbaiki (tombol dipindah ke dalam `[data-recipe-items]`, listener dipasang di form, `initRecipeForm()` dipanggil ulang setelah fetch edit), satuan jadi dropdown dari `base_unit` bahan aktif dengan auto-select, dan aksi hapus ditambahkan: migration `is_active` di `recipes`, `RecipeService::deactivateMenuRecipes()`, route `DELETE recipes.destroy` (gate `manage-recipes`), modal konfirmasi, serta filter `is_active` di index & kontrak HPP. 12 test resep lulus; full suite 129/130 (failure lama: excel). Migration sudah dijalankan di DB dev. Sudah di-commit sebagai `8588b89`.
+- **Hasil:** Selesai. Tombol "Tambah Bahan" diperbaiki (tombol dipindah ke dalam `[data-recipe-items]`, listener dipasang di form, `initRecipeForm()` dipanggil ulang setelah fetch edit), satuan jadi dropdown dari `base_unit` bahan aktif dengan auto-select, dan aksi hapus ditambahkan: migration `is_active` di `recipes`, `RecipeService::deactivateMenuRecipes()`, route `DELETE recipes.destroy` (gate `manage-recipes`), modal konfirmasi, serta filter `is_active` di index & kontrak HPP. 12 test resep lulus; full suite 129/130 (failure lama: excel). Migration sudah dijalankan di DB dev. Sudah di-commit sebagai `2bc4cfb`.
 
 ## [2026-11-24 20:45 WIB] — Anggota 2
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
@@ -51,7 +51,7 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
   ```text
   kerjakan
   ```
-- **Hasil:** Tahap 2 (Pengelolaan Resep & HPP) selesai. Model `Recipe`/`RecipeItem` + factory, `RecipeService` (versi inkremen tiap ubah takaran, HPP `average_cost` × takaran `base_unit` via bcmath), FormRequest + `RecipeController` + route `recipes.*` dengan gate `view-recipes`/`manage-recipes`/`manage-recipe-costs`, UI Figma (KPI, toolbar, tabel, modal Tambah/Ubah/Detail dengan repeater bahan), implementasi A2 `RecipeCostService` menggantikan stub A4 di `AppServiceProvider`, 10 test baru (`RecipeManagementTest`). D4/D5/D7 difinalisasi + interpretasi FR-RECIPE-03 dicatat di `docs/decisions.md`; `docs/implementation-plan.md` diperbarui. Verifikasi: pint bersih, `RecipeManagementTest` 10/10, build sukses, full suite 127/128 (1 failure lama: `maatwebsite/excel` belum terpasang). Sudah di-commit sebagai `8588b89`.
+- **Hasil:** Tahap 2 (Pengelolaan Resep & HPP) selesai. Model `Recipe`/`RecipeItem` + factory, `RecipeService` (versi inkremen tiap ubah takaran, HPP `average_cost` × takaran `base_unit` via bcmath), FormRequest + `RecipeController` + route `recipes.*` dengan gate `view-recipes`/`manage-recipes`/`manage-recipe-costs`, UI Figma (KPI, toolbar, tabel, modal Tambah/Ubah/Detail dengan repeater bahan), implementasi A2 `RecipeCostService` menggantikan stub A4 di `AppServiceProvider`, 10 test baru (`RecipeManagementTest`). D4/D5/D7 difinalisasi + interpretasi FR-RECIPE-03 dicatat di `docs/decisions.md`; `docs/implementation-plan.md` diperbarui. Verifikasi: pint bersih, `RecipeManagementTest` 10/10, build sukses, full suite 127/128 (1 failure lama: `maatwebsite/excel` belum terpasang). Sudah di-commit sebagai `2bc4cfb`.
 
 ## [2026-11-24 17:30 WIB] — Anggota 2
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
@@ -78,7 +78,7 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
   ```text
   kerjakan
   ```
-- **Hasil:** Bug edit menu selesai tuntas. Variabel loop grid diganti `$menu` → `$cardMenu` supaya tidak bocor ke include modal; `menus.partials.form` dan `_form` kini menerima `$isEdit` eksplisit dari semua pemanggil (index, controller partial, halaman create/edit). Render HTML live membuktikan modal Tambah sekarang berisi `id="create-menu-form-element"` (action POST /menus) dan tidak ada form edit di page load. Test regresi diperkuat. Verifikasi: pint bersih, `MenuManagementTest` 20/20, build sukses, full suite 117/118 (1 failure lama: `maatwebsite/excel` belum terpasang). Sudah di-commit sebagai `8588b89`.
+- **Hasil:** Bug edit menu selesai tuntas. Variabel loop grid diganti `$menu` → `$cardMenu` supaya tidak bocor ke include modal; `menus.partials.form` dan `_form` kini menerima `$isEdit` eksplisit dari semua pemanggil (index, controller partial, halaman create/edit). Render HTML live membuktikan modal Tambah sekarang berisi `id="create-menu-form-element"` (action POST /menus) dan tidak ada form edit di page load. Test regresi diperkuat. Verifikasi: pint bersih, `MenuManagementTest` 20/20, build sukses, full suite 117/118 (1 failure lama: `maatwebsite/excel` belum terpasang). Sudah di-commit sebagai `2bc4cfb`.
 
 ## [2026-11-24 17:12 WIB] — Anggota 2
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
@@ -95,7 +95,7 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
   ```text
   kerjakan
   ```
-- **Hasil:** Bug edit modal selesai. `menus.partials.form` kini menghasilkan `id` unik (`create-menu-form-element` / `edit-menu-form-element`) beserta prefiks field (`create-` / `edit-`); tombol footer mengarah ke form masing-masing; handler JS busy mengikuti ID baru. Test regresi ditambahkan. Verifikasi: pint bersih, `MenuManagementTest` 20/20 lulus, `npm run build` sukses, full suite 117/118 (1 failure lama: `maatwebsite/excel` belum terpasang di vendor). Sudah di-commit sebagai `8588b89`.
+- **Hasil:** Bug edit modal selesai. `menus.partials.form` kini menghasilkan `id` unik (`create-menu-form-element` / `edit-menu-form-element`) beserta prefiks field (`create-` / `edit-`); tombol footer mengarah ke form masing-masing; handler JS busy mengikuti ID baru. Test regresi ditambahkan. Verifikasi: pint bersih, `MenuManagementTest` 20/20 lulus, `npm run build` sukses, full suite 117/118 (1 failure lama: `maatwebsite/excel` belum terpasang di vendor). Sudah di-commit sebagai `2bc4cfb`.
 
 ## [2026-11-24 16:55 WIB] — Anggota 2
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
@@ -111,7 +111,7 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
   ```text
   kerjakan
   ```
-- **Hasil:** UI Pengelolaan Menu diperbarui sesuai design_system_v2 + Figma: shell (sidebar ikon/indikator aktif, topbar breadcrumb/peran statis/notifikasi/avatar), 3 KPI nyata (tanpa kategori mock), toolbar search + status filter, grid kartu foto 2 kolom, modal Tambah/Ubah/Detail/Konfirmasi Status via `?partial=1`, form 48px & upload 2 MB sesuai backend, komponen badge/toast/pagination, Escape + focus trap. `MenuController` dapat filter & statistik; 5 test baru ditambahkan. Verifikasi: pint bersih, `npm run build` sukses, `MenuManagementTest` 19/19 lulus, full suite 115/116 (1 kegagalan lama di `ProfitReportTest` karena paket `maatwebsite/excel` belum terpasang di vendor — di luar scope perubahan ini). Sudah di-commit sebagai `8588b89`.
+- **Hasil:** UI Pengelolaan Menu diperbarui sesuai design_system_v2 + Figma: shell (sidebar ikon/indikator aktif, topbar breadcrumb/peran statis/notifikasi/avatar), 3 KPI nyata (tanpa kategori mock), toolbar search + status filter, grid kartu foto 2 kolom, modal Tambah/Ubah/Detail/Konfirmasi Status via `?partial=1`, form 48px & upload 2 MB sesuai backend, komponen badge/toast/pagination, Escape + focus trap. `MenuController` dapat filter & statistik; 5 test baru ditambahkan. Verifikasi: pint bersih, `npm run build` sukses, `MenuManagementTest` 19/19 lulus, full suite 115/116 (1 kegagalan lama di `ProfitReportTest` karena paket `maatwebsite/excel` belum terpasang di vendor — di luar scope perubahan ini). Sudah di-commit sebagai `2bc4cfb`.
 
 ## [2026-11-24 16:25 WIB] — Anggota 2
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
