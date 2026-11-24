@@ -1,20 +1,35 @@
 @extends('layouts.app')
 
 @section('title', 'Ubah Menu')
+@section('breadcrumb', 'Pengelolaan Menu')
 
 @section('content')
-    <div class="mx-auto max-w-2xl rounded-2xl border border-[#ecece8] bg-white p-6 shadow-[0_8px_24px_rgba(30,58,138,0.06)] sm:p-8">
-        <h2 class="text-lg font-bold text-[#142d70]">Ubah Data Menu</h2>
-        <p class="mt-1 text-xs text-slate-500">Perbarui informasi menu, harga jual, atau foto produk.</p>
+    <div class="mx-auto max-w-3xl rounded-2xl border border-line bg-white p-6 shadow-card sm:p-8">
+        <div class="mb-6 flex items-start gap-3">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#dbeafe] text-brand">
+                <x-icon name="pencil" :size="19" />
+            </span>
+            <div>
+                <h2 class="text-sm font-bold text-[#142d70]">Ubah Data Menu</h2>
+                <p class="mt-0.5 text-[11px] text-slate-500">Perbarui informasi menu, harga jual, atau foto produk.</p>
+            </div>
+        </div>
 
-        <form method="POST" action="{{ route('menus.update', $menu) }}" enctype="multipart/form-data" class="mt-6">
+        <form method="POST" action="{{ route('menus.update', $menu) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            @include('menus._form')
+            @include('menus._form', ['isEdit' => true, 'fieldPrefix' => 'edit'])
 
-            <div class="mt-7 flex flex-wrap gap-3">
-                <button type="submit" class="rounded-lg bg-[#2563eb] px-5 py-2.5 text-xs font-bold text-white transition hover:bg-[#1d4ed8]">Simpan Perubahan</button>
-                <a href="{{ route('menus.show', $menu) }}" class="rounded-lg border border-[#dfe3e8] px-5 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50">Batal</a>
+            <div class="mt-7 flex flex-wrap justify-end gap-3 border-t border-line pt-5">
+                <a href="{{ route('menus.show', $menu) }}"
+                   class="rounded-lg border border-line-input bg-white px-5 py-2.5 text-xs font-bold text-[#4b5563] transition hover:bg-slate-50">
+                    Batal
+                </a>
+                <button type="submit"
+                        class="flex items-center gap-2 rounded-lg bg-brand px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-200 transition hover:bg-brand-hover">
+                    <x-icon name="check" :size="14" :stroke="2.4" />
+                    Simpan Perubahan
+                </button>
             </div>
         </form>
     </div>

@@ -23,7 +23,7 @@ class MenuManagementTest extends TestCase
         $this->actingAs($admin)
             ->get(route('menus.index'))
             ->assertOk()
-            ->assertSee('Daftar Menu')
+            ->assertSee('Katalog Menu')
             ->assertSee('Nasi Ayam Geprek')
             ->assertSee('Rp25.000');
     }
@@ -256,5 +256,133 @@ class MenuManagementTest extends TestCase
             'hpp_snapshot' => 8000,
         ]);
         $this->assertSame('Nasi Ayam Geprek Special', $menu->fresh()->name);
+    }
+
+    public function test_menu_index_can_be_filtered_by_search_and_status(): void
+    {
+        $admin = User::factory()->admin()->create();
+        Menu::factory()->create(['name' => 'Nasi Ayam Geprek', 'is_active' => true]);
+        Menu::factory()->create(['name' => 'Es Teh Manis', 'is_active' => false]);
+
+        $this->actingAs($admin)
+            ->get(route('menus.index', ['search' => 'Geprek']))
+            ->assertOk()
+            ->assertSee('Nasi Ayam Geprek')
+            ->assertDontSee('Es Teh Manis');
+
+        $this->actingAs($admin)
+            ->get(route('menus.index', ['status' => 'nonaktif']))
+            ->assertOk()
+            ->assertSee('Es Teh Manis')
+            ->assertDontSee('Nasi Ayam Geprek');
+    }
+
+    public function test_menu_index_shows_statistics_from_database(): void
+    {
+        $admin = User::factory()->admin()->create();
+        Menu::factory()->count(2)->create(['is_active' => true]);
+        Menu::factory()->create(['is_active' => false]);
+
+        $this->actingAs($admin)
+            ->get(route('menus.index'))
+            ->assertOk()
+            ->assertViewHas('menuStats', fn (array $stats): bool => $stats === [
+                'total' => 3,
+                'aktif' => 2,
+                'nonaktif' => 1,
+            ]);
+    }
+
+    public function test_modal_fragments_are_rendered_without_full_layout(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $menu = Menu::factory()->create(['name' => 'Ayam Geprek']);
+
+        $this->actingAs($admin)
+            ->get(route('menus.create', ['partial' => 1]))
+            ->assertOk()
+            ->assertViewIs('menus.partials.form')
+            ->assertSee('Nama Menu');
+
+        $this->actingAs($admin)
+            ->get(route('menus.edit', $menu).'?partial=1')
+            ->assertOk()
+            ->assertViewIs('menus.partials.form')
+            ->assertSee('Ayam Geprek');
+
+        $this->actingAs($admin)
+            ->get(route('menus.show', $menu).'?partial=1')
+            ->assertOk()
+            ->assertViewIs('menus.partials.detail')
+            ->assertSee('Harga Jual');
+    }
+
+    public function test_create_and_edit_modals_use_distinct_form_and_field_ids(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $menu = Menu::factory()->create(['name' => 'Ayam Geprek']);
+
+        $this->actingAs($admin)
+            ->get(route('menus.index'))
+            ->assertOk()
+            ->assertSee('id="create-menu-form-element"', false)
+            ->assertDontSee('id="edit-menu-form-element"', false)
+            ->assertSee('form="create-menu-form-element"', false)
+            ->assertSee('form="edit-menu-form-element"', false)
+            ->assertDontSee('id="menu-form"', false)
+            ->assertDontSee('form="menu-form"', false);
+
+        $this->actingAs($admin)
+            ->get(route('menus.create', ['partial' => 1]))
+            ->assertOk()
+            ->assertSee('id="create-menu-form-element"', false)
+            ->assertSee('id="create-name"', false)
+            ->assertSee('action="'.route('menus.store').'"', false);
+
+        $this->actingAs($admin)
+            ->get(route('menus.edit', $menu).'?partial=1')
+            ->assertOk()
+            ->assertSee('id="edit-menu-form-element"', false)
+            ->assertSee('id="edit-name"', false)
+            ->assertSee('action="'.route('menus.update', $menu).'"', false)
+            ->assertSee('value="PUT"', false);
+    }
+
+    public function test_failed_modal_submission_reopens_edit_modal_with_errors(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $menu = Menu::factory()->create(['name' => 'Ayam Bakar']);
+
+        $this->actingAs($admin)
+            ->from(route('menus.index'))
+            ->put(route('menus.update', $menu), [
+                'name' => '',
+                'selling_price' => 10000,
+                'form_modal' => 'edit-menu-modal',
+                'menu_id' => $menu->id,
+            ])
+            ->assertRedirect(route('menus.index'))
+            ->assertSessionHasErrors('name');
+
+        $this->actingAs($admin)
+            ->get(route('menus.index'))
+            ->assertOk()
+            ->assertViewHas('failedMenu', fn ($failed): bool => $failed?->is($menu) === true);
+    }
+
+    public function test_modal_hidden_fields_are_not_stored_as_menu_attributes(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $this->actingAs($admin)
+            ->post(route('menus.store'), [
+                'name' => 'Menu Modal',
+                'selling_price' => 15000,
+                'form_modal' => 'create-menu-modal',
+            ])
+            ->assertRedirect(route('menus.index'));
+
+        $this->assertDatabaseCount('menus', 1);
+        $this->assertDatabaseHas('menus', ['name' => 'Menu Modal']);
     }
 }

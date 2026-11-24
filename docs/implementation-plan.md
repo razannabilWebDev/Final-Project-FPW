@@ -22,12 +22,12 @@
 - [x] Role + middleware/policy dari `docs/permissions.md` (Anggota 1 — 19 gate, alias `role`/`active`)
 - [x] Kelola Pengguna: CRUD + nonaktifkan akun oleh Admin (Anggota 1 — guard self-role/self-deactivate)
 - [x] Lupa password: reset link via email + notifikasi Bahasa Indonesia (Anggota 1 — FR-AUTH-06/D14, 10 test baru)
-- [ ] Master menu + harga jual (Anggota 2)
+- [x] Master menu + harga jual (Anggota 2 — 2026-11-24: CRUD/foto/status + UI v2)
 - [x] Master bahan baku + satuan dasar (Anggota 3 — 2026-11-23; tanpa tabel konversi, D5 menunggu A2)
 - [x] Service stok terpusat + `stock_movements` ledger (Anggota 3 — 2026-11-23; deduct/reversal untuk A4)
 - [x] Migration semua tabel dari `docs/database.md`, urut dependensi FK (Anggota 1, 2026-11-18)
 - [x] Seeder dummy lengkap & idempoten + test konsistensi ledger (`DatabaseSchemaTest`, 40 test lulus)
-- [ ] Layout dasar + komponen umum (card, badge, DataTable, modal, toast)
+- [~] Layout dasar + komponen umum (card, badge, modal, toast, pagination selesai 2026-11-24; DataTable masih memakai tabel Blade biasa)
 
 ## Tahap 2 — Pengembangan Paralel (boleh mulai setelah kontrak disepakati)
 
@@ -49,14 +49,22 @@
 
 - Branch kerja: `feature/member-4-setup` (sudah di-push, 65 test lulus). Sudah me-merge fondasi auth Anggota 1.
 - **Selesai — Anggota 3:** branch `feature/member-3-stock-purchases` sudah di-merge; `Member3StockServiceAdapter` menjembatani service stok asli ke kontrak `StockService` (idempotensi ledger A3 + flag `sales.stock_deducted_at`/`reversal_done_at` dari adapter).
-- **Koordinasi Anggota 2:** HPP dihitung oleh `DefaultRecipeCostService` (versi resep terbaru × `average_cost`, D4/D7). Bila A2 membuat service HPP resmi, ganti binding di `AppServiceProvider` — kontrak `RecipeCostService` tidak berubah.
+- **Selesai — Anggota 2 (2026-11-24):** binding `RecipeCostService` di `AppServiceProvider` sudah diganti dari `DefaultRecipeCostService` ke implementasi A2 (`App\Services\RecipeCostService`); kontrak tidak berubah, `SaleService`/`ProfitReportService` tetap memakai antarmuka yang sama.
 - **Selesai — ekspor:** dependency `maatwebsite/excel` + `barryvdh/laravel-dompdf` dipasang (keputusan tim 2026-11-23); tombol PDF/Excel aktif dengan gate `export-reports`.
 - **Perlu koordinasi merge:** `feature/member-4-setup` → `develop`/`main` (develop masih perlu merge commit Biaya/Laporan/integrasi).
 
+### Catatan koordinasi Anggota 2 (2026-11-24)
+
+- Modul Menu & Resep sudah diimplementasikan lengkap: CRUD menu (foto, harga, status), CRUD resep dengan versi, takaran dalam `base_unit`, HPP `average_cost` × takaran (D4/D5/D7 final di `docs/decisions.md`).
+- Gate dipakai di backend: `view-recipes` (lihat), `manage-recipes` (Admin, takaran), `manage-recipe-costs` (Admin+Pengelola, rincian biaya). Staf 403.
+- `RecipeCostService` A2 terpasang di `AppServiceProvider`; kontrak `costPerPortion`/`ingredientsPerPortion` tidak berubah untuk A4/A1.
+- FR-RECIPE-03 ditafsirkan sebagai komposisi + lihat HPP turunan D4 (tanpa angka override manual) — lihat `docs/decisions.md`.
+- 2026-11-24: "hapus resep" = nonaktifkan **semua versi** menu (`recipes.is_active`, migration baru); versi tetap tersimpan untuk audit dan tidak dipakai sebagai HPP transaksi baru. Tombol tambah bahan di modal edit diperbaiki dan satuan memakai dropdown `base_unit`.
+
 ## Tahap 3 — Integrasi (TASK_INSTRUCTIONS §8)
 
-1. [~] Auth & permission di semua modul — gate tersedia & dipakai Sales/Expense/Report; modul A2/A3 belum diverifikasi
-2. [ ] Menu & resep ↔ master bahan (Anggota 2)
+1. [~] Auth & permission di semua modul — gate tersedia & dipakai Sales/Expense/Report/Menu/Resep (A2 terverifikasi 2026-11-24); modul A3 pembelian masih tertunda
+2. [x] Menu & resep ↔ master bahan (Anggota 2 — 2026-11-24: resep, versi, HPP `average_cost` × takaran `base_unit`, contract `RecipeCostService` A2 menggantikan stub A4)
 3. [~] Penjualan ↔ menu, HPP, service stok — stub aktif, menunggu service A2/A3
 4. [x] Pembelian ↔ stok masuk (Anggota 3) — verifikasi memanggil `StockService::recordIn` (ledger `purchase_in` + `average_cost`)
 5. [x] Biaya & penjualan → laporan keuntungan — commit `20253ea`

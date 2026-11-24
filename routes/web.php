@@ -7,12 +7,13 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfitReportController;
+use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\StockMovementController;
-use App\Http\Controllers\MenuController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WasteController;
 use Illuminate\Support\Facades\Route;
@@ -57,6 +58,27 @@ Route::middleware(['auth', 'active'])->group(function (): void {
         });
 
         Route::get('/{menu}', [MenuController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('resep')->name('recipes.')->group(function (): void {
+        Route::middleware('can:view-recipes')->group(function (): void {
+            Route::get('/', [RecipeController::class, 'index'])->name('index');
+        });
+
+        Route::middleware('can:manage-recipes')->group(function (): void {
+            Route::get('/tambah', [RecipeController::class, 'create'])->name('create');
+            Route::post('/', [RecipeController::class, 'store'])->name('store');
+        });
+
+        Route::middleware('can:view-recipes')->group(function (): void {
+            Route::get('/{recipe}', [RecipeController::class, 'show'])->name('show');
+        });
+
+        Route::middleware('can:manage-recipes')->group(function (): void {
+            Route::get('/{recipe}/ubah', [RecipeController::class, 'edit'])->name('edit');
+            Route::put('/{recipe}', [RecipeController::class, 'update'])->name('update');
+            Route::delete('/{recipe}', [RecipeController::class, 'destroy'])->name('destroy');
+        });
     });
 
     Route::middleware('can:manage-users')->prefix('users')->name('users.')->group(function (): void {

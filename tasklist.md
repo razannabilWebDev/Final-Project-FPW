@@ -10,6 +10,74 @@
 
 ---
 
+## [2026-11-24 21:31] — Anggota 2 — Format takaran tanpa trailing .000
+
+- [x] Catat prompt sesi ke `prompt_history.md`
+- [x] Format takaran di form edit & detail resep (2.000 → 2)
+- [x] Test regresi tampilan takaran
+- [x] Verifikasi: pint bersih, 13/13 test resep, build sukses, full suite 130/131 (failure lama: excel)
+- [x] Commit `2bc4cfb`
+
+## [2026-11-24 20:52] — Anggota 2 — Resep: hapus, tambah bahan, dropdown satuan
+
+- [x] Catat prompt sesi ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Perbaiki tombol tambah bahan di modal edit (delegasi event + init ulang setelah fetch)
+- [x] Satuan jadi dropdown dari base_unit bahan aktif + auto-select
+- [x] Migration is_active recipes + service deaktivasi semua versi
+- [x] Route destroy + aksi hapus + modal konfirmasi Figma
+- [x] Test regresi (tambah bahan, dropdown, hapus, permission) — 12/12 lulus
+- [x] Verifikasi: migrate dijalankan, pint bersih, build sukses, full suite 129/130 (failure lama: excel)
+- [x] Commit `2bc4cfb`
+
+## [2026-11-24 17:41] — Anggota 2 — Tahap 2: Pengelolaan Resep & HPP
+
+- [x] Catat prompt sesi ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Model Recipe/RecipeItem + factory + relasi
+- [x] RecipeService: versioning, kalkulasi HPP bcmath, normalisasi satuan dasar
+- [x] FormRequest, controller, route dengan gate view/manage-recipes/manage-recipe-costs
+- [x] UI resep sesuai Figma (KPI, toolbar, tabel, modal Tambah/Ubah/Detail)
+- [x] Implementasi kontrak RecipeCostService + ganti binding di AppServiceProvider
+- [x] Test: HPP, versi, snapshot, permission, konversi satuan (10/10 lulus)
+- [x] Dokumen: finalisasi D4/D5/D7 + interpretasi FR-RECIPE-03, update implementation-plan
+- [x] Verifikasi: pint bersih, build sukses, full suite 127/128 (1 failure lama: excel)
+- [x] Commit `2bc4cfb`
+
+## [2026-11-24 17:27] — Anggota 2 — Koreksi penulis prompt history
+
+- [x] Catat prompt "jangan lupa catat prompt ke @prompt_history.md sebagai anggota 2" sebagai entri teratas
+- [x] Koreksi penulis 6 entri sesi ini (16:25–17:17 WIB) dari Anggota 1 → Anggota 2
+- [x] Verifikasi 7 entri 2026-11-24 semuanya tercatat sebagai Anggota 2
+- [x] Tidak ada perubahan kode atau dokumen kontrak
+
+## [2026-11-24 17:17] — Anggota 2 — Fix akar masalah edit menu (variabel loop bocor ke modal)
+
+- [x] Catat prompt sesi ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Ganti variabel loop `$menu` → `$cardMenu` di grid kartu index
+- [x] Mode form eksplisit (`$isEdit`) di partial form & `_form`, kirim dari semua pemanggil
+- [x] Test regresi: index fresh tidak merender form edit di modal Tambah
+- [x] Verifikasi: pint bersih, 20/20 test menu, render HTML benar, build sukses, full suite 117/118 (1 failure lama: excel)
+- [x] Commit `2bc4cfb`
+
+## [2026-11-24 17:00] — Anggota 2 — Fix edit menu via modal tidak menyimpan
+
+- [x] Catat prompt sesi ke `prompt_history.md`
+- [x] ID form & field unik untuk modal Tambah vs Ubah
+- [x] Tombol submit footer diarahkan ke form masing-masing + JS busy handler
+- [x] Test regresi alur edit modal
+- [x] Verifikasi: pint bersih, `MenuManagementTest` 20/20, build sukses, full suite 117/118 (1 failure lama: `maatwebsite/excel` belum di-install)
+- [x] Commit `2bc4cfb`
+
+## [2026-11-24 16:39] — Anggota 2 — UI Pengelolaan Menu sesuai design system v2
+
+- [x] Catat prompt sesi ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Fondasi: ikon, badge, toast, modal, pagination + CSS pendukung
+- [x] Shell minimal: sidebar aktif & topbar breadcrumb/peran statis/notifikasi/profil
+- [x] `MenuController`: filter search/status, statistik KPI, dukungan `?partial=1`
+- [x] Index menu: 3 KPI, toolbar, grid kartu foto, badge, aksi, empty state, pagination
+- [x] Modal Tambah/Ubah/Detail/Konfirmasi + form 48px & upload sesuai batas backend
+- [x] Test `MenuManagementTest` untuk filter, statistik, dan alur modal (19/19 lulus)
+- [x] Verifikasi: pint bersih, `npm run build` sukses; full suite 115/116 (1 failure lama: `maatwebsite/excel` belum di-install di vendor); graphify CLI tidak tersedia
+- [x] Commit `2bc4cfb`
 ## [2026-11-24 21:21] — Anggota 3 — Backfill log prompt sesi tanya-jawab
 
 - [x] Audit `prompt_history.md`: 6 prompt Plan mode terakhir belum tercatat (mode build sudah di-backfill sebelumnya)
