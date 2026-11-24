@@ -16,14 +16,35 @@ class IngredientController extends Controller
 {
     public function __construct(private readonly IngredientService $ingredients) {}
 
-    public function index(): View
+    public function index(Request $request): View
     {
+        $search = trim((string) $request->query('search', ''));
+        $status = (string) $request->query('status', '');
+
+        $filtered = Ingredient::query()
+            ->when($search !== '', fn ($query) => $query->where('name', 'like', "%{$search}%"))
+            ->when($status === 'aman', fn ($query) => $query->whereColumn('current_stock', '>', 'minimum_stock'))
+            ->when($status === 'menipis', fn ($query) => $query->lowStock()->where('current_stock', '>', 0))
+            ->when($status === 'habis', fn ($query) => $query->where('current_stock', '<=', 0))
+            ->when($status === 'nonaktif', fn ($query) => $query->where('is_active', false));
+
+        $ingredients = (clone $filtered)
+            ->orderBy('name')
+            ->orderBy('id')
+            ->paginate(10)
+            ->withQueryString();
+
+        $all = Ingredient::query();
+
         return view('ingredients.index', [
-            'ingredients' => Ingredient::query()
-                ->orderBy('name')
-                ->orderBy('id')
-                ->paginate(10),
-            'lowStockCount' => Ingredient::query()->lowStock()->count(),
+            'ingredients' => $ingredients,
+            'totalIngredients' => (clone $all)->count(),
+            'safeStockCount' => (clone $all)->whereColumn('current_stock', '>', 'minimum_stock')->count(),
+            'lowStockCount' => (clone $all)->lowStock()->where('current_stock', '>', 0)->count(),
+            'outOfStockCount' => (clone $all)->where('current_stock', '<=', 0)->count(),
+            'units' => $this->units(),
+            'search' => $search,
+            'status' => $status,
         ]);
     }
 
