@@ -10,6 +10,30 @@
 
 ---
 
+## [2026-11-24 17:50] — Anggota 3 — Fix toggle status bahan baku
+
+- [x] Catat 2 prompt sesi ini ke `prompt_history.md`
+- [x] Diagnosis: JS modal mengirim state target `0` ke hidden input `is_active`, padahal `setActive()` membalik nilai (mengira state saat ini) → nonaktif jadi aktif
+- [x] Perbaiki `resources/views/ingredients/index.blade.php`: kirim `button.dataset.active` (state saat ini)
+- [x] Pastikan controller & test lama tidak diubah (konvensi `is_active` = state saat ini dipertahankan)
+- [x] Verifikasi: 17/17 test modul stok lulus (75 assertion)
+- [ ] Commit (hash menyusul)
+
+## [2026-11-24 17:06] — Anggota 3 — Penyesuaian visual modul stok ke design_system_v2
+
+- [x] Catat 3 prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Audit view stok + screenshot Figma `-7.png` (stok), `-8.png` (pembelian), `-13.png`/`-19.png` (modal) dan konfirmasi field mock tidak disalin (PRD §7)
+- [x] `IngredientController@index`: filter `search` + `status`, 4 angka KPI dari DB, `withQueryString()`, kirim `$units`
+- [x] `StockMovementController@index`: filter `movement_type`, 3 angka KPI, `withQueryString()`
+- [x] Rewrite `ingredients/index.blade.php`: header, KPI, toolbar search/filter, tabel badge status, aksi ikon, footer pagination, empty state
+- [x] Modal Tambah/Ubah/Detail Bahan + konfirmasi perubahan status via `<x-modal>`; route lama tetap ada
+- [x] `_form.blade.php` diberi prefix ID unik; create/edit standalone ikut dirapikan
+- [x] Rapikan `stock/movements`, `stock/adjustments`, `stock/waste` (header, toolbar, input, tombol, empty state)
+- [x] Tambah 3 test regresi: filter stok, KPI dari data nyata, filter jenis pergerakan
+- [x] Verifikasi: 17/17 test modul, pint bersih, `npm run build` sukses; suite penuh 99/101 (2 gagal pre-existing di luar modul)
+- [ ] Commit (hash menyusul)
+- [ ] Pembelian + verifikasi masih tertunda (sesuai keputusan cakupan sesi ini)
+
 ## [2026-11-23 19:50] — Anggota 1 — Audit modul + fitur lupa password
 
 - [x] Catat 6 prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)

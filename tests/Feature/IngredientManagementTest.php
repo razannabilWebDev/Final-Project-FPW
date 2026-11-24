@@ -99,6 +99,43 @@ class IngredientManagementTest extends TestCase
         $this->assertModelExists($ingredient);
     }
 
+    public function test_index_filters_ingredients_by_search_and_stock_status(): void
+    {
+        $admin = User::factory()->admin()->create();
+        Ingredient::factory()->create(['name' => 'Daging Ayam', 'current_stock' => '10.000', 'minimum_stock' => '2.000']);
+        Ingredient::factory()->create(['name' => 'Cabai Rawit', 'current_stock' => '1.000', 'minimum_stock' => '2.000']);
+        Ingredient::factory()->create(['name' => 'Daun Salad', 'current_stock' => '0.000', 'minimum_stock' => '1.000']);
+
+        $this->actingAs($admin)
+            ->get(route('ingredients.index', ['search' => 'Cabai']))
+            ->assertOk()
+            ->assertSee('Cabai Rawit')
+            ->assertViewHas('ingredients', fn ($ingredients): bool => $ingredients->total() === 1);
+
+        $this->actingAs($admin)
+            ->get(route('ingredients.index', ['status' => 'menipis']))
+            ->assertOk()
+            ->assertSee('Cabai Rawit')
+            ->assertViewHas('ingredients', fn ($ingredients): bool => $ingredients->total() === 1);
+    }
+
+    public function test_index_stock_kpi_comes_from_real_data(): void
+    {
+        $admin = User::factory()->admin()->create();
+        Ingredient::factory()->create(['current_stock' => '10.000', 'minimum_stock' => '2.000']);
+        Ingredient::factory()->create(['current_stock' => '1.000', 'minimum_stock' => '2.000']);
+        Ingredient::factory()->create(['current_stock' => '0.000', 'minimum_stock' => '1.000']);
+
+        $this->actingAs($admin)
+            ->get(route('ingredients.index'))
+            ->assertOk()
+            ->assertViewHas('totalIngredients', 3)
+            ->assertViewHas('safeStockCount', 1)
+            ->assertViewHas('lowStockCount', 1)
+            ->assertViewHas('outOfStockCount', 1)
+            ->assertSee('Stok Habis');
+    }
+
     public function test_unauthenticated_request_redirects_to_login(): void
     {
         $this->get(route('ingredients.index'))->assertRedirect(route('login'));

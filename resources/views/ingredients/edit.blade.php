@@ -3,18 +3,26 @@
 @section('title', 'Ubah Bahan Baku')
 
 @section('content')
-    <div class="mx-auto max-w-2xl rounded-2xl border border-[#ecece8] bg-white p-6 shadow-[0_8px_24px_rgba(30,58,138,0.06)] sm:p-8">
-        <h2 class="text-lg font-bold text-[#142d70]">Ubah Bahan Baku</h2>
-        <p class="mt-1 text-xs text-slate-500">Stok berjalan tidak diubah di sini. Gunakan penyesuaian stok fisik.</p>
+    <div class="mb-6">
+        <h1 class="text-[22px] font-extrabold tracking-tight text-[#172033]">Ubah Bahan Baku</h1>
+        <p class="mt-1 text-sm text-slate-500">Perbarui data master bahan tanpa mengubah stok berjalan.</p>
+    </div>
 
-        <form method="POST" action="{{ route('ingredients.update', $ingredient) }}" class="mt-6">
+    <div class="mx-auto max-w-2xl rounded-2xl border border-line bg-white p-5 shadow-card sm:p-6">
+        <h2 class="text-sm font-bold text-[#142d70]">Informasi Bahan Baku</h2>
+        <p class="mt-0.5 text-[11px] text-slate-500">Gunakan penyesuaian stok fisik untuk mengubah jumlah stok.</p>
+
+        <form method="POST" action="{{ route('ingredients.update', $ingredient) }}" class="mt-5">
             @csrf
             @method('PUT')
-            @include('ingredients._form')
+            @include('ingredients._form', ['fieldId' => 'edit-page-'.$ingredient->id])
 
             <div class="mt-7 flex flex-wrap gap-3">
-                <button type="submit" class="rounded-lg bg-[#2563eb] px-5 py-2.5 text-xs font-bold text-white transition hover:bg-[#1d4ed8]">Simpan Perubahan</button>
-                <a href="{{ route('ingredients.index') }}" class="rounded-lg border border-[#dfe3e8] px-5 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50">Batal</a>
+                <button type="submit" class="flex items-center gap-2 rounded-lg bg-brand px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-200 transition hover:bg-brand-hover">
+                    <x-icon name="check" :size="14" :stroke="2.4" />
+                    Simpan Perubahan
+                </button>
+                <a href="{{ route('ingredients.index') }}" class="rounded-lg border border-line-input bg-white px-4 py-2.5 text-xs font-bold text-[#374151] transition hover:bg-slate-50">Batal</a>
             </div>
         </form>
     </div>

@@ -12,6 +12,64 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-24 18:06 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  kerjakan mulai dari commit dahulu, rekap benar benar khusus admin/pengelola
+  ```
+- **Jawaban via form pertanyaan:** (dari sesi rencana sebelumnya) cakupan lanjutan = modul Pembelian Bahan Baku Anggota 3; rekap pembelian benar-benar khusus Admin/Pengelola, Staf tidak bisa melihat.
+- **Hasil:** Sedang dikerjakan — commit pekerjaan stok sebelumnya, lalu implementasi pembelian + verifikasi.
+
+## [2026-11-24 18:03 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  berdasarkan TASK_INSTRUCTION.md apa yang akan selanjutnya kamu kerjakan?
+  ```
+- **Hasil:** Rencana: lanjut ke modul Pembelian Bahan Baku (§3.3/§10 TASK_INSTRUCTIONS, PRD §4.4/§6.6): model/service, input+upload nota, verifikasi idempoten dengan stok masuk hanya saat disetujui, UI design v2, test, dan dokumentasi. Open point: format `purchase_code`, D5 satuan, dan akses rekap.
+
+## [2026-11-24 17:50 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  kerjakan perbaikan yang perlu dilakukan
+  ```
+- **Hasil:** Selesai — `resources/views/ingredients/index.blade.php` baris JS `statusForm` kini mengirim `button.dataset.active` (state saat ini), bukan state target, sehingga `IngredientController::setActive()` melakukan toggle dengan benar: sampah pada bahan aktif → "Bahan baku berhasil dinonaktifkan.", centang pada bahan nonaktif → "Bahan baku berhasil diaktifkan." Data tetap tersimpan sesuai aturan no-hard-delete PRD. Verifikasi: 17/17 test modul stok lulus (75 assertion). Belum commit.
+
+## [2026-11-24 17:48 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  di tabel daftar bahan baku kan ada fitur hapus dengan icon berbentuk tempat sampah, tapi ketika aku coba hapus salah satu data, info yang muncul malah menampilkan pesan "Bahan baku berhasil diaktifkan" dan data nya masih ada
+  ```
+- **Hasil:** Diagnosis: JS modal mengirim state target (`0`) sedangkan `setActive()` membalik `is_active` (mengira yang dikirim state saat ini), sehingga nonaktif menjadi aktif. Perbaikan: kirim `button.dataset.active`. Data memang tetap ada karena aturan PRD tidak ada hard delete — tombol sampah berarti nonaktifkan.
+
+## [2026-11-24 17:06 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  kerjakan
+  ```
+- **Hasil:** Selesai — 7 view modul stok disesuaikan dengan `design_system_v2.md`: header 22px, 4 KPI + 3 KPI riwayat, toolbar search/filter, badge status ber-teks, aksi ikon 29px, modal Tambah/Ubah/Detail/Konfirmasi status, empty state, dan pagination. Controller `IngredientController`/`StockMovementController` ditambah filter+KPI; 3 test regresi baru. Verifikasi: 17/17 test modul lulus, `pint` bersih, `npm run build` sukses. Suite penuh 99/101 (2 kegagalan pre-existing di luar modul: notifikasi forgot-password & paket `maatwebsite/excel` belum terpasang). Shell bersama tidak diubah. Belum commit.
+
+## [2026-11-24 17:05 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  aku sudah melakukan merge dari branch develop dan telah melakukan pull, bisakah kamu sesuaikan tampilan dari modul yang aku bangun agar sesuai dengan design terbaru yang mengacu pada  @docs/design_system_v2.md dan @docs/UI SmartFood Home\
+  ```
+- **Jawaban via form pertanyaan:** cakupan = hanya halaman stok yang sudah ada; shell bersama `layouts/app.blade.php` tidak diubah; form Tambah/Ubah Bahan dijadikan modal dengan route lama tetap dipertahankan.
+- **Hasil:** Rencana disusun dan disetujui: rewrite `ingredients/index.blade.php` (4 KPI, toolbar search/filter, tabel badge status, aksi ikon, modal detail/nonaktif), samakan `stock/movements`, `stock/adjustments`, `stock/waste`, tambah filter+KPI di controller, tanpa menyentuh service/migration/gate/ file anggota lain.
+
+## [2026-11-24 17:04 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  apa saja yang sudah kamu kerjakan di proyek ini dalam modul Anggota 3 modul Pengelolaan Stok dan Pembelian Bahan Baku?
+  ```
+- **Hasil:** Audit riwayat: fondasi stok selesai (model, `StockService` ledger/idempoten, actions, 4 controller, 11 route, 7 view, 21 test, commit `d7185bc`); pembelian + verifikasi masih tertunda; integrasi dengan A4 sudah aktif lewat `Member3StockServiceAdapter`.
+
 ## [2026-11-23 20:17 WIB] — Anggota 1
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**
