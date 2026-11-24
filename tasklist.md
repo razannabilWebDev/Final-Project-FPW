@@ -22,7 +22,7 @@
 - [x] `PurchaseTest`: 7 test (input+nota, rekap 403 Staf, setuju→ledger, tolak→stok tetap, verifikasi ganda, gate, kode urut)
 - [x] Dokumentasi: `docs/architecture.md` §11 (kontrak), `docs/implementation-plan.md` Tahap 2–4, `docs/decisions.md` D15 (asumsi)
 - [x] Verifikasi: 7/7 test pembelian, 106/108 suite penuh (2 gagal pre-existing di luar modul), pint bersih, `npm run build` sukses
-- [ ] Commit (hash menyusul)
+- [x] Commit `e2a73d6` (feat(purchase): add purchase input and verification)
 - [ ] Konfirmasi tim D15 (format kode pembelian) & D5 (satuan dasar)
 
 ## [2026-11-24 17:50] — Anggota 3 — Fix toggle status bahan baku
