@@ -36,6 +36,20 @@ class DashboardRoleTest extends TestCase
         ];
     }
 
+    public function test_all_roles_see_the_same_greeting(): void
+    {
+        foreach (UserRole::cases() as $role) {
+            $user = User::factory()->state(['role' => $role])->create();
+
+            $this->actingAs($user)
+                ->get(route('dashboard'))
+                ->assertOk()
+                ->assertSee('Selamat datang,')
+                ->assertDontSee('Halo,')
+                ->assertDontSee('Selamat pagi,');
+        }
+    }
+
     public function test_pengelola_and_staf_cannot_see_financial_summary(): void
     {
         foreach ([UserRole::Pengelola, UserRole::Staf] as $role) {

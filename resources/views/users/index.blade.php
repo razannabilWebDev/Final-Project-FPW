@@ -8,9 +8,11 @@
             <h2 class="text-xl font-bold tracking-tight text-[#142d70]">Daftar Pengguna</h2>
             <p class="mt-1 text-xs text-slate-500">Kelola akun Pengelola dan Staf Operasional usaha Anda.</p>
         </div>
-        @if (Route::has('users.create'))
-            <a href="{{ route('users.create') }}"
-                class="rounded-lg bg-[#2563eb] px-4 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#1d4ed8]">+ Tambah Pengguna</a>
+        @if (Route::has('users.store'))
+            <button type="button" id="open-create-user"
+                class="rounded-lg bg-[#2563eb] px-4 py-2.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#1d4ed8]">
+                + Tambah Pengguna
+            </button>
         @endif
     </div>
 
@@ -78,4 +80,51 @@
             </div>
         @endforelse
     </div>
+
+    {{-- Modal: Tambah Pengguna (tetap di halaman yang sama) --}}
+    @if (Route::has('users.store'))
+        <x-modal id="create-user-modal" title="Tambah Pengguna"
+            subtitle="Akun baru akan langsung aktif dan dapat digunakan untuk masuk."
+            icon="plus" size="md">
+            <form id="user-create-form" method="POST" action="{{ route('users.store') }}">
+                @csrf
+                @include('users._form', ['roles' => $roles, 'user' => null])
+            </form>
+            <x-slot:footer>
+                <button type="button"
+                    class="modal-close rounded-lg border border-line-input bg-white px-4 py-2.5 text-xs font-bold text-[#374151]">Batal</button>
+                <button type="submit" form="user-create-form"
+                    class="rounded-lg bg-brand px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-200 hover:bg-brand-hover">
+                    Simpan Pengguna
+                </button>
+            </x-slot:footer>
+        </x-modal>
+    @endif
+
+    <script>
+        (function () {
+            const openCreate = document.getElementById('open-create-user');
+            const modal = document.getElementById('create-user-modal');
+
+            if (openCreate && modal) {
+                openCreate.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    modal.openModal();
+                });
+            }
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key !== 'Escape') return;
+                document.querySelectorAll('.modal-root:not(.hidden)').forEach(function (root) {
+                    root.closeModal();
+                });
+            });
+
+            @if ($errors->any())
+                document.addEventListener('DOMContentLoaded', function () {
+                    if (modal) modal.openModal();
+                });
+            @endif
+        })();
+    </script>
 @endsection

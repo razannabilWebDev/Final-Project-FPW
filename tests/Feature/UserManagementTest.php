@@ -22,6 +22,36 @@ class UserManagementTest extends TestCase
             ->assertSee('Daftar Pengguna');
     }
 
+    public function test_user_index_renders_create_user_modal_on_the_same_page(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $this->actingAs($admin)
+            ->get(route('users.index'))
+            ->assertOk()
+            ->assertSee('open-create-user')
+            ->assertSee('create-user-modal')
+            ->assertSee(route('users.store'))
+            ->assertSee('user-create-form');
+    }
+
+    public function test_validation_errors_redirect_back_to_the_same_index_page(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $this->actingAs($admin)
+            ->from(route('users.index'))
+            ->post(route('users.store'), [
+                'name' => '',
+                'email' => '',
+                'role' => '',
+                'password' => '',
+                'password_confirmation' => '',
+            ])
+            ->assertRedirect(route('users.index'))
+            ->assertSessionHasErrors(['name', 'email', 'role', 'password']);
+    }
+
     public function test_admin_can_create_pengelola_account(): void
     {
         $admin = User::factory()->admin()->create();

@@ -19,7 +19,10 @@ class UserController extends Controller
     {
         $users = User::query()->latest()->paginate(10);
 
-        return view('users.index', ['users' => $users]);
+        return view('users.index', [
+            'users' => $users,
+            'roles' => UserRole::cases(),
+        ]);
     }
 
     public function create(): View

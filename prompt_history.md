@@ -12,6 +12,48 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-24 19:32 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  kerjakan
+  ```
+- **Hasil:** Eksekusi selesai: `DashboardController::__invoke()` mengirim `$greeting = 'Selamat datang'` ke ketiga view; `dashboard/admin.blade.php`, `pengelola.blade.php`, `staf.blade.php` kini memakai `{{ $greeting }}, {{ $user->name }}!` (eyebrow tidak diubah). `DashboardRoleTest` ditambah test sapaan identik untuk semua role. `DashboardRoleTest` 8/8; `composer test` **120/120 lulus (642 assertion)**; pint & `npm run build` sukses.
+
+## [2026-11-24 19:25 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  untuk kata kata sambutan seperti selamat, atau halo pada dashboard tolong samakan semua pada setiap role
+  ```
+- **Jawaban via form pertanyaan:** (1) Sapaan dipakai "Selamat datang, {nama}!" untuk semua role; (2) baris kecil/eyebrow di atas sapaan tidak diubah.
+- **Hasil:** Rencana: sapaan disatukan lewat variabel `$greeting` dari `DashboardController` ke tiga view dashboard; test `DashboardRoleTest` memastikan semua role menampilkan "Selamat datang," dan tidak lagi "Halo,"/"Selamat pagi,". Belum dieksekusi (mode rencana).
+
+## [2026-11-24 17:37 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  kerjakan sekarang
+  ```
+- **Hasil:** Eksekusi selesai: tombol "+ Tambah Pengguna" di `users/index.blade.php` kini membuka `<x-modal id="create-user-modal">` di halaman yang sama (form `user-create-form` memakai `users._form`, action tetap `users.store`). `UserController::index()` meneruskan `$roles`; `@include` diberi `user => null` agar tidak terisi data user terakhir dari loop. Error validasi ditutup dengan auto-open modal via `@if ($errors->any())`; Escape & overlay menutup modal. Halaman `users.create` tetap dipertahankan. `UserManagementTest` bertambah 2 test (12 test file tersebut); `composer test` **119/119 lulus (630 assertion)**, pint & `npm run build` sukses.
+
+## [2026-11-24 17:32 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  pada saat ingin tambah pengguna untuk tampilannya dibuat pop up saja
+  ```
+- **Jawaban via form pertanyaan:** (1) Yang dimaksud popup = tidak pindah ke halaman lain, tetap di halaman yang sama; (2) halaman `users.create` standalone tetap dipertahankan.
+- **Hasil:** Rencana disusun: tombol "+ Tambah Pengguna" di `users/index.blade.php` membuka `<x-modal id="create-user-modal">` di halaman yang sama; form memakai `users._form`, `UserController::index()` meneruskan `$roles`, error validasi membuka modal otomatis, success tetap redirect ke index. Scope hanya Tambah; Ubah masih ke halaman edit. Belum dieksekusi (mode rencana).
+
+## [2026-11-24 17:25 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  bagaimana alur kerja pada modul rekomendasi produksi?
+  ```
+- **Hasil:** Dijelaskan alur end-to-end: penjualan `completed` & `type=menu` (A4) → `GenerateForecastAction` (idempoten, window 28 hari, min 7 hari, rata-rata = total/window) → `production_forecasts`/`items` → penyesuaian Admin (`predicted_quantity` immutable) → estimasi bahan via `RecipeCostService` → tampilan `/forecast` + kartu dashboard. Tidak ada file yang diubah (mode rencana).
+
 ## [2026-11-23 22:13 WIB] — Anggota 1
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**

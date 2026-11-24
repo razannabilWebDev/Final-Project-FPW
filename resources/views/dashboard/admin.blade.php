@@ -24,7 +24,7 @@
         <div class="relative flex flex-wrap items-center justify-between gap-6">
             <div>
                 <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-blue-200">{{ now()->translatedFormat('l, d F Y') }}</p>
-                <h3 class="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">Selamat pagi, {{ $user->name }}!</h3>
+                <h3 class="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">{{ $greeting }}, {{ $user->name }}!</h3>
                 <p class="mt-2 max-w-xl text-sm text-blue-100">Pantau pendapatan, HPP, biaya, dan keuntungan usaha Anda dalam satu layar.</p>
             </div>
             <div class="w-full max-w-xs rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm">

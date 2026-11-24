@@ -127,6 +127,7 @@ class DashboardController extends Controller
         return view($view, [
             'user' => $user,
             'summary' => $this->summary(),
+            'greeting' => 'Selamat datang',
         ]);
     }
 }
