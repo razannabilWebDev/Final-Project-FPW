@@ -8,7 +8,10 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ForecastController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfitReportController;
+use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\StockMovementController;
@@ -43,6 +46,41 @@ Route::middleware(['auth', 'active'])->group(function (): void {
 
     Route::get('/ganti-password', [ChangePasswordController::class, 'edit'])->name('password.edit');
     Route::post('/ganti-password', [ChangePasswordController::class, 'update'])->name('password.update');
+
+    Route::prefix('menus')->name('menus.')->group(function (): void {
+        Route::get('/', [MenuController::class, 'index'])->name('index');
+
+        Route::middleware('can:manage-menus')->group(function (): void {
+            Route::get('/create', [MenuController::class, 'create'])->name('create');
+            Route::post('/', [MenuController::class, 'store'])->name('store');
+            Route::get('/{menu}/edit', [MenuController::class, 'edit'])->name('edit');
+            Route::put('/{menu}', [MenuController::class, 'update'])->name('update');
+            Route::patch('/{menu}/status', [MenuController::class, 'setActive'])->name('status');
+        });
+
+        Route::get('/{menu}', [MenuController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('resep')->name('recipes.')->group(function (): void {
+        Route::middleware('can:view-recipes')->group(function (): void {
+            Route::get('/', [RecipeController::class, 'index'])->name('index');
+        });
+
+        Route::middleware('can:manage-recipes')->group(function (): void {
+            Route::get('/tambah', [RecipeController::class, 'create'])->name('create');
+            Route::post('/', [RecipeController::class, 'store'])->name('store');
+        });
+
+        Route::middleware('can:view-recipes')->group(function (): void {
+            Route::get('/{recipe}', [RecipeController::class, 'show'])->name('show');
+        });
+
+        Route::middleware('can:manage-recipes')->group(function (): void {
+            Route::get('/{recipe}/ubah', [RecipeController::class, 'edit'])->name('edit');
+            Route::put('/{recipe}', [RecipeController::class, 'update'])->name('update');
+            Route::delete('/{recipe}', [RecipeController::class, 'destroy'])->name('destroy');
+        });
+    });
 
     Route::middleware('can:manage-users')->prefix('users')->name('users.')->group(function (): void {
         Route::get('/', [UserController::class, 'index'])->name('index');
@@ -87,6 +125,20 @@ Route::middleware(['auth', 'active'])->group(function (): void {
     Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
     Route::post('/sales/{sale}/status', [SaleController::class, 'updateStatus'])
         ->name('sales.update-status')->middleware('can:update-sale-status');
+});
+
+Route::middleware(['auth', 'active', 'can:manage-stock'])->group(function (): void {
+    Route::get('/pembelian', [PurchaseController::class, 'index'])->name('purchases.index');
+    Route::get('/pembelian/{purchase}', [PurchaseController::class, 'show'])->name('purchases.show');
+    Route::get('/pembelian/{purchase}/nota', [PurchaseController::class, 'receipt'])->name('purchases.receipt');
+});
+
+Route::middleware(['auth', 'active', 'can:create-purchases'])->group(function (): void {
+    Route::post('/pembelian', [PurchaseController::class, 'store'])->name('purchases.store');
+});
+
+Route::middleware(['auth', 'active', 'can:verify-purchases'])->group(function (): void {
+    Route::post('/pembelian/{purchase}/verifikasi', [PurchaseController::class, 'verify'])->name('purchases.verify');
 });
 
 Route::middleware(['auth', 'active', 'can:manage-expenses'])->group(function (): void {

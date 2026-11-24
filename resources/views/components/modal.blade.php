@@ -7,7 +7,11 @@
 ])
 
 @php
-    $width = $size === 'md' ? 'max-w-lg' : 'max-w-3xl';
+    $width = match ($size) {
+        'sm' => 'max-w-md',
+        'md' => 'max-w-lg',
+        default => 'max-w-3xl',
+    };
 @endphp
 
 <div id="{{ $id }}"
@@ -15,7 +19,8 @@
      role="dialog"
      aria-modal="true"
      aria-labelledby="{{ $id }}-title"
-     data-modal-id="{{ $id }}">
+     data-modal-id="{{ $id }}"
+     data-busy="false">
 
     <div class="modal-overlay fixed inset-0 bg-[rgba(15,23,42,.56)] backdrop-blur-[3px]"></div>
 
@@ -64,6 +69,7 @@
             if (focusable) focusable.focus();
         };
         const close = () => {
+            if (root.dataset.busy === 'true') return;
             root.classList.add('hidden');
             root.classList.remove('flex');
             document.body.classList.remove('overflow-hidden');

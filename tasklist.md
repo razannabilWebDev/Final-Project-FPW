@@ -37,6 +37,122 @@
 - [x] `composer test` 117/117 lulus (618 assertion); pint & `npm run build` sukses
 - [x] Audit kelengkapan `prompt_history.md`: tambah entri 22:05 & 22:13, jawaban form entri 19:50, pulihkan entri 10:45 yang kosong
 - [ ] Commit (hash menyusul)
+## [2026-11-24 21:31] — Anggota 2 — Format takaran tanpa trailing .000
+
+- [x] Catat prompt sesi ke `prompt_history.md`
+- [x] Format takaran di form edit & detail resep (2.000 → 2)
+- [x] Test regresi tampilan takaran
+- [x] Verifikasi: pint bersih, 13/13 test resep, build sukses, full suite 130/131 (failure lama: excel)
+- [x] Commit `2bc4cfb`
+
+## [2026-11-24 20:52] — Anggota 2 — Resep: hapus, tambah bahan, dropdown satuan
+
+- [x] Catat prompt sesi ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Perbaiki tombol tambah bahan di modal edit (delegasi event + init ulang setelah fetch)
+- [x] Satuan jadi dropdown dari base_unit bahan aktif + auto-select
+- [x] Migration is_active recipes + service deaktivasi semua versi
+- [x] Route destroy + aksi hapus + modal konfirmasi Figma
+- [x] Test regresi (tambah bahan, dropdown, hapus, permission) — 12/12 lulus
+- [x] Verifikasi: migrate dijalankan, pint bersih, build sukses, full suite 129/130 (failure lama: excel)
+- [x] Commit `2bc4cfb`
+
+## [2026-11-24 17:41] — Anggota 2 — Tahap 2: Pengelolaan Resep & HPP
+
+- [x] Catat prompt sesi ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Model Recipe/RecipeItem + factory + relasi
+- [x] RecipeService: versioning, kalkulasi HPP bcmath, normalisasi satuan dasar
+- [x] FormRequest, controller, route dengan gate view/manage-recipes/manage-recipe-costs
+- [x] UI resep sesuai Figma (KPI, toolbar, tabel, modal Tambah/Ubah/Detail)
+- [x] Implementasi kontrak RecipeCostService + ganti binding di AppServiceProvider
+- [x] Test: HPP, versi, snapshot, permission, konversi satuan (10/10 lulus)
+- [x] Dokumen: finalisasi D4/D5/D7 + interpretasi FR-RECIPE-03, update implementation-plan
+- [x] Verifikasi: pint bersih, build sukses, full suite 127/128 (1 failure lama: excel)
+- [x] Commit `2bc4cfb`
+
+## [2026-11-24 17:27] — Anggota 2 — Koreksi penulis prompt history
+
+- [x] Catat prompt "jangan lupa catat prompt ke @prompt_history.md sebagai anggota 2" sebagai entri teratas
+- [x] Koreksi penulis 6 entri sesi ini (16:25–17:17 WIB) dari Anggota 1 → Anggota 2
+- [x] Verifikasi 7 entri 2026-11-24 semuanya tercatat sebagai Anggota 2
+- [x] Tidak ada perubahan kode atau dokumen kontrak
+
+## [2026-11-24 17:17] — Anggota 2 — Fix akar masalah edit menu (variabel loop bocor ke modal)
+
+- [x] Catat prompt sesi ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Ganti variabel loop `$menu` → `$cardMenu` di grid kartu index
+- [x] Mode form eksplisit (`$isEdit`) di partial form & `_form`, kirim dari semua pemanggil
+- [x] Test regresi: index fresh tidak merender form edit di modal Tambah
+- [x] Verifikasi: pint bersih, 20/20 test menu, render HTML benar, build sukses, full suite 117/118 (1 failure lama: excel)
+- [x] Commit `2bc4cfb`
+
+## [2026-11-24 17:00] — Anggota 2 — Fix edit menu via modal tidak menyimpan
+
+- [x] Catat prompt sesi ke `prompt_history.md`
+- [x] ID form & field unik untuk modal Tambah vs Ubah
+- [x] Tombol submit footer diarahkan ke form masing-masing + JS busy handler
+- [x] Test regresi alur edit modal
+- [x] Verifikasi: pint bersih, `MenuManagementTest` 20/20, build sukses, full suite 117/118 (1 failure lama: `maatwebsite/excel` belum di-install)
+- [x] Commit `2bc4cfb`
+
+## [2026-11-24 16:39] — Anggota 2 — UI Pengelolaan Menu sesuai design system v2
+
+- [x] Catat prompt sesi ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Fondasi: ikon, badge, toast, modal, pagination + CSS pendukung
+- [x] Shell minimal: sidebar aktif & topbar breadcrumb/peran statis/notifikasi/profil
+- [x] `MenuController`: filter search/status, statistik KPI, dukungan `?partial=1`
+- [x] Index menu: 3 KPI, toolbar, grid kartu foto, badge, aksi, empty state, pagination
+- [x] Modal Tambah/Ubah/Detail/Konfirmasi + form 48px & upload sesuai batas backend
+- [x] Test `MenuManagementTest` untuk filter, statistik, dan alur modal (19/19 lulus)
+- [x] Verifikasi: pint bersih, `npm run build` sukses; full suite 115/116 (1 failure lama: `maatwebsite/excel` belum di-install di vendor); graphify CLI tidak tersedia
+- [x] Commit `2bc4cfb`
+## [2026-11-24 21:21] — Anggota 3 — Backfill log prompt sesi tanya-jawab
+
+- [x] Audit `prompt_history.md`: 6 prompt Plan mode terakhir belum tercatat (mode build sudah di-backfill sebelumnya)
+- [x] Tambah 6 entri teratas dengan teks prompt verbatim + hasil ringkas (21:04–21:21 WIB)
+- [x] Catat keputusan: pencarian pembelian tetap berdasarkan kode & supplier saja; supplier bukan master data; verifikasi via modal detail pembelian
+- [x] Catat status commit: 3 commit lokal, branch ahead 3, belum di-push
+- [x] Tambah blok checklist sesi ini
+- [x] Commit log: `docs(prompt): backfill plan-mode prompts`
+- [ ] Tidak ada perubahan kode; tidak perlu test/pint/build
+
+## [2026-11-24 18:06] — Anggota 3 — Modul Pembelian Bahan Baku
+
+- [x] Catat 2 prompt sesi ini ke `prompt_history.md`
+- [x] Commit pekerjaan stok sebelumnya: `0b3605f`
+- [x] Enum `PurchaseStatus` + model/factory `Purchase`, `PurchaseItem`
+- [x] `PurchaseService`: create multi-item (decimal, kode unik `PUR-YYYYMMDD-XXXX`) + verify idempoten; setuju → `StockService::recordIn` (ledger + `average_cost`), tolak → alasan wajib & stok tetap; semuanya dalam DB transaction + lock
+- [x] 2 Form Request + `PurchaseController` + 5 route dengan gate `manage-stock` / `create-purchases` / `verify-purchases`
+- [x] UI design v2: 3 KPI, tabel riwayat + search/filter + badge, modal input multi-item dengan unggah nota, modal detail + verifikasi, bukti nota privat
+- [x] **Rekap/detail/bukti nota khusus Admin & Pengelola**; Staf hanya input dan diarahkan ke dashboard setelah simpan
+- [x] `PurchaseTest`: 7 test (input+nota, rekap 403 Staf, setuju→ledger, tolak→stok tetap, verifikasi ganda, gate, kode urut)
+- [x] Dokumentasi: `docs/architecture.md` §11 (kontrak), `docs/implementation-plan.md` Tahap 2–4, `docs/decisions.md` D15 (asumsi)
+- [x] Verifikasi: 7/7 test pembelian, 106/108 suite penuh (2 gagal pre-existing di luar modul), pint bersih, `npm run build` sukses
+- [x] Commit `e2a73d6` (feat(purchase): add purchase input and verification)
+- [ ] Konfirmasi tim D15 (format kode pembelian) & D5 (satuan dasar)
+
+## [2026-11-24 17:50] — Anggota 3 — Fix toggle status bahan baku
+
+- [x] Catat 2 prompt sesi ini ke `prompt_history.md`
+- [x] Diagnosis: JS modal mengirim state target `0` ke hidden input `is_active`, padahal `setActive()` membalik nilai (mengira state saat ini) → nonaktif jadi aktif
+- [x] Perbaiki `resources/views/ingredients/index.blade.php`: kirim `button.dataset.active` (state saat ini)
+- [x] Pastikan controller & test lama tidak diubah (konvensi `is_active` = state saat ini dipertahankan)
+- [x] Verifikasi: 17/17 test modul stok lulus (75 assertion)
+- [x] Commit `0b3605f` (feat(stock): align stock UI with design system v2)
+
+## [2026-11-24 17:06] — Anggota 3 — Penyesuaian visual modul stok ke design_system_v2
+
+- [x] Catat 3 prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Audit view stok + screenshot Figma `-7.png` (stok), `-8.png` (pembelian), `-13.png`/`-19.png` (modal) dan konfirmasi field mock tidak disalin (PRD §7)
+- [x] `IngredientController@index`: filter `search` + `status`, 4 angka KPI dari DB, `withQueryString()`, kirim `$units`
+- [x] `StockMovementController@index`: filter `movement_type`, 3 angka KPI, `withQueryString()`
+- [x] Rewrite `ingredients/index.blade.php`: header, KPI, toolbar search/filter, tabel badge status, aksi ikon, footer pagination, empty state
+- [x] Modal Tambah/Ubah/Detail Bahan + konfirmasi perubahan status via `<x-modal>`; route lama tetap ada
+- [x] `_form.blade.php` diberi prefix ID unik; create/edit standalone ikut dirapikan
+- [x] Rapikan `stock/movements`, `stock/adjustments`, `stock/waste` (header, toolbar, input, tombol, empty state)
+- [x] Tambah 3 test regresi: filter stok, KPI dari data nyata, filter jenis pergerakan
+- [x] Verifikasi: 17/17 test modul, pint bersih, `npm run build` sukses; suite penuh 99/101 (2 gagal pre-existing di luar modul)
+- [x] Commit `0b3605f` (feat(stock): align stock UI with design system v2)
+- [x] Pembelian + verifikasi dikerjakan di sesi berikutnya
 
 ## [2026-11-23 19:50] — Anggota 1 — Audit modul + fitur lupa password
 
@@ -87,6 +203,51 @@
 - [x] Verifikasi: pint bersih, 21/21 test modul, 61/61 seluruh suite, `npm run build` sukses
 - [x] Kontrak service di `docs/architecture.md` §10; status D1/D3/D4/D5/D6 & rencana diperbarui
 - [ ] Koordinasi A1 (nav Staf) & A2/A4 (satuan + kontrak stok); pembelian/verifikasi menyusul; commit bila diminta
+## [2026-11-21 21:23] — Anggota 2 — Tahap 1: Implementasi Master Menu
+
+- [x] Audit struktur & Git: branch `feature/member-2-menu-recipe`; kontrak tabel `menus` di `docs/database.md` sudah sesuai migration ada → **tidak ada migration baru**
+- [x] Konfirmasi permission final A1: `manage-menus` (Admin) + `auth`/`active`; tidak membuat gate/role alternatif
+- [x] Model `Menu` (cast `decimal:2`/boolean, scope `active`) + `MenuFactory`
+- [x] `MenuService` (create/update, upload & replace foto via Storage `public`, hapus foto lama, setActive) + `MenuPhotoUploadException`
+- [x] `StoreMenuRequest` & `UpdateMenuRequest` (validasi nama/deskripsi/harga/foto + `authorize()` manage-menus, pesan Bahasa Indonesia)
+- [x] `MenuController` (index, create, store, show, edit, update, setActive) dengan notifikasi sukses/gagal
+- [x] 7 route `menus.*` di `routes/web.php`: `index`/`show` = `auth`+`active`; `create`/`store`/`edit`/`update`/`status` = `can:manage-menus`
+- [x] 5 view Blade `menus/{index,create,edit,show,_form}` (Tailwind 4, format `Rp15.000`, badge status, konfirmasi nonaktif, error per field)
+- [x] `tests/Feature/MenuManagementTest.php`: 14 test / 70 assertion lulus (CRUD, harga, foto, validasi, status, 403 per role, tamper snapshot historis)
+- [x] Suite penuh: 54 test / 381 assertion lulus; `route:list --path=menus` sesuai; `vendor/bin/pint --dirty --format agent` passed
+- [x] Prompt lengkap dicatat di `prompt_history.md` (entri 21:17) dan hasil akhir dilengkapi; tasklist ini diperbarui
+- [ ] Menunggu persetujuan pengguna sebelum melanjutkan Tahap 2 (Resep/HPP)
+- [ ] Koordinasi D4/D5/D7 dengan A1/A3/A4 (di luar lingkup Master Menu)
+- [ ] Verifikasi symlink `public/storage` di dev lokal jika foto tidak tampil (test memakai `Storage::fake`)
+- [ ] Commit: tidak dilakukan (menunggu instruksi)
+
+## [2026-11-21 21:14] — Anggota 2 — Pencatatan prompt & finalisasi tasklist audit
+
+- [x] Periksa struktur/format `prompt_history.md` yang sudah ada; konvensi: terbaru di atas, blok `text`, model AI, timestamp WIB
+- [x] Pastikan prompt audit 21:07 sudah tercatat lengkap → tidak dibuat entri duplikat
+- [x] Tambah entri baru untuk prompt 21:14 di bagian paling bawah `prompt_history.md` (sesuai instruksi) dengan Modul, Tahap, Tujuan, Ringkasan instruksi, Ringkasan hasil audit, File yang diperiksa, Status
+- [x] Verifikasi isi `prompt_history.md` setelah edit; riwayat lama tetap utuh, template manual tidak dihapus
+- [x] Tandai pekerjaan audit yang benar-benar selesai; implementasi Menu/Resep sengaja **tidak** ditandai selesai
+- [x] Pertahankan format & riwayat `tasklist.md` (blok 21:07 dan entri lama tetap ada)
+- [x] Verifikasi `git status --short`: hanya `prompt_history.md` & `tasklist.md` yang berubah; tidak ada kode/migration/dokumen kontrak tersentuh
+- [ ] Menunggu persetujuan pengguna sebelum mulai coding Master Menu Tahap 1
+- [ ] Menunggu persetujuan tim atas D4 (valuasi harga modal), D5 (konversi satuan), D7 (format snapshot & versi resep)
+- [ ] Koordinasi kontrak service dengan A3 (bahan & HPP), A4 (snapshot HPP), dan A1 (nama route/service prediksi)
+- [ ] Commit: tidak dilakukan (menunggu instruksi)
+
+## [2026-11-21 21:07] — Anggota 2 — Audit & persiapan Menu/Resep (belum coding)
+
+- [x] Git: branch aktif `feature/member-2-menu-recipe`, up-to-date `origin/...`, working tree clean; tidak ada checkout/merge/reset/commit
+- [x] Baca `prd.md`, `TASK_INSTRUCTIONS.md`, `AGENTS.md`, `.ai/rules`, dan 7 dokumen `docs/` yang diminta
+- [x] Verifikasi struktur aktual: 1 model (User), 6 controller auth/users/dashboard, 13 migration, 1 route file, 13 blade, 4 FormRequest, 3 service/action, 11 test, 8 seeder
+- [x] Audit Menu: CRUD/harga/foto/nonaktif/historis/permission → seluruhnya belum diimplementasikan (baru schema + seeder)
+- [x] Audit Resep: relasi, takaran, HPP, konversi, versi, snapshot, batas Pengelola → baru schema + seeder; belum ada service/UI/test
+- [x] Audit integrasi A1/A3/A4, D4/D5/D7, serta urutan Tahap 1 vs Tahap 2 sesuai `implementation-plan.md`
+- [x] Susun laporan audit 12 bagian; catat prompt + checklist hanya di dua file log
+- [ ] Tunggu persetujuan pengguna sebelum coding atau membuat file modul apa pun
+- [ ] Koordinasi D4 (valuasi), D5 (konversi), D7 (format snapshot/versi) dengan A3/A4/A1
+- [ ] Commit: tidak dilakukan (sesuai instruksi audit)
+
 ## [2026-11-18 22:00] — Anggota 1 — Seluruh migration + seeder dummy
 
 - [x] Catat prompt 21:58 & 22:00 ke `prompt_history.md` (sesuai aturan baru)
