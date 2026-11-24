@@ -12,6 +12,31 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-24 22:30 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  perbaiki seluruhnya lalu lakukan tes ulang
+  ```
+- **Hasil:** Selesai. 19 temuan E2E diperbaiki: presisi biaya 4 desimal + formatter Rupiah dinamis + seeder harga realistis (HPP kini Rp2.900–5.020/porsi); state machine status penjualan (deduk juga saat Completed, cancelled terminal) + validasi transisi; tombol Simpan di `/sales/create`; riwayat status Bahasa Indonesia; form input nota khusus Staf (`/pembelian/tambah`); forecast dashboard Pengelola/Staf; tren laba bersih 30 hari; logout (pointer-events modal); breadcrumb dinamis; kartu Transaksi Terbaru; notes seeder. Root cause 1 test gagal: `.env` APP_NAME=Laravel → diperbaiki jadi "SmartFood Home". Verifikasi: pint bersih, test 163/163 lulus, npm build sukses, uji ulang Chrome (console bersih, alur kritis OK). Tidak ada commit dibuat dalam entri ini (lihat tasklist).
+
+## [2026-11-24 22:05 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  aku telah menggabungkan semua branch dan ini kurang lebih hasil akhir dari sistem web ku, bisakah kamu lakukan pengujian semua fitur yang ada dengan pengujian asli langsung ke chrome menggunakan mcp chrome devtools, berikan aku feedback nya
+  ```
+- **Jawaban via form pertanyaan:** (1) jalankan semuanya (migrasi/seed + `php artisan serve`); (2) pengujian semua fitur dengan data nyata; (3) boleh menulis/mengubah data uji di database.
+- **Hasil:** Selesai. Pengujian E2E via Chrome DevTools MCP (Chrome sungguhan) mencakup auth 3 role, permission 403, CRUD menu/user/bahan/resep, pembelian→verifikasi→ledger, sales (multi-item, manual, deduksi/reversal stok), biaya, laporan + ekspor PDF/Excel, forecast, responsive, console. Temuan utama: HPP/harga modal tampil Rp0 karena satuan, pemicu deduksi stok hanya di status Diproses (bukan Selesai), transaksi batal bisa diubah lagi ke Diproses, standalone `/sales/create` tanpa tombol Simpan, shortcut Staf "Input Nota Pembelian" 403, dashboard Staf/Pengelola forecast 0, breadcrumb statik, kartu "Transaksi Terbaru" kosong, klik logout tidak berefek via MCP. Feedback detail diberikan di chat; tidak ada perubahan kode.
+
+## [2026-11-24 22:03 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  lakukan pengujian
+  ```
+- **Hasil:** Sedang berjalan — lanjut eksekusi rencana uji end-to-end.
+
 ## [2026-11-24 19:32 WIB] — Anggota 1
 ## [2026-11-24 21:45 WIB] — Anggota 2
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode

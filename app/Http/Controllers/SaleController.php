@@ -11,6 +11,7 @@ use App\Services\SaleService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use InvalidArgumentException;
 
 class SaleController extends Controller
 {
@@ -69,7 +70,7 @@ class SaleController extends Controller
                 $request->user(),
                 $request->string('note')->toString() ?: null,
             );
-        } catch (InsufficientStockException $e) {
+        } catch (InsufficientStockException|InvalidArgumentException $e) {
             return back()->with('error', $e->getMessage());
         }
 

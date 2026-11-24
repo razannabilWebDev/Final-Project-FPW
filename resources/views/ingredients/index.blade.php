@@ -9,7 +9,7 @@
 
             return rtrim(rtrim($formatted, '0'), ',');
         };
-        $rupiah = static fn ($value): string => 'Rp'.number_format((float) $value, 0, ',', '.');
+        $rupiah = static fn ($value): string => \App\Support\Rupiah::format($value);
     @endphp
 
     <div class="mb-6">
@@ -91,7 +91,7 @@
                             <th class="px-3 py-3">Jumlah</th>
                             <th class="px-3 py-3">Satuan</th>
                             <th class="px-3 py-3">Stok Min.</th>
-                            <th class="px-3 py-3">Harga Modal</th>
+                            <th class="px-3 py-3">Harga Modal / Satuan</th>
                             <th class="px-3 py-3">Status</th>
                             <th class="px-3 py-3 text-right">Aksi</th>
                         </tr>

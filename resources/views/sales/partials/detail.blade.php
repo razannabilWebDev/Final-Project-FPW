@@ -64,9 +64,12 @@
                 @csrf
                 <h4 class="mb-3 text-xs font-bold text-[#142d70]">Ubah Status</h4>
                 <select name="status" class="h-10 w-full rounded-lg border border-line-input bg-white px-3 text-sm outline-none focus:border-brand">
-                    @foreach (\App\Enums\SaleStatus::cases() as $status)
-                        <option value="{{ $status->value }}" @selected($sale->status === $status)>{{ $status->label() }}</option>
+                    @foreach ($sale->status->allowedTransitions() as $status)
+                        <option value="{{ $status->value }}">{{ $status->label() }}</option>
                     @endforeach
+                    @if ($sale->status->allowedTransitions() === [])
+                        <option value="" disabled>Tidak ada transaksi lanjutan</option>
+                    @endif
                 </select>
                 <input type="text" name="note" placeholder="Catatan perubahan (opsional)"
                     class="mt-2 h-10 w-full rounded-lg border border-line-input px-3 text-sm outline-none focus:border-brand">
@@ -78,7 +81,12 @@
             <h4 class="mb-3 text-xs font-bold text-[#142d70]">Riwayat Status</h4>
             @forelse ($sale->statusHistories()->latest('created_at')->get() as $history)
                 <div class="border-b border-line py-2 last:border-0">
-                    <p class="text-xs font-semibold text-[#374151]">{{ $history->to_status }}</p>
+                    <p class="text-xs font-semibold text-[#374151]">
+                        {{ \App\Enums\SaleStatus::tryFrom($history->to_status)?->label() ?? $history->to_status }}
+                        @if ($history->from_status)
+                            <span class="font-normal text-slate-400">(dari {{ \App\Enums\SaleStatus::tryFrom($history->from_status)?->label() ?? $history->from_status }})</span>
+                        @endif
+                    </p>
                     <p class="text-[10px] text-slate-500">{{ $history->created_at?->translatedFormat('d M Y, H.i') }}</p>
                 </div>
             @empty

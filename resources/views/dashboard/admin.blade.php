@@ -109,8 +109,21 @@
                     <a href="{{ route('sales.index') }}" class="text-[11px] font-bold text-brand hover:text-brand-hover">Lihat semua</a>
                 @endif
             </div>
-            @if (Route::has('sales.index') && $summary['salesCount'] > 0)
-                <p class="text-xs text-slate-500">{{ number_format($summary['salesCount'], 0, ',', '.') }} transaksi tercatat. Buka modul penjualan untuk rinciannya.</p>
+            @if (Route::has('sales.index') && $summary['recentSales']->isNotEmpty())
+                <ul class="divide-y divide-line">
+                    @foreach ($summary['recentSales'] as $recent)
+                        <li class="flex items-center justify-between gap-3 py-2.5 first:pt-0 last:pb-0">
+                            <div class="min-w-0">
+                                <p class="truncate text-xs font-bold text-[#142d70]">{{ $recent->transaction_code }}</p>
+                                <p class="text-[10px] text-slate-500">{{ \Carbon\Carbon::parse($recent->created_at)->translatedFormat('d M Y, H.i') }}</p>
+                            </div>
+                            <div class="shrink-0 text-right">
+                                <p class="text-xs font-bold text-[#374151]">Rp{{ number_format((float) $recent->total, 0, ',', '.') }}</p>
+                                <p class="text-[10px] text-slate-500">{{ \App\Enums\SaleStatus::tryFrom($recent->status)?->label() ?? $recent->status }}</p>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
             @else
                 <x-empty-state icon="receipt" title="Belum ada transaksi" description="Penjualan yang dicatat akan tampil di sini." />
             @endif

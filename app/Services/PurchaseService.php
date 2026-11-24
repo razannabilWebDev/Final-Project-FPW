@@ -13,7 +13,7 @@ class PurchaseService
 {
     private const QUANTITY_SCALE = 3;
 
-    private const MONEY_SCALE = 2;
+    private const MONEY_SCALE = 4;
 
     public function __construct(private readonly StockService $stock) {}
 

@@ -11,6 +11,7 @@
 
 <body class="min-h-screen bg-cream text-[#1f2937] antialiased">
     @php
+        $__breadcrumbDefault = trim(view()->yieldContent('title')) ?: 'Dashboard';
         $user = auth()->user();
         $navItems = [
             ['label' => 'Dashboard', 'route' => 'dashboard', 'icon' => 'home', 'roles' => null],
@@ -116,7 +117,7 @@
             <div class="min-w-0">
                 <p class="truncate text-[11px] text-slate-500">
                     SmartFood Home <span class="mx-1 text-slate-400" aria-hidden="true">&rsaquo;</span>
-                    @yield('breadcrumb', 'Dashboard')
+                    @yield('breadcrumb', $__breadcrumbDefault ?? 'Dashboard')
                 </p>
                 <h1 class="truncate text-[17px] font-bold tracking-tight text-navy">@yield('title', 'Dashboard')</h1>
             </div>

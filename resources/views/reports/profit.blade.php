@@ -82,11 +82,15 @@
             <p class="mt-0.5 text-[11px] text-slate-500">Pertumbuhan harian pada periode</p>
             @if ($trend->isNotEmpty())
                 <div class="mt-5 flex h-52 items-end gap-2 border-b border-line pb-2">
-                    @php $maxTrend = $trend->max(fn ($row) => (float) $row->menu_revenue + (float) $row->manual_revenue) ?: 1; @endphp
+                    @php $maxTrend = $trend->max(fn ($row) => abs((float) $row->net_profit)) ?: 1; @endphp
                     @foreach ($trend as $row)
-                        @php $amount = (float) $row->menu_revenue + (float) $row->manual_revenue; @endphp
+                        @php
+                            $amount = (float) $row->net_profit;
+                            $height = max(4, round(abs($amount) / $maxTrend * 100));
+                            $color = $amount < 0 ? 'bg-[#ef4444]' : 'bg-brand';
+                        @endphp
                         <div class="flex flex-1 flex-col items-center justify-end gap-1">
-                            <div class="w-full max-w-8 rounded-t bg-brand" style="height: {{ max(4, round($amount / $maxTrend * 100)) }}%" title="{{ $row->day }}: {{ $rupiah($amount) }}"></div>
+                            <div class="w-full max-w-8 rounded-t {{ $color }}" style="height: {{ $height }}%" title="{{ $row->day }}: {{ $rupiah($amount) }}"></div>
                             <span class="text-[9px] text-slate-400">{{ \Carbon\Carbon::parse($row->day)->translatedFormat('d M') }}</span>
                         </div>
                     @endforeach

@@ -24,7 +24,7 @@ class StorePurchaseRequest extends FormRequest
             'items.*.ingredient_id' => ['required', 'integer', 'exists:ingredients,id'],
             'items.*.quantity' => ['required', 'numeric', 'decimal:0,3', 'min:0.001'],
             'items.*.unit' => ['required', 'string', 'max:20'],
-            'items.*.unit_cost' => ['required', 'numeric', 'decimal:0,2', 'min:0.01'],
+            'items.*.unit_cost' => ['required', 'numeric', 'decimal:0,4', 'min:0.0001'],
         ];
     }
 

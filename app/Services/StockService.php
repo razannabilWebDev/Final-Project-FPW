@@ -251,7 +251,7 @@ class StockService
             );
 
             $ingredient->average_cost = bccomp($denominator, '0', self::SCALE) > 0
-                ? bcdiv($numerator, $denominator, 2)
+                ? bcdiv($numerator, $denominator, 4)
                 : $unitCost;
         }
 

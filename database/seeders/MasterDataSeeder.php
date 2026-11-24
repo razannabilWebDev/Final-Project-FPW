@@ -62,18 +62,27 @@ class MasterDataSeeder extends Seeder
         }
 
         $ingredients = [
-            ['name' => 'Ayam', 'base_unit' => 'gram', 'current_stock' => 5000, 'minimum_stock' => 1000, 'average_cost' => 0.04],
-            ['name' => 'Beras', 'base_unit' => 'gram', 'current_stock' => 10000, 'minimum_stock' => 2000, 'average_cost' => 0.01],
-            ['name' => 'Minyak Goreng', 'base_unit' => 'ml', 'current_stock' => 4000, 'minimum_stock' => 1000, 'average_cost' => 0.02],
-            ['name' => 'Bawang Merah', 'base_unit' => 'gram', 'current_stock' => 2000, 'minimum_stock' => 500, 'average_cost' => 0.02],
-            ['name' => 'Bawang Putih', 'base_unit' => 'gram', 'current_stock' => 1500, 'minimum_stock' => 400, 'average_cost' => 0.03],
-            ['name' => 'Cabai', 'base_unit' => 'gram', 'current_stock' => 1200, 'minimum_stock' => 300, 'average_cost' => 0.05],
-            ['name' => 'Kecap Manis', 'base_unit' => 'ml', 'current_stock' => 2000, 'minimum_stock' => 500, 'average_cost' => 0.02],
+            ['name' => 'Ayam', 'base_unit' => 'gram', 'current_stock' => 5000, 'minimum_stock' => 1000, 'average_cost' => 15],
+            ['name' => 'Beras', 'base_unit' => 'gram', 'current_stock' => 10000, 'minimum_stock' => 2000, 'average_cost' => 12],
+            ['name' => 'Minyak Goreng', 'base_unit' => 'ml', 'current_stock' => 4000, 'minimum_stock' => 1000, 'average_cost' => 18],
+            ['name' => 'Bawang Merah', 'base_unit' => 'gram', 'current_stock' => 2000, 'minimum_stock' => 500, 'average_cost' => 30],
+            ['name' => 'Bawang Putih', 'base_unit' => 'gram', 'current_stock' => 1500, 'minimum_stock' => 400, 'average_cost' => 40],
+            ['name' => 'Cabai', 'base_unit' => 'gram', 'current_stock' => 1200, 'minimum_stock' => 300, 'average_cost' => 50],
+            ['name' => 'Kecap Manis', 'base_unit' => 'ml', 'current_stock' => 2000, 'minimum_stock' => 500, 'average_cost' => 15],
             ['name' => 'Telur', 'base_unit' => 'butir', 'current_stock' => 200, 'minimum_stock' => 50, 'average_cost' => 2500],
         ];
 
         foreach ($ingredients as $ingredient) {
-            if (DB::table('ingredients')->where('name', $ingredient['name'])->exists()) {
+            $existing = DB::table('ingredients')->where('name', $ingredient['name'])->first();
+
+            if ($existing !== null) {
+                // Jaga harga modal dummy tetap konsisten (termasuk data lama yang
+                // dibulatkan menjadi 0 karena presisi kolom sebelumnya 2 desimal).
+                DB::table('ingredients')->where('id', $existing->id)->update([
+                    'average_cost' => $ingredient['average_cost'],
+                    'updated_at' => $now,
+                ]);
+
                 continue;
             }
 

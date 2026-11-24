@@ -24,6 +24,22 @@ enum SaleStatus: string
         return $this === self::Completed;
     }
 
+    /**
+     * Status lanjutan yang diizinkan dari status saat ini.
+     * Transaksi batal bersifat terminal; selesai hanya boleh dibatalkan.
+     *
+     * @return list<self>
+     */
+    public function allowedTransitions(): array
+    {
+        return match ($this) {
+            self::Pending => [self::Processing, self::Completed, self::Cancelled],
+            self::Processing => [self::Completed, self::Cancelled],
+            self::Completed => [self::Cancelled],
+            self::Cancelled => [],
+        };
+    }
+
     public static function fromString(string $value): self
     {
         return self::tryFrom($value) ?? throw new \InvalidArgumentException("Status penjualan tidak valid: {$value}");

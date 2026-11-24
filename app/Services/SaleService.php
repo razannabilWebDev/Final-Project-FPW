@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\Contracts\RecipeCostService;
 use App\Services\Contracts\StockService;
 use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
 
 class SaleService
 {
@@ -91,14 +92,23 @@ class SaleService
         DB::transaction(function () use ($sale, $status, $user, $note): void {
             $from = $sale->status;
 
-            if ($from === $status && $status !== SaleStatus::Completed) {
+            if ($from === $status) {
                 return;
+            }
+
+            if (! $this->canTransition($from, $status)) {
+                throw new InvalidArgumentException(
+                    "Transisi status {$from->value} → {$status->value} tidak diizinkan."
+                );
             }
 
             $updates = ['status' => $status->value];
 
-            // D1: potong stok sekali saat masuk processing.
-            if ($status === SaleStatus::Processing && $sale->stock_deducted_at === null && $sale->type === 'menu') {
+            // D1: potong stok sekali, baik saat masuk processing maupun langsung
+            // ke completed (misalnya transaksi yang tidak melalui dapur).
+            if (in_array($status, [SaleStatus::Processing, SaleStatus::Completed], true)
+                && $sale->stock_deducted_at === null
+                && $sale->type === 'menu') {
                 $items = [];
                 foreach ($sale->items as $item) {
                     foreach ($this->recipeCosts->ingredientsPerPortion((int) $item->menu_id) as $ingredient) {
@@ -147,6 +157,15 @@ class SaleService
                 'created_at' => now(),
             ]);
         });
+    }
+
+    /**
+     * Status machine: transaksi batal bersifat terminal dan tidak boleh
+     * dikembalikan ke processing; completed hanya boleh dibatalkan.
+     */
+    private function canTransition(SaleStatus $from, SaleStatus $to): bool
+    {
+        return in_array($to, $from->allowedTransitions(), true);
     }
 
     private function generateCode(): string

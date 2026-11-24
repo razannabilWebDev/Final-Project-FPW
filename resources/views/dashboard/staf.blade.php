@@ -18,7 +18,7 @@
             $actions = [
                 ['label' => 'Input Pesanan', 'icon' => 'cart', 'route' => 'sales.index'],
                 ['label' => 'Update Stok Fisik', 'icon' => 'box', 'route' => 'ingredients.index'],
-                ['label' => 'Input Nota Pembelian', 'icon' => 'receipt', 'route' => 'purchases.index'],
+                ['label' => 'Input Nota Pembelian', 'icon' => 'receipt', 'route' => 'purchases.create'],
                 ['label' => 'Lihat Daftar Menu', 'icon' => 'chef', 'route' => 'menus.index'],
             ];
         @endphp
@@ -64,7 +64,7 @@
             <h3 class="text-sm font-bold text-[#142d70]">Estimasi Porsi Harian</h3>
             <p class="mt-0.5 text-[11px] text-slate-500">Jumlah produksi yang disarankan</p>
             @if ($summary['forecast'])
-                <p class="mt-6 text-center text-3xl font-extrabold text-[#142d70]">{{ number_format((float) ($summary['forecast']->predicted_quantity ?? 0), 0, ',', '.') }}</p>
+                <p class="mt-6 text-center text-3xl font-extrabold text-[#142d70]">{{ number_format((float) ($summary['forecast_portions'] ?? 0), 0, ',', '.') }}</p>
                 <p class="mt-1 text-center text-[11px] text-slate-500">total porsi</p>
             @else
                 <div class="mt-6">

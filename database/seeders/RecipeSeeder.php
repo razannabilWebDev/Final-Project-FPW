@@ -48,11 +48,15 @@ class RecipeSeeder extends Seeder
             if ($recipeId === null) {
                 $recipeId = DB::table('recipes')->insertGetId([
                     'menu_id' => $menuId,
-                    'notes' => 'Resep dummy versi 1 untuk keperluan demo.',
+                    'notes' => 'Komposisi standar versi 1 sesuai takaran resep.',
                     'version' => 1,
                     'created_at' => $now,
                     'updated_at' => $now,
                 ]);
+            } else {
+                DB::table('recipes')->where('id', $recipeId)
+                    ->where('notes', 'like', '%dummy%')
+                    ->update(['notes' => 'Komposisi standar versi 1 sesuai takaran resep.', 'updated_at' => $now]);
             }
 
             foreach ($items as [$ingredientName, $quantity]) {

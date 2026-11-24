@@ -10,8 +10,8 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfitReportController;
-use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\StockMovementController;
@@ -125,6 +125,11 @@ Route::middleware(['auth', 'active'])->group(function (): void {
     Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
     Route::post('/sales/{sale}/status', [SaleController::class, 'updateStatus'])
         ->name('sales.update-status')->middleware('can:update-sale-status');
+});
+
+// Didefinisikan sebelum /pembelian/{purchase} agar tidak tertangkap sebagai ID.
+Route::middleware(['auth', 'active', 'can:create-purchases'])->group(function (): void {
+    Route::get('/pembelian/tambah', [PurchaseController::class, 'create'])->name('purchases.create');
 });
 
 Route::middleware(['auth', 'active', 'can:manage-stock'])->group(function (): void {

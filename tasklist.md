@@ -10,6 +10,33 @@
 
 ---
 
+## [2026-11-24 22:05] — Anggota 1 — Pengujian E2E via Chrome DevTools MCP
+
+- [x] Catat prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Persiapan: migrasi+seed (MySQL), `php artisan serve` port 8000, Chrome dibuka
+- [x] Uji auth & permission (3 role + 403 sesuai matrix; akun nonaktif tidak diuji login langsung)
+- [x] Uji master data (user, menu, bahan baku, resep/HPP)
+- [x] Uji stok & pembelian (verifikasi → stok + Rp2.747 average_cost, ledger lengkap)
+- [x] Uji penjualan (manual HPP unavailable; deduksi saat Diproses; reversal saat Batal; idempoten)
+- [x] Uji biaya & laporan keuntungan + ekspor PDF/Excel (200, content-type valid)
+- [x] Uji forecast (generate idempoten + adjust Admin), responsive (tanpa overflow), console bersih, screenshot
+- [x] Susun feedback akhir (19 temuan: 5 kritis, 8 sedang, 6 minor/catatan)
+- [x] Perbaikan bug — selesai (diminta user: perbaiki seluruhnya lalu tes ulang)
+
+## [2026-11-25 07:10] — Anggota 1 — Perbaiki temuan E2E + uji ulang
+
+- [x] Catat prompt ke `prompt_history.md`
+- [x] Perbaiki format harga satuan / HPP tampil Rp0 (migration presisi 4 desimal, `App\Support\Rupiah`, seeder harga realistis)
+- [x] Perbaiki satuan harga pembelian (label "per satuan dasar" + validasi 4 desimal) & state machine status sales (deduk saat Completed, transisi divalidasi)
+- [x] Perbaiki `/sales/create` tanpa tombol Simpan + riwayat status Bahasa Indonesia
+- [x] Tambah route/view input nota pembelian untuk Staf (`purchases.create`) + shortcut dashboard
+- [x] Perbaiki kartu forecast Pengelola/Staf & tren laba bersih (30 hari default, hitung net profit)
+- [x] Perbaiki logout (pointer-events modal), breadcrumb dinamis, teks dummy seeder, kartu Transaksi Terbaru
+- [x] Perbaiki `.env` APP_NAME (root cause 1 test gagal)
+- [x] Pint bersih, `php artisan test` 163/163 lulus, `npm run build` sukses
+- [x] Uji ulang via Chrome: HPP realistis, deduk langsung saat Selesai, reversal, Staf input nota, forecast 39, tren 14 tanggal, logout via klik berhasil, console bersih
+- [x] Commit `aa96f49` — `fix(qa): perbaiki 19 temuan pengujian E2E Chrome DevTools` (29 file)
+
 ## [2026-11-24 19:32] — Anggota 1 — Samakan sapaan dashboard
 
 - [x] Catat 2 prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)

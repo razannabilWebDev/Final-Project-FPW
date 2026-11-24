@@ -54,6 +54,17 @@ class PurchaseController extends Controller
         ]);
     }
 
+    /**
+     * Form input nota untuk Admin & Staf (tanpa mengakses rekap pembelian).
+     */
+    public function create(): View
+    {
+        return view('purchases.create', [
+            'ingredients' => Ingredient::query()->where('is_active', true)->orderBy('name')->get(['id', 'name', 'base_unit']),
+            'suppliers' => Purchase::query()->whereNotNull('supplier_name')->distinct()->orderBy('supplier_name')->pluck('supplier_name'),
+        ]);
+    }
+
     public function store(StorePurchaseRequest $request): RedirectResponse
     {
         $data = $request->validated();

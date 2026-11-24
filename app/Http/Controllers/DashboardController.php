@@ -94,7 +94,16 @@ class DashboardController extends Controller
                 ->value('total')
             : 0.0;
 
+        $recentSales = $table('sales')
+            ? DB::table('sales')
+                ->select('transaction_code', 'total', 'status', 'created_at')
+                ->orderByDesc('id')
+                ->limit(5)
+                ->get()
+            : collect();
+
         return [
+            'recentSales' => $recentSales,
             'revenue' => $salesCompleted,
             'hpp' => $hppTotal,
             'expenses' => $expensesTotal,

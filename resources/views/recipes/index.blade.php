@@ -5,7 +5,7 @@
 
 @section('content')
     @php
-        $rupiah = fn ($value): string => 'Rp'.number_format((float) $value, 0, ',', '.');
+        $rupiah = fn ($value): string => \App\Support\Rupiah::format($value);
     @endphp
 
     <div class="mb-7">

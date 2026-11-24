@@ -70,22 +70,74 @@ class ProfitReportService
      */
     public function dailyTrend(?Carbon $start, ?Carbon $end): Collection
     {
-        if ($start === null || $end === null) {
-            return collect();
-        }
+        // Tanpa filter tanggal, tampilkan tren 30 hari terakhir agar grafik
+        // tidak kosong pada periode "Seluruh periode".
+        $start ??= now()->subDays(29)->startOfDay();
+        $end ??= now()->endOfDay();
 
-        return DB::table('sales')
-            ->select(
-                DB::raw('DATE(completed_at) as day'),
-                DB::raw("SUM(CASE WHEN type = 'menu' THEN total ELSE 0 END) as menu_revenue"),
-                DB::raw("SUM(CASE WHEN type = 'manual' THEN total ELSE 0 END) as manual_revenue"),
-                DB::raw('COUNT(*) as transactions'),
-            )
+        $sales = Sale::query()
             ->where('status', 'completed')
             ->whereBetween('completed_at', [$start, $end])
-            ->groupByRaw('DATE(completed_at)')
-            ->orderBy('day')
+            ->with('items')
             ->get();
+
+        $expenses = Expense::query()
+            ->whereBetween('expense_date', [$start->toDateString(), $end->toDateString()])
+            ->get(['expense_date', 'amount']);
+
+        $rows = [];
+
+        foreach ($sales as $sale) {
+            $day = $sale->completed_at?->toDateString();
+            if ($day === null) {
+                continue;
+            }
+
+            $row = $rows[$day] ??= [
+                'day' => $day,
+                'menu_revenue' => 0.0,
+                'manual_revenue' => 0.0,
+                'hpp' => 0.0,
+                'expenses' => 0.0,
+                'transactions' => 0,
+            ];
+
+            $row['transactions']++;
+            if ($sale->type === 'manual') {
+                $row['manual_revenue'] += (float) $sale->total;
+            } else {
+                $row['menu_revenue'] += (float) $sale->total;
+                foreach ($sale->items as $item) {
+                    $row['hpp'] += (float) $item->hpp_snapshot * (float) $item->quantity;
+                }
+            }
+            $rows[$day] = $row;
+        }
+
+        foreach ($expenses as $expense) {
+            $day = $expense->expense_date?->toDateString();
+            if ($day === null) {
+                continue;
+            }
+            $row = $rows[$day] ??= [
+                'day' => $day,
+                'menu_revenue' => 0.0,
+                'manual_revenue' => 0.0,
+                'hpp' => 0.0,
+                'expenses' => 0.0,
+                'transactions' => 0,
+            ];
+            $row['expenses'] += (float) $expense->amount;
+            $rows[$day] = $row;
+        }
+
+        ksort($rows);
+
+        return collect($rows)->map(static function (array $row): object {
+            $row['net_profit'] = $row['menu_revenue'] + $row['manual_revenue'] - $row['hpp'] - $row['expenses'];
+
+            return (object) $row;
+        })->values();
     }
 
     /**

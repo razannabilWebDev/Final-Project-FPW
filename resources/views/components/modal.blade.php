@@ -20,7 +20,8 @@
      aria-modal="true"
      aria-labelledby="{{ $id }}-title"
      data-modal-id="{{ $id }}"
-     data-busy="false">
+     data-busy="false"
+     style="pointer-events: none;">
 
     <div class="modal-overlay fixed inset-0 bg-[rgba(15,23,42,.56)] backdrop-blur-[3px]"></div>
 
@@ -64,6 +65,7 @@
         const open = () => {
             root.classList.remove('hidden');
             root.classList.add('flex');
+            root.style.pointerEvents = 'auto';
             document.body.classList.add('overflow-hidden');
             const focusable = root.querySelector('input, select, textarea, button');
             if (focusable) focusable.focus();
@@ -72,6 +74,7 @@
             if (root.dataset.busy === 'true') return;
             root.classList.add('hidden');
             root.classList.remove('flex');
+            root.style.pointerEvents = 'none';
             document.body.classList.remove('overflow-hidden');
         };
 
