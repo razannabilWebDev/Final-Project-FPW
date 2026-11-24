@@ -12,6 +12,15 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-25 09:00 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  icon notifikasi pada navbar belum memiliki fungsi, bisakah kamu tambahkan?
+  ```
+- **Jawaban via form pertanyaan:** (1) ringkasan kondisi aplikasi (pembelian pending, pesanan masuk, stok menipis); (2) dropdown panel di navbar; (3) badge jumlah item perlu tindakan.
+- **Hasil:** Selesai. `NotificationService` menghitung real-time per role (pembelian pending untuk Admin/Pengelola, pesanan pending/processing, stok menipis); View Composer di `AppServiceProvider` mengirim data eksplisit ke komponen anonymous `notification-dropdown`. Badge jumlah item, panel dropdown berisi link ke modul terkait + empty state, tutup via klik luar/Escape. 4 test baru; 169/169 lulus, pint & build sukses. Uji Chrome: badge 3, panel & link benar, console bersih.
+
 ## [2026-11-25 08:00 WIB] — Anggota 1
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**

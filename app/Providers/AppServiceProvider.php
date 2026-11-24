@@ -5,7 +5,9 @@ namespace App\Providers;
 use App\Services\Adapters\Member3StockServiceAdapter;
 use App\Services\Contracts\RecipeCostService;
 use App\Services\Contracts\StockService;
+use App\Services\NotificationService;
 use App\Services\RecipeCostService as A2RecipeCostService;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,6 +29,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::composer('layouts.app', static function ($view): void {
+            $user = auth()->user();
+
+            $view->with(
+                'navbarNotifications',
+                $user !== null
+                    ? app(NotificationService::class)->forUser($user)
+                    : collect(),
+            );
+        });
     }
 }

@@ -23,6 +23,16 @@
 - [x] Susun feedback akhir (19 temuan: 5 kritis, 8 sedang, 6 minor/catatan)
 - [x] Perbaikan bug — selesai (diminta user: perbaiki seluruhnya lalu tes ulang)
 
+## [2026-11-25 09:30] — Anggota 1 — Dropdown notifikasi navbar
+
+- [x] Catat prompt ke `prompt_history.md`
+- [x] `NotificationService` ringkasan real-time per role (pembelian pending, pesanan masuk, stok menipis)
+- [x] View Composer di `AppServiceProvider` → kirim data eksplisit ke komponen anonymous
+- [x] Komponen dropdown: badge jumlah, daftar item + link, empty state, klik luar & Escape
+- [x] 4 test baru (`NotificationTest`); 169/169 lulus, pint & build sukses
+- [x] Uji Chrome: badge 3, panel terbuka, 2 link benar, Escape menutup, console bersih
+- [ ] Commit (hash menyusul)
+
 ## [2026-11-25 08:20] — Anggota 1 — Form input pesanan pakai dropdown menu
 
 - [x] Catat prompt ke `prompt_history.md`
@@ -32,7 +42,7 @@
 - [x] SaleService: nama & harga snapshot diambil dari master menu (abaikan input klien)
 - [x] 2 test baru (fake input ditolak, menu invalid ditolak); 165/165 lulus, pint & build sukses
 - [x] Uji ulang Chrome: dropdown terisi, auto-fill harga, add-item, toggle manual, transaksi tersimpan benar
-- [ ] Commit (hash menyusul)
+- [x] Commit `922fe5f` — `fix(sales): ganti input manual dengan dropdown menu di form pesanan`
 
 ## [2026-11-25 07:10] — Anggota 1 — Perbaiki temuan E2E + uji ulang
 

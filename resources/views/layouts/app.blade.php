@@ -125,12 +125,7 @@
                 <span class="hidden rounded-full border border-line-input bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600 sm:inline-flex">
                     Tampilan: <span class="ml-1 font-bold text-[#1d4ed8]">{{ $user->role->label() }}</span>
                 </span>
-                <button type="button" aria-label="Notifikasi"
-                        class="relative flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-50 hover:text-navy">
-                    <x-icon name="bell" :size="18" />
-                    <span class="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-danger ring-2 ring-white"
-                          aria-hidden="true"></span>
-                </button>
+                <x-notification-dropdown :notifications="$navbarNotifications ?? collect()" />
                 <div class="flex items-center gap-2">
                     <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#dbeafe] text-[11px] font-bold text-[#1d4ed8]">
                         {{ strtoupper(substr($user->name, 0, 1)) }}
