@@ -16,7 +16,9 @@ class LoginTest extends TestCase
     {
         $this->get(route('login'))
             ->assertOk()
-            ->assertSee('Masuk ke akun Anda');
+            ->assertSee('Selamat Datang Kembali!')
+            ->assertSee('Masuk ke Dashboard')
+            ->assertSee('Akses aman sesuai peran');
     }
 
     #[DataProvider('roleProvider')]

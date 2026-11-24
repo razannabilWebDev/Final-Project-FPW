@@ -10,6 +10,55 @@
 
 ---
 
+## [2026-11-23 19:50] — Anggota 1 — Audit modul + fitur lupa password
+
+- [x] Catat 6 prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Audit modul A1: auth/users/dashboard selesai; Rekomendasi Produksi belum ada; kontrak A2/A3/A4 perlu koordinasi
+- [x] Analisis lupa password vs audit log; keputusan tim dicatat (email+SMTP produksi, akun nonaktif ditolak generik, FR-AUTH-06 + D14)
+- [x] Panduan pembuatan Gmail App Password + variabel `.env` produksi diberikan ke user
+- [x] Perbaiki `.env` lokal (kutip `MAIL_PASSWORD`, `MAIL_FROM_NAME`) setelah izin; `composer test` baseline 47/47 lulus
+- [x] FR-AUTH-06 + D14 didokumentasikan di PRD & decision log
+- [x] Implementasi: `User` `CanResetPassword` + notifikasi ID, 2 Action, 2 Form Request, controller, 4 route guest, 2 view, link login
+- [x] Migration terpisah tidak diperlukan — tabel `password_reset_tokens` sudah ada di migration `users` bawaan Laravel 13
+- [x] Test `ForgotPasswordTest` (10 test/27 assertion) + `composer test` 57/57 lulus (363 assertion); pint & npm build sukses
+- [x] Uji SMTP sungguhan via `Mail::raw()` ke `razannabilannadif@gmail.com` berhasil; koreksi `MAIL_SCHEME=tls` → `smtp` (Laravel 13/Symfony tidak mendukung `tls`)
+- [x] Hapus logo Laravel di email reset: `APP_NAME="SmartFood Home"` di `.env` + `.env.example`; assertion render HTML di test; D14 diperbarui; 10/10 lulus
+- [ ] Commit (hash menyusul)
+- [ ] Audit log menyusul (D13: pemilik final belum ditetapkan)
+- [ ] Rekomendasi Produksi menyusul (butuh kontrak A2/A3/A4)
+
+## [2026-11-23 10:45] — Anggota 1 — Fix tanggal purchase dashboard Pengelola
+## [2026-11-23 10:45] — Anggota 4 — Fix tanggal purchase dashboard Pengelola
+
+- [x] Perbaiki `Call to a member function translatedFormat() on string` di `pengelola.blade.php:78` (hasil `DB::table` bukan Carbon)
+- [x] Tambah `purchase_date_label` di `DashboardController` via `Carbon::parse(...)->timezone('Asia/Jakarta')`
+- [x] Tambah test regresi `test_pengelola_dashboard_renders_purchase_dates`
+- [x] Pint + test 47/47 lulus (336 assertion)
+- [ ] Commit (hash menyusul)
+
+## [2026-11-23 10:30] — Anggota 4 — Login sesuai desain v2 + dashboard 3 role
+
+- [x] Catat prompt sesi ke `prompt_history.md` (penulis Anggota 4)
+- [x] Buat branch `feature/auth-dashboard` dari `origin/main`, merge branch Anggota 1 (`feature/member-1-auth-users-forecast`) tanpa konflik
+- [x] Pasang token `design_system_v2.md` ke `resources/css/app.css` `@theme` (brand/navy/cream/semantik/chart + shadow) & font Inter
+- [x] Buat komponen Blade reusable: `icon` (path Lucide inline), `stat-card`, `empty-state`
+- [x] Login 2 panel sesuai §5 desain v2: branding navy + badge pill + headline two-tone + foto & kartu overlay; panel form dengan password toggle, "Lupa password?", info box akses; dropdown "Masuk sebagai" sengaja dihilangkan (role dari akun)
+- [x] `DashboardController`: ringkas data per role dari tabel existing (aman via `Schema::hasTable`), pilih view admin/pengelola/staf
+- [x] 3 view dashboard sesuai PRD §8.3: Admin (KPI keuangan, grafik, menu terlaris, stok menipis, pembelian, rekomendasi), Pengelola (aktivitas penjualan, pesanan, pembelian, stok, menu, estimasi — tanpa data keuangan), Staf (aksi cepat, pesanan, stok fisik, nota, estimasi)
+- [x] Tambah `DashboardRoleTest` (5 test) + update assertion `LoginTest`; total 46/46 test lulus, 333 assertion
+- [x] `npm install --ignore-scripts` + `npm run build`, `vendor/bin/pint --dirty`, `graphify update .`
+- [x] Commit `0b24522` (branch `feature/auth-dashboard`)
+## [2026-11-23 12:03] — Anggota 3 — Fondasi Pengelolaan Stok
+
+- [x] Baca `prd.md`, `TASK_INSTRUCTIONS.md`, `docs/*`, dan audit kode yang ada sebelum bekerja
+- [x] Catat prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Model `Ingredient`, `StockMovement`, `StockAdjustment` + factory + `InsufficientStockException`
+- [x] `StockService` (ledger, lock, non-negatif, deduct/reversal idempotent) + `IngredientService` + 2 actions
+- [x] 4 Form Request, 4 controller, 11 route dengan gate; 7 view Blade Bahasa Indonesia
+- [x] Test ledger, non-negatif, idempotensi, penyesuaian/susut, permission (21 test baru)
+- [x] Verifikasi: pint bersih, 21/21 test modul, 61/61 seluruh suite, `npm run build` sukses
+- [x] Kontrak service di `docs/architecture.md` §10; status D1/D3/D4/D5/D6 & rencana diperbarui
+- [ ] Koordinasi A1 (nav Staf) & A2/A4 (satuan + kontrak stok); pembelian/verifikasi menyusul; commit bila diminta
 ## [2026-11-21 21:23] — Anggota 2 — Tahap 1: Implementasi Master Menu
 
 - [x] Audit struktur & Git: branch `feature/member-2-menu-recipe`; kontrak tabel `menus` di `docs/database.md` sudah sesuai migration ada → **tidak ada migration baru**
@@ -89,6 +138,28 @@
 - [~] Rekomendasi Produksi ditunda: menunggu kontrak penjualan (A4), resep (A2), stok (A3)
 - [~] Perlu koordinasi tim: gate baru `manage-recipe-costs`, `manage-stock`, `view-sales-summary`, `view-forecast`; nama route modul lain di layout; file bersama `bootstrap/app.php`
 - [ ] Commit: belum (menunggu instruksi)
+## [2026-11-23 11:00] — Anggota 4 — Modul Pencatatan Penjualan (fase 1)
+
+- [x] Kembali ke modul Anggota 4; prioritaskan Penjualan, pakai usulan default D1/D2/D3/D6/D11/D12, branch `feature/member-4-setup`
+- [x] Enum `SaleStatus`, `PaymentMethod`; model `Sale`, `SaleItem`, `SaleStatusHistory`; migration `sales` (+ FK menus kondisional)
+- [x] Stub service: `RecipeCostService`/`DefaultRecipeCostService` (HPP dari recipe_items × average_cost) & `StockService`/`DefaultStockService` (deduct/reversal idempoten + ledger `stock_movements`, cek non-negatif)
+- [x] `SaleService`: transaksi DB, snapshot nama/harga/HPP, `transaction_code TRX-YYYYMMDD-XXXX`, history status, D1 potong sekali, D2 completed_at, D6 reversal sekali
+- [x] FormRequest `StoreSaleRequest`/`UpdateSaleStatusRequest`, `SaleController`, route `sales.*` dengan gate
+- [x] Blade sales (index/create/show) + komponen icon/stat-card/empty-state; layout sementara `layouts.sales`
+- [x] `SaleFactory` + `SalesTest` (7 skenario: manual tanpa item, snapshot multi-item, deduksi/reversal idempoten, stok kurang gagal, completed_at, guest)
+- [x] Pint + test 8/8 lulus (33 assertion)
+- [x] Commit `e1e6847` (branch `feature/member-4-setup`)
+- [~] Integrasi: ganti stub dengan service resmi Anggota 2 (HPP) & Anggota 3 (stok); samakan gate dengan `AuthServiceProvider` Anggota 1 saat merge
+
+## [2026-11-23 10:15] — Anggota 4 — Design system v2 dari screenshot Figma panel-per-panel
+
+- [x] Bandingkan `docs/design.md` vs `docs/design_system.md`; simpulkan Figma sebagai source of truth visual, `design_system.md` tetap dipakai untuk token/komponen
+- [x] Baca `docs/UI SmartFood Home.png` (contact sheet) + seluruh screenshot per panel di `docs/UI SmartFood Home/` (login, 10 halaman modul, modal & delete dialog)
+- [x] Catat temuan: spesifikasi login tidak ada di `design_system.md`; field modal mock bersifat generik dan tidak boleh menggantikan aturan bisnis PRD; `SmartFood Home Management Dashboard-3.png` kosong (export gagal)
+- [x] Buat `docs/design_system_v2.md`: token + `@theme` Tailwind 4, warna grafik, shell & pola tiap modul, spesifikasi login lengkap, komponen/modal, state wajib, aksesibilitas, catatan mock vs PRD, riwayat versi
+- [x] Catat sesi ini ke `prompt_history.md` + `tasklist.md`
+- [~] Menunggu koordinasi tim: tinjau/koordinasi penggantian `design_system.md` oleh v2 (aset bersama, TASK_INSTRUCTIONS §6.4) — file lama sengaja tidak ditimpa
+- [ ] Commit `docs/design_system_v2.md` + log (belum di-commit; user yang commit)
 
 ## [2026-11-16 19:42] — Anggota 4 — Tasklist konvensi
 
