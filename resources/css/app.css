@@ -33,3 +33,19 @@
     --shadow-modal: 0 25px 80px rgb(15 23 42 / 0.3);
     --shadow-toast: 0 15px 45px rgb(15 23 42 / 0.15);
 }
+
+@layer base {
+    :focus-visible {
+        outline: 3px solid #bfdbfe;
+        outline-offset: 1px;
+    }
+}
+
+@keyframes toast-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.toast-item {
+    animation: toast-in 0.18s ease-out;
+}

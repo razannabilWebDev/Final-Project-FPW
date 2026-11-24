@@ -1,19 +1,34 @@
 @extends('layouts.app')
 
 @section('title', 'Tambah Menu')
+@section('breadcrumb', 'Pengelolaan Menu')
 
 @section('content')
-    <div class="mx-auto max-w-2xl rounded-2xl border border-[#ecece8] bg-white p-6 shadow-[0_8px_24px_rgba(30,58,138,0.06)] sm:p-8">
-        <h2 class="text-lg font-bold text-[#142d70]">Tambah Menu Baru</h2>
-        <p class="mt-1 text-xs text-slate-500">Isi nama, deskripsi, harga jual, dan foto produk jika tersedia.</p>
+    <div class="mx-auto max-w-3xl rounded-2xl border border-line bg-white p-6 shadow-card sm:p-8">
+        <div class="mb-6 flex items-start gap-3">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#dbeafe] text-brand">
+                <x-icon name="plus" :size="19" />
+            </span>
+            <div>
+                <h2 class="text-sm font-bold text-[#142d70]">Tambah Menu Baru</h2>
+                <p class="mt-0.5 text-[11px] text-slate-500">Lengkapi informasi dengan benar.</p>
+            </div>
+        </div>
 
-        <form method="POST" action="{{ route('menus.store') }}" enctype="multipart/form-data" class="mt-6">
+        <form method="POST" action="{{ route('menus.store') }}" enctype="multipart/form-data">
             @csrf
-            @include('menus._form')
+            @include('menus._form', ['isEdit' => false, 'fieldPrefix' => 'create'])
 
-            <div class="mt-7 flex flex-wrap gap-3">
-                <button type="submit" class="rounded-lg bg-[#2563eb] px-5 py-2.5 text-xs font-bold text-white transition hover:bg-[#1d4ed8]">Simpan Menu</button>
-                <a href="{{ route('menus.index') }}" class="rounded-lg border border-[#dfe3e8] px-5 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50">Batal</a>
+            <div class="mt-7 flex flex-wrap justify-end gap-3 border-t border-line pt-5">
+                <a href="{{ route('menus.index') }}"
+                   class="rounded-lg border border-line-input bg-white px-5 py-2.5 text-xs font-bold text-[#4b5563] transition hover:bg-slate-50">
+                    Batal
+                </a>
+                <button type="submit"
+                        class="flex items-center gap-2 rounded-lg bg-brand px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-200 transition hover:bg-brand-hover">
+                    <x-icon name="check" :size="14" :stroke="2.4" />
+                    Simpan Menu
+                </button>
             </div>
         </form>
     </div>

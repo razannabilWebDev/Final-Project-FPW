@@ -11,10 +11,10 @@
 | D1 | Status pemicu pengurangan stok | **Saat transaksi dikonfirmasi/diterima** (masuk `processing`), sekali saja, idempotent, dalam DB transaction | §6.1 "default implementasi" | ⚠️ A3 (2026-11-23): dipakai di kontrak service; menunggu konfirmasi A4 |
 | D2 | Status pendapatan final | **`completed`** — pending/processing tidak masuk pendapatan final | §6.1 rekomendasi default | ⏳ Usulan |
 | D3 | Kebijakan stok tidak cukup | **Gagal terkontrol**: tampilkan bahan yang kurang + jumlah kekurangan; tidak pernah membuat stok negatif; tanpa deduct partial | §6.5 | ⚠️ A3 (2026-11-23): diterapkan via `InsufficientStockException`; menunggu konfirmasi tim |
-| D4 | Metode valuasi harga modal bahan | **`average_cost`** (rata-rata) pada master bahan, di-update saat pembelian disetujui; HPP dihitung dari `average_cost` × takaran saat transaksi | implisit §7.1 (`average_cost`) | ⚠️ A3 (2026-11-23): rata-rata tertimbang diterapkan di `StockService::recordIn` |
-| D5 | Konversi satuan bahan | Simpan resep dalam **satuan dasar bahan** (`base_unit`) — konversi kg→gram, liter→ml dilakukan saat input resep via faktor konversi; tabel `unit_conversions` bila perlu | §6.4 | ⚠️ A3 (2026-11-23): `base_unit` tanpa tabel konversi; menunggu konfirmasi A2 |
+| D4 | Metode valuasi harga modal bahan | **`average_cost`** (rata-rata) pada master bahan, di-update saat pembelian disetujui; HPP dihitung dari `average_cost` × takaran saat transaksi | implisit §7.1 (`average_cost`) | ✅ A3 (2026-11-23): rata-rata tertimbang di `StockService::recordIn`; A2 (2026-11-24): dipakai sebagai satu-satunya sumber HPP |
+| D5 | Konversi satuan bahan | Simpan resep dalam **satuan dasar bahan** (`base_unit`) — konversi kg→gram, liter→ml dilakukan saat input resep via faktor konversi; tabel `unit_conversions` bila perlu | §6.4 | ✅ Dikonfirmasi A2 (2026-11-24): `base_unit` tanpa tabel konversi; normalisasi dilakukan saat input resep |
 | D6 | Pembatalan & refund | Pembatalan setelah stok terpotong → **reversal stok sekali** (idempotent); refund dicatat sebagai penurunan pendapatan pada laporan (bukan penghapusan transaksi); transaksi tetap ada dengan status `cancelled` + history | §6.1 | ⚠️ A3 (2026-11-23): reversal dari ledger `sale_out`; menunggu konfirmasi A4 |
-| D7 | Format snapshot HPP & resep | `sale_items.hpp_snapshot` = **HPP per porsi** (decimal 12,2) dari versi resep aktif saat transaksi dikonfirmasi; resep ber-versi (`recipes.version`), snapshot mereferensikan versi yang dipakai | §6.4, §7.1 | ⏳ Usulan — final Anggota 2 |
+| D7 | Format snapshot HPP & resep | `sale_items.hpp_snapshot` = **HPP per porsi** (decimal 12,2) dari versi resep aktif saat transaksi dikonfirmasi; resep ber-versi (`recipes.version`), snapshot mereferensikan versi yang dipakai | §6.4, §7.1 | ✅ Final A2 (2026-11-24): versi inkremen tiap ubah takaran (`hpp_snapshot` per porsi dari A4 tetap dipakai) |
 | D8 | Periode historis & metode prediksi | **Rata-rata bergerak harian per menu, window 28 hari**; hanya `sales.type=menu` & `status=completed`; penjualan manual dikecualikan; < 7 hari data → status "data terbatas"; parameter di `config/forecast.php` (bukan tabel `settings`, yang pemiliknya belum ditetapkan) | §6.9 | ✅ Disetujui Anggota 1 (2026-11-18) |
 | D9 | Struktur kategori & data awal | Seed 8 kategori: pembelian bahan baku, listrik/air, gas, gaji, sewa, transportasi, perawatan, lainnya; Admin bisa tambah/ubah nama/nonaktifkan; terpakai → tidak boleh hard-delete | §6.8 | ⏳ Usulan — modul Anggota 4 |
 | D10 | Struktur route/service lintas modul | Lihat `docs/architecture.md` §3 (konvensi nama) + kontrak service stok Anggota 3 di `docs/database.md` §5 | §11 | ⏳ Usulan |
@@ -30,10 +30,16 @@
   dan di alur status penjualan. Butuh mekanisme idempotensi yang disepakati
   (usulan kolom `stock_deducted_at` di `sales` — `docs/database.md`).
 - **D2 (Anggota 4):** memengaruhi semua query laporan keuntungan.
-- **D4–D5 (Anggota 2 & 3):** HPP hanya benar kalau satuan resep = satuan
-  harga modal; ini kontrak paling rawan salah hitung. A3 sudah memakai
-  `base_unit` tanpa tabel konversi dan rata-rata tertimbang; A2 perlu
-  mengonversi takaran resep ke `base_unit` sebelum kontrak ditandatangani.
+- **D4–D5 (Anggota 2 & 3) — SELAIK (2026-11-24):** HPP hanya benar kalau
+  satuan resep = satuan harga modal. A3 memakai `base_unit` tanpa tabel
+  konversi dan rata-rata tertimbang; A2 mengonfirmasi skema yang sama dan
+  menyimpan takaran resep di `base_unit` bahan (konversi saat input).
+- **FR-RECIPE-03 (Anggota 2, 2026-11-24):** "mengelola harga modal resep"
+  ditafsirkan sebagai mengelola komposisi/takaran dan melihat HPP turunan
+  D4. Tidak ada kolom harga modal manual; Pengelola memakai gate
+  `manage-recipe-costs` untuk melihat rincian biaya, bukan mengubah angka.
+  Interpretasi ini menyempitkan teks FR-RECIPE-03 dan perlu dicatat pada
+  review PRD bila tim menginginkan angka override.
 - **D1, D3, D6 (Anggota 3 & 4):** kontrak service stok memakai pemicu
   `processing`, gagal tanpa deduksi sebagian, dan reversal yang jumlahnya
   dibaca dari ledger. Flag idempotensi di `sales` tetap menjadi tanggung
