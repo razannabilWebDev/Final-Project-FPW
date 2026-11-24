@@ -12,6 +12,62 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-24 21:21 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  oke, catat semua prompt yang aku lakukan dan tambahkan juga blok checklist nya
+  ```
+- **Hasil:** Selesai — backfill 6 prompt Plan mode ke entri teratas `prompt_history.md` (teks verbatim + hasil ringkas) dan tambah blok checklist baru di `tasklist.md`. Tidak ada perubahan kode; perubahan hanya dokumentasi/log sesi.
+
+## [2026-11-24 21:19 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  apakah semua prompt yang aku kirim sudah kamu catat di prompt_history.md termasuk mode plan dan mode build?
+  ```
+- **Hasil:** Audit: prompt mode build sudah tercatat, tetapi 6 prompt terakhir dari sesi tanya-jawab Plan mode belum. Daftar prompt yang hilang disampaikan ke user; disarankan backfill setelah pindah ke agent build karena Plan mode melarang penulisan file.
+
+## [2026-11-24 21:16 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  code yang sekarang apakah sudah di commit semua?
+  ```
+- **Hasil:** Cek `git status`: bersih, tidak ada modified/untracked. 3 commit lokal (`0b3605f`, `e2a73d6`, `3c71243`), branch `feature/member-3-stock-purchases` ahead 3 dari origin — sudah ter-commit tapi belum di-push.
+
+## [2026-11-24 21:13 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  status menunggu verifikasi, ditolak, atau disetujui untuk memverifikasinya itu dimana?
+  ```
+- **Hasil:** Dijelaskan alur verifikasi: buka `/pembelian` (Admin/Pengelola) → klik ikon mata pada baris berstatus Menunggu Verifikasi → modal Detail Pembelian → section "Verifikasi Pembelian" dengan tombol **Setujui** dan **Tolak** + alasan wajib. Tombol hanya muncul untuk status `pending`; verifikasi kedua ditolak backend. Staf tidak punya akses rekap/detail.
+
+## [2026-11-24 21:10 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  di modul ku kan ada supplier, tambah atau hapus atau edit suppliernya ada dimana?
+  ```
+- **Hasil:** Dijelaskan bahwa supplier bukan master data: PRD §7 hanya punya kolom `supplier_name` di `purchases`, tanpa tabel/route CRUD. Ditambahkan dengan mengetik di modal Input Pembelian; saran berasal dari `distinct supplier_name`. Tidak ada edit/hapus supplier, dan pembelian sengaja immutable agar histori tidak berubah. Opsi perbaikan (master supplier atau edit saat `pending`) memerlukan keputusan tim.
+
+## [2026-11-24 21:07 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  oke, berdasarkan nama supplier dan kode saja
+  ```
+- **Hasil:** Diputuskan tidak mengubah kode: filter pencarian tetap hanya `purchase_code` dan `supplier_name`. Opsi kosmetik placeholder "Cari kode atau supplier..." ditawarkan tetapi tidak diimplementasikan.
+
+## [2026-11-24 21:04 WIB] — Anggota 3
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  kenapa fitur pencarian di modul pembelian bahan baku dicari berdasarkan kode nya bukan nama bahan nya?
+  ```
+- **Hasil:** Dijelaskan bahwa `PurchaseController::index()` hanya mencari `purchase_code`/`supplier_name`; nama bahan ada di `purchase_items` → `ingredients` sehingga perlu `whereHas`. Ini keputusan implementasi, bukan aturan PRD. Di usulkan penambahan `orWhereHas('items.ingredient', ...)` + test, lalu user memutuskan tetap kode & supplier saja.
+
 ## [2026-11-24 18:06 WIB] — Anggota 3
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**

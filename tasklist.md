@@ -10,6 +10,16 @@
 
 ---
 
+## [2026-11-24 21:21] — Anggota 3 — Backfill log prompt sesi tanya-jawab
+
+- [x] Audit `prompt_history.md`: 6 prompt Plan mode terakhir belum tercatat (mode build sudah di-backfill sebelumnya)
+- [x] Tambah 6 entri teratas dengan teks prompt verbatim + hasil ringkas (21:04–21:21 WIB)
+- [x] Catat keputusan: pencarian pembelian tetap berdasarkan kode & supplier saja; supplier bukan master data; verifikasi via modal detail pembelian
+- [x] Catat status commit: 3 commit lokal, branch ahead 3, belum di-push
+- [x] Tambah blok checklist sesi ini
+- [x] Commit log: `docs(prompt): backfill plan-mode prompts`
+- [ ] Tidak ada perubahan kode; tidak perlu test/pint/build
+
 ## [2026-11-24 18:06] — Anggota 3 — Modul Pembelian Bahan Baku
 
 - [x] Catat 2 prompt sesi ini ke `prompt_history.md`
