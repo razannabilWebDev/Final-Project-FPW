@@ -23,6 +23,17 @@
 - [x] Susun feedback akhir (19 temuan: 5 kritis, 8 sedang, 6 minor/catatan)
 - [x] Perbaikan bug — selesai (diminta user: perbaiki seluruhnya lalu tes ulang)
 
+## [2026-11-25 08:20] — Anggota 1 — Form input pesanan pakai dropdown menu
+
+- [x] Catat prompt ke `prompt_history.md`
+- [x] Controller kirim daftar menu aktif ke index & create
+- [x] Form: ganti input nama/ID/harga manual dengan dropdown menu + hidden snapshot, harga readonly dari master
+- [x] FormRequest: `menu_id exists:menus,id,is_active,1`
+- [x] SaleService: nama & harga snapshot diambil dari master menu (abaikan input klien)
+- [x] 2 test baru (fake input ditolak, menu invalid ditolak); 165/165 lulus, pint & build sukses
+- [x] Uji ulang Chrome: dropdown terisi, auto-fill harga, add-item, toggle manual, transaksi tersimpan benar
+- [ ] Commit (hash menyusul)
+
 ## [2026-11-25 07:10] — Anggota 1 — Perbaiki temuan E2E + uji ulang
 
 - [x] Catat prompt ke `prompt_history.md`
@@ -35,7 +46,7 @@
 - [x] Perbaiki `.env` APP_NAME (root cause 1 test gagal)
 - [x] Pint bersih, `php artisan test` 163/163 lulus, `npm run build` sukses
 - [x] Uji ulang via Chrome: HPP realistis, deduk langsung saat Selesai, reversal, Staf input nota, forecast 39, tren 14 tanggal, logout via klik berhasil, console bersih
-- [x] Commit `aa96f49` — `fix(qa): perbaiki 19 temuan pengujian E2E Chrome DevTools` (29 file)
+- [x] Commit `b07ce4f` — `fix(qa): perbaiki 19 temuan pengujian E2E Chrome DevTools` (29 file)
 
 ## [2026-11-24 19:32] — Anggota 1 — Samakan sapaan dashboard
 

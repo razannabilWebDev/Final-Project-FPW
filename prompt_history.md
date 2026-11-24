@@ -12,6 +12,15 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-25 08:00 WIB] — Anggota 1
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  pada pencatatan penjualan dan input pesanan kita harus menulis menu dan id menu manual dan itu membingungkan
+  ```
+- **Jawaban via form pertanyaan:** (1) dropdown/search menu; (2) harga dikunci dari master menu; (3) toggle jenis penjualan tetap dipertahankan.
+- **Hasil:** Selesai. Dropdown menu aktif menggantikan input nama/ID/harga manual; JS mengisi hidden snapshot & label harga otomatis. `StoreSaleRequest` memvalidasi `menu_id exists:menus,id,is_active,1`; `SaleService` mengambil `menu_name_snapshot` dan `unit_price_snapshot` langsung dari tabel `menus` (abaikan nilai klien). 2 test regresi ditambahkan; 165/165 lulus, pint & build sukses. Uji Chrome: dropdown, auto-fill, tambah item, toggle manual, simpan transaksi — semua benar, console bersih.
+
 ## [2026-11-24 22:30 WIB] — Anggota 1
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
 - **Prompt:**

@@ -193,4 +193,45 @@ class SalesTest extends TestCase
             ->assertDontSee('<html', false)
             ->assertDontSee('layouts.app', false);
     }
+
+    public function test_sale_uses_master_menu_name_and_price_even_when_client_sends_fake_values(): void
+    {
+        $this->actingUser();
+        $menu = DB::table('menus')->insertGetId([
+            'name' => 'Nasi Goreng Asli', 'selling_price' => 25000, 'is_active' => true,
+            'created_at' => now(), 'updated_at' => now(),
+        ]);
+
+        $this->post(route('sales.store'), [
+            'type' => 'menu',
+            'payment_method' => 'cash',
+            'items' => [[
+                'menu_id' => $menu,
+                'menu_name' => 'Menu Palsu',
+                'unit_price' => 1,
+                'quantity' => 1,
+            ]],
+        ])->assertRedirect();
+
+        $item = Sale::firstOrFail()->items->first();
+        $this->assertSame('Nasi Goreng Asli', $item->menu_name_snapshot);
+        $this->assertSame('25000.00', (string) $item->unit_price_snapshot);
+        $this->assertSame('25000.00', (string) $item->subtotal);
+    }
+
+    public function test_sale_rejects_unknown_or_inactive_menu(): void
+    {
+        $this->actingUser();
+
+        $this->post(route('sales.store'), [
+            'type' => 'menu',
+            'payment_method' => 'cash',
+            'items' => [[
+                'menu_id' => 99999,
+                'quantity' => 1,
+            ]],
+        ])->assertSessionHasErrors('items.0.menu_id');
+
+        $this->assertSame(0, Sale::count());
+    }
 }

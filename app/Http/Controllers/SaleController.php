@@ -6,10 +6,12 @@ use App\Enums\SaleStatus;
 use App\Exceptions\InsufficientStockException;
 use App\Http\Requests\StoreSaleRequest;
 use App\Http\Requests\UpdateSaleStatusRequest;
+use App\Models\Menu;
 use App\Models\Sale;
 use App\Services\SaleService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use InvalidArgumentException;
 
@@ -33,13 +35,22 @@ class SaleController extends Controller
 
         $sales = $query->paginate(15)->withQueryString();
         $statuses = SaleStatus::cases();
+        $menus = $this->activeMenus();
 
-        return view('sales.index', compact('sales', 'statuses'));
+        return view('sales.index', compact('sales', 'statuses', 'menus'));
     }
 
     public function create(): View
     {
-        return view('sales.create');
+        return view('sales.create', ['menus' => $this->activeMenus()]);
+    }
+
+    /**
+     * @return Collection<int, Menu>
+     */
+    private function activeMenus()
+    {
+        return Menu::query()->where('is_active', true)->orderBy('name')->get(['id', 'name', 'selling_price']);
     }
 
     public function store(StoreSaleRequest $request): RedirectResponse

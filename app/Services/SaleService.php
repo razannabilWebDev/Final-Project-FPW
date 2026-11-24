@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\PaymentMethod;
 use App\Enums\SaleStatus;
+use App\Models\Menu;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\SaleStatusHistory;
@@ -26,7 +27,7 @@ class SaleService
      *     payment_method: string,
      *     note: ?string,
      *     total_nominal?: numeric-string|float|int,
-     *     items?: list<array{menu_id: int, menu_name: string, unit_price: numeric-string|float|int, quantity: numeric-string|float|int}>
+     *     items?: list<array{menu_id: int, quantity: numeric-string|float|int}>
      * }  $data
      */
     public function create(array $data, User $user): Sale
@@ -54,14 +55,17 @@ class SaleService
                 foreach ($data['items'] ?? [] as $item) {
                     $menuId = (int) $item['menu_id'];
                     $quantity = number_format((float) $item['quantity'], 3, '.', '');
-                    $unitPrice = number_format((float) $item['unit_price'], 2, '.', '');
+
+                    /** @var Menu $menu */
+                    $menu = Menu::query()->findOrFail($menuId);
+                    $unitPrice = number_format((float) $menu->selling_price, 2, '.', '');
                     $hpp = $this->recipeCosts->costPerPortion($menuId);
                     $subtotal = bcmul($quantity, $unitPrice, 2);
 
                     SaleItem::create([
                         'sale_id' => $sale->id,
                         'menu_id' => $menuId,
-                        'menu_name_snapshot' => $item['menu_name'],
+                        'menu_name_snapshot' => $menu->name,
                         'quantity' => $quantity,
                         'unit_price_snapshot' => $unitPrice,
                         'hpp_snapshot' => $hpp,
