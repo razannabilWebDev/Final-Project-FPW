@@ -80,6 +80,7 @@
 ### Konvensi tambahan yang sudah tersedia (Anggota 1, 2026-11-18)
 
 - Route auth/users: `login`, `login.store`, `logout`, `password.edit`, `password.update`, `dashboard`, `users.{index,create,store,edit,update,status}`.
+- Route lupa password (guest): `password.request`, `password.email`, `password.reset`, `password.reset.store`. `password.update` tetap dipakai untuk ganti password setelah login, sehingga aksi reset memakai nama berbeda (FR-AUTH-06/D14).
 - Layout bersama: `layouts.auth` (halaman login) dan `layouts.app` (sidebar role-filtered). Navigasi memakai `Route::has()` sehingga tidak error sebelum modul lain terpasang; nama route modul lain mengikuti konvensi §3 (`menus.index`, `recipes.index`, `ingredients.index`, `purchases.index`, `sales.index`, `expenses.index`, `reports.profit`, `forecast.index`) — koordinasikan bila berbeda.
 - Gate baru di luar usulan awal: `manage-recipe-costs`, `manage-stock`, `view-sales-summary`, `view-forecast` (lihat `docs/permissions.md` §3).
 

@@ -104,3 +104,4 @@ pemilik modul masing-masing melalui `can:` atau `@can`.
 - [ ] Seed akun Admin awal — **koordinasi seed akun awal per §5.2 masih terbuka**.
 - [x] Umumkan ke tim: alias `role`/`active` dan gate di §3 siap dipakai Anggota 2/3/4.
 - [ ] Anggota 2/3/4: pasang gate pada route modul masing-masing; laporkan bila butuh gate baru.
+- [x] FR-AUTH-06/D14: route lupa password (`password.request`, `password.email`, `password.reset`, `password.reset.store`) sengaja `guest`; tidak menambah gate baru.

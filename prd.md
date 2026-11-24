@@ -145,104 +145,104 @@ diberikan sampai ditetapkan kemudian.
   -------------------------------------------------------------------------------------
   Modul         Use case/aksi             Admin          Pengelola     Staf Operasional
   ------------- -------------------- ---------------- ---------------- ----------------
-  Autentikasi   Login                       ✓                ✓                ✓
+  Autentikasi   Login                       âœ“                âœ“                âœ“
 
-  Autentikasi   Logout                      ✓                ✓                ✓
+  Autentikasi   Logout                      âœ“                âœ“                âœ“
 
-  Autentikasi   Ganti password              ✓                ✓                ✓
+  Autentikasi   Ganti password              âœ“                âœ“                âœ“
 
-  Kelola        Tambah akun                 ✓               ---              ---
+  Kelola        Tambah akun                 âœ“               ---              ---
   Pengguna      Pengelola dan Staf                                     
 
-  Kelola        Edit data pengguna          ✓               ---              ---
+  Kelola        Edit data pengguna          âœ“               ---              ---
   Pengguna                                                             
 
-  Kelola        Menonaktifkan akun          ✓               ---              ---
+  Kelola        Menonaktifkan akun          âœ“               ---              ---
   Pengguna      pengguna                                               
 
-  Pengelolaan   Tambah/Edit/Hapus           ✓               ---              ---
+  Pengelolaan   Tambah/Edit/Hapus           âœ“               ---              ---
   Menu          menu                                                   
 
-  Pengelolaan   Menentukan harga            ✓               ---              ---
+  Pengelolaan   Menentukan harga            âœ“               ---              ---
   Menu          jual                                                   
 
-  Pengelolaan   Unggah foto produk          ✓               ---              ---
+  Pengelolaan   Unggah foto produk          âœ“               ---              ---
   Menu                                                                 
 
-  Pengelolaan   Melihat daftar menu         ✓                ✓                ✓
+  Pengelolaan   Melihat daftar menu         âœ“                âœ“                âœ“
   Menu                                                                 
 
-  Pengelolaan   Mengatur takaran            ✓               ---              ---
+  Pengelolaan   Mengatur takaran            âœ“               ---              ---
   Resep         resep                                                  
 
-  Pengelolaan   Mengelola harga             ✓                ✓               ---
+  Pengelolaan   Mengelola harga             âœ“                âœ“               ---
   Resep         modal resep                                            
 
-  Pengelolaan   Melihat resep               ✓                ✓               ---
+  Pengelolaan   Melihat resep               âœ“                âœ“               ---
   Resep         terbatas                                               
 
-  Pengelolaan   Mengelola master            ✓               ---              ---
+  Pengelolaan   Mengelola master            âœ“               ---              ---
   Stok Bahan    stok                                                   
   Baku                                                                 
 
-  Pengelolaan   Memantau dan                ✓                ✓               ---
+  Pengelolaan   Memantau dan                âœ“                âœ“               ---
   Stok Bahan    mengelola persediaan                                   
   Baku                                                                 
 
-  Pengelolaan   Update stok fisik           ✓                ✓                ✓
+  Pengelolaan   Update stok fisik           âœ“                âœ“                âœ“
   Stok Bahan    harian                                                 
   Baku                                                                 
 
-  Pengelolaan   Mencatat stok               ✓               ---               ✓
+  Pengelolaan   Mencatat stok               âœ“               ---               âœ“
   Stok Bahan    susut/rusak                                            
   Baku                                                                 
 
-  Pembelian     Melihat rekap               ✓                ✓               ---
+  Pembelian     Melihat rekap               âœ“                âœ“               ---
   Bahan Baku    pembelian                                              
 
-  Pembelian     Verifikasi pembelian        ✓                ✓               ---
+  Pembelian     Verifikasi pembelian        âœ“                âœ“               ---
   Bahan Baku                                                           
 
-  Pembelian     Input nota belanja          ✓               ---               ✓
+  Pembelian     Input nota belanja          âœ“               ---               âœ“
   Bahan Baku    harian                                                 
 
-  Pembelian     Unggah foto                 ✓               ---               ✓
+  Pembelian     Unggah foto                 âœ“               ---               âœ“
   Bahan Baku    struk/nota                                             
 
-  Pencatatan    Rekap dan analisis          ✓                ✓               ---
+  Pencatatan    Rekap dan analisis          âœ“                âœ“               ---
   Penjualan     penjualan                                              
 
-  Pencatatan    Memantau pesanan            ✓                ✓               ---
+  Pencatatan    Memantau pesanan            âœ“                âœ“               ---
   Penjualan     masuk                                                  
 
-  Pencatatan    Input pesanan masuk         ✓                ✓                ✓
+  Pencatatan    Input pesanan masuk         âœ“                âœ“                âœ“
   Penjualan                                                            
 
-  Pencatatan    Update status               ✓                ✓                ✓
+  Pencatatan    Update status               âœ“                âœ“                âœ“
   Penjualan     transaksi                                              
 
-  Biaya         Mencatat pengeluaran        ✓               ---              ---
+  Biaya         Mencatat pengeluaran        âœ“               ---              ---
   Operasional   tetap                                                  
 
-  Biaya         Mengategorikan jenis        ✓               ---              ---
+  Biaya         Mengategorikan jenis        âœ“               ---              ---
   Operasional   biaya                                                  
 
-  Biaya         Melihat riwayat             ✓               ---              ---
+  Biaya         Melihat riwayat             âœ“               ---              ---
   Operasional   biaya                                                  
 
-  Laporan       Melihat dashboard           ✓               ---              ---
+  Laporan       Melihat dashboard           âœ“               ---              ---
   Keuntungan    keuangan                                               
 
-  Laporan       Menghitung laba             ✓               ---              ---
+  Laporan       Menghitung laba             âœ“               ---              ---
   Keuntungan    bersih                                                 
 
-  Laporan       Mengunduh/mencetak          ✓               ---              ---
+  Laporan       Mengunduh/mencetak          âœ“               ---              ---
   Keuntungan    laporan PDF/Excel                                      
 
-  Rekomendasi   Menganalisis                ✓               ---              ---
+  Rekomendasi   Menganalisis                âœ“               ---              ---
   Produksi      estimasi produksi                                      
 
-  Rekomendasi   Melihat estimasi            ✓                ✓                ✓
+  Rekomendasi   Melihat estimasi            âœ“                âœ“                âœ“
   Produksi      jumlah porsi harian                                    
   -------------------------------------------------------------------------------------
 
@@ -409,6 +409,11 @@ menyelesaikan alur operasional. - **P2:** pengembangan lanjutan.
                           dilindungi dan diakhiri 
                           dengan aman saat        
                           logout.                 
+  FR-AUTH-06              Sistem menyediakan      P1
+                          alur permintaan dan
+                          penggantian kata sandi
+                          bagi pengguna yang
+                          lupa password.
   -----------------------------------------------------------------------
 
 ### 5.2 Kelola Pengguna
