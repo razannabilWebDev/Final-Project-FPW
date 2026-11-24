@@ -10,6 +10,21 @@
 
 ---
 
+## [2026-11-24 18:06] — Anggota 3 — Modul Pembelian Bahan Baku
+
+- [x] Catat 2 prompt sesi ini ke `prompt_history.md`
+- [x] Commit pekerjaan stok sebelumnya: `0b3605f`
+- [x] Enum `PurchaseStatus` + model/factory `Purchase`, `PurchaseItem`
+- [x] `PurchaseService`: create multi-item (decimal, kode unik `PUR-YYYYMMDD-XXXX`) + verify idempoten; setuju → `StockService::recordIn` (ledger + `average_cost`), tolak → alasan wajib & stok tetap; semuanya dalam DB transaction + lock
+- [x] 2 Form Request + `PurchaseController` + 5 route dengan gate `manage-stock` / `create-purchases` / `verify-purchases`
+- [x] UI design v2: 3 KPI, tabel riwayat + search/filter + badge, modal input multi-item dengan unggah nota, modal detail + verifikasi, bukti nota privat
+- [x] **Rekap/detail/bukti nota khusus Admin & Pengelola**; Staf hanya input dan diarahkan ke dashboard setelah simpan
+- [x] `PurchaseTest`: 7 test (input+nota, rekap 403 Staf, setuju→ledger, tolak→stok tetap, verifikasi ganda, gate, kode urut)
+- [x] Dokumentasi: `docs/architecture.md` §11 (kontrak), `docs/implementation-plan.md` Tahap 2–4, `docs/decisions.md` D15 (asumsi)
+- [x] Verifikasi: 7/7 test pembelian, 106/108 suite penuh (2 gagal pre-existing di luar modul), pint bersih, `npm run build` sukses
+- [ ] Commit (hash menyusul)
+- [ ] Konfirmasi tim D15 (format kode pembelian) & D5 (satuan dasar)
+
 ## [2026-11-24 17:50] — Anggota 3 — Fix toggle status bahan baku
 
 - [x] Catat 2 prompt sesi ini ke `prompt_history.md`
@@ -17,7 +32,7 @@
 - [x] Perbaiki `resources/views/ingredients/index.blade.php`: kirim `button.dataset.active` (state saat ini)
 - [x] Pastikan controller & test lama tidak diubah (konvensi `is_active` = state saat ini dipertahankan)
 - [x] Verifikasi: 17/17 test modul stok lulus (75 assertion)
-- [ ] Commit (hash menyusul)
+- [x] Commit `0b3605f` (feat(stock): align stock UI with design system v2)
 
 ## [2026-11-24 17:06] — Anggota 3 — Penyesuaian visual modul stok ke design_system_v2
 
@@ -31,8 +46,8 @@
 - [x] Rapikan `stock/movements`, `stock/adjustments`, `stock/waste` (header, toolbar, input, tombol, empty state)
 - [x] Tambah 3 test regresi: filter stok, KPI dari data nyata, filter jenis pergerakan
 - [x] Verifikasi: 17/17 test modul, pint bersih, `npm run build` sukses; suite penuh 99/101 (2 gagal pre-existing di luar modul)
-- [ ] Commit (hash menyusul)
-- [ ] Pembelian + verifikasi masih tertunda (sesuai keputusan cakupan sesi ini)
+- [x] Commit `0b3605f` (feat(stock): align stock UI with design system v2)
+- [x] Pembelian + verifikasi dikerjakan di sesi berikutnya
 
 ## [2026-11-23 19:50] — Anggota 1 — Audit modul + fitur lupa password
 

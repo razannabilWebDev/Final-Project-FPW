@@ -19,7 +19,7 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
   kerjakan mulai dari commit dahulu, rekap benar benar khusus admin/pengelola
   ```
 - **Jawaban via form pertanyaan:** (dari sesi rencana sebelumnya) cakupan lanjutan = modul Pembelian Bahan Baku Anggota 3; rekap pembelian benar-benar khusus Admin/Pengelola, Staf tidak bisa melihat.
-- **Hasil:** Sedang dikerjakan — commit pekerjaan stok sebelumnya, lalu implementasi pembelian + verifikasi.
+- **Hasil:** Selesai. Commit awal `0b3605f` (`feat(stock): align stock UI with design system v2`). Modul pembelian dibangun: enum `PurchaseStatus`, model+factory `Purchase`/`PurchaseItem`, `PurchaseService` (create + verify idempoten, stok masuk hanya saat setuju, `average_cost` via `StockService::recordIn`), 2 Form Request, `PurchaseController`, 5 route dengan gate existing, UI design v2 (3 KPI, tabel, modal input multi-item + upload nota, modal detail/verifikasi, bukti nota privat), dan `PurchaseTest` (7 test/47 assertion). Rekap/detail/nota **khusus Admin & Pengelola**; Staf hanya input lalu kembali ke dashboard. Kontrak dicatat di `docs/architecture.md` §11; D15 (format `PUR-YYYYMMDD-XXXX`) masih asumsi menunggu konfirmasi tim. Verifikasi: 7/7 test pembelian, 106/108 suite penuh (2 gagal pre-existing di luar modul), pint bersih, `npm run build` sukses.
 
 ## [2026-11-24 18:03 WIB] — Anggota 3
 - **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
