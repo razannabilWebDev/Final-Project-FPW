@@ -105,3 +105,5 @@ pemilik modul masing-masing melalui `can:` atau `@can`.
 - [x] Umumkan ke tim: alias `role`/`active` dan gate di §3 siap dipakai Anggota 2/3/4.
 - [ ] Anggota 2/3/4: pasang gate pada route modul masing-masing; laporkan bila butuh gate baru.
 - [x] FR-AUTH-06/D14: route lupa password (`password.request`, `password.email`, `password.reset`, `password.reset.store`) sengaja `guest`; tidak menambah gate baru.
+- [x] Audit log A1 (D13): `LogActivityAction` dipakai `UserService`/`ChangePasswordAction`; A3/A4 menunggu koordinasi pemilik final.
+- [x] Rekomendasi produksi: `forecast.index` memakai `view-forecast` (semua role), `forecast.generate`/`forecast.adjust` memakai `manage-forecast` (Admin), diuji 403untuk Pengelola/Staf.

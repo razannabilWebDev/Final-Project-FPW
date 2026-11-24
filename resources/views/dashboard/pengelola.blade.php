@@ -7,7 +7,7 @@
         <div class="pointer-events-none absolute -right-16 -top-20 h-72 w-72 rounded-full border border-white/10"></div>
         <div class="relative">
             <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-blue-200">Dashboard Pengelola</p>
-            <h2 class="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">Halo, {{ $user->name }}!</h2>
+            <h2 class="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">{{ $greeting }}, {{ $user->name }}!</h2>
             <p class="mt-2 max-w-xl text-sm text-blue-100">Pantau aktivitas penjualan, pesanan masuk, pembelian, stok, dan estimasi produksi usaha.</p>
         </div>
     </div>

@@ -10,6 +10,33 @@
 
 ---
 
+## [2026-11-24 19:32] — Anggota 1 — Samakan sapaan dashboard
+
+- [x] Catat 2 prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Satukan sapaan jadi "Selamat datang, {nama}!" untuk Admin/Pengelola/Staf lewat `$greeting` di `DashboardController` (eyebrow tidak diubah)
+- [x] `DashboardRoleTest` 8/8; `composer test` 120/120 lulus (642 assertion); pint & `npm run build` sukses
+- [ ] Commit (hash menyusul)
+
+## [2026-11-24 17:37] — Anggota 1 — Modal Tambah Pengguna
+
+- [x] Catat 3 prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Ubah tombol Tambah Pengguna jadi popup modal di halaman yang sama (`<x-modal>` reusable, form `user-create-form`)
+- [x] `UserController::index()` meneruskan `$roles`; include `_form` dengan `user => null`; error validasi membuka modal otomatis via `@if ($errors->any())`
+- [x] Halaman `users.create` standalone tetap dipertahankan (kompatibilitas test)
+- [x] `UserManagementTest` 12/12; `composer test` 119/119 lulus (630 assertion); pint & `npm run build` sukses
+- [ ] Commit (hash menyusul)
+
+## [2026-11-23 21:46] — Anggota 1 — Audit log + Rekomendasi Produksi
+
+- [x] Catat 3 prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)
+- [x] Audit log A1: `LogActivityAction` + integrasi `UserService`/`ChangePasswordAction`; `ActivityLogTest` 9 test/33 assertion
+- [x] Rekomendasi Produksi: `config/forecast.php`, 2 model, 3 Action, `ForecastIngredientService` via kontrak `RecipeCostService`, controller + 3 route + view; `MovingAverageTest` (3) + `ForecastTest` (7)
+- [x] Perbaiki kartu forecast di dashboard Admin (baca total dari `production_forecast_items`)
+- [x] Update dokumen: D8 (rata-rata/idempotensi/bahan), D13 (helper A1), duplikat D14 ekspor → D15, architecture, permissions, implementation-plan
+- [x] `composer install` untuk dependency ekspor A4 yang sudah dideklarasikan (perbaiki 1 test gagal di luar modul A1)
+- [x] `composer test` 117/117 lulus (618 assertion); pint & `npm run build` sukses
+- [x] Audit kelengkapan `prompt_history.md`: tambah entri 22:05 & 22:13, jawaban form entri 19:50, pulihkan entri 10:45 yang kosong
+- [ ] Commit (hash menyusul)
 ## [2026-11-24 21:31] — Anggota 2 — Format takaran tanpa trailing .000
 
 - [x] Catat prompt sesi ke `prompt_history.md`

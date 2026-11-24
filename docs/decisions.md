@@ -22,6 +22,7 @@
 | D12 | Format `transaction_code` | `TRX-YYYYMMDD-XXXX`, unique | `docs/database.md` usulan | ⚠️ Diterapkan sbg asumsi Anggota 1 (2026-11-18) — perlu konfirmasi A4 |
 | D13 | `settings` & `activity_logs` | Dibuat sesuai baseline; pemilik sementara Anggota 1 | `docs/database.md` §1 | ⚠️ Diterapkan, pemilik final belum ditetapkan tim |
 | D14 | Alur lupa password (FR-AUTH-06) | Email via broker Laravel (dev `log`, test `array`, produksi SMTP); akun nonaktif ditolak dengan pesan generik; token 60 menit & sekali pakai | Persetujuan tim 2026-11-23; PRD §5.1 | ✅ Disetujui tim (2026-11-23) |
+| D15 | Dependency ekspor laporan | `maatwebsite/excel` (Excel) + `barryvdh/laravel-dompdf` (PDF); gate `export-reports` (Admin) | PRD §2.1.14 | ✅ Disetujui tim (2026-11-23) |
 | D14 | Dependency ekspor laporan | `maatwebsite/excel` (Excel) + `barryvdh/laravel-dompdf` (PDF); gate `export-reports` (Admin) | PRD §2.1.14 | ✅ Disetujui tim (2026-11-23) |
 | D15 | Format `purchase_code` | `PUR-YYYYMMDD-XXXX` (tanggal `Asia/Jakarta`), urut & unik — mengikuti pola `TRX-...` (D12) | PRD §7 (kode pembelian unik) | ⚠️ Asumsi implementasi A3 (2026-11-24), menunggu konfirmasi tim |
 
@@ -51,6 +52,11 @@
   `type=menu`, `status=completed` dengan tanggal `completed_at` dalam window;
   manual dikecualikan. Parameter `window_days=28` dan `min_days=7` di
   `config/forecast.php`. Kontrak ini dipakai saat modul prediksi dibangun.
+  Implementasi 2026-11-23: rata-rata = total porsi dalam window ÷ `window_days`
+  (hari tanpa transaksi dihitung 0); generate idempoten per tanggal+method dan
+  tidak menimpa penyesuaian; estimasi bahan memakai kontrak
+  `RecipeCostService::ingredientsPerPortion()` (A4) sebagai pengganti sementara
+  service resep A2, dengan penanda "resep belum tersedia" bila kosong.
 - **Akses rekap pembelian (2026-11-24, Anggota 3):** Staf benar-benar tidak memiliki akses ke rekap/detail/bukti nota pembelian; Staf hanya menginput dan kembali ke dashboard setelah simpan. Admin & Pengelola memakai gate `manage-stock` untuk rekap dan `verify-purchases` untuk verifikasi.
 - **D15 (Anggota 3):** format kode pembelian diusulkan mengikuti pola transaksi (`PUR-YYYYMMDD-XXXX`). Belum ada persetujuan tim; implementasi memakai asumsi ini agar kode unik dan urut.
 - **D14 (Anggota 1) — FINAL:** Lupa password memakai broker bawaan Laravel.
@@ -62,6 +68,11 @@
   Laravel menampilkan logo hanya jika nama aplikasi persis `Laravel`.
   Route reset sengaja `guest`; `password.update` tetap dipakai untuk ganti
   password setelah login, sehingga aksi reset memakai `password.reset.store`.
+- **D13 (Anggota 1, 2026-11-23):** `LogActivityAction` disediakan sebagai satu
+  jalur tulis `activity_logs` dan dipakai untuk aksi `user.*` (created,
+  role_changed, activated/deactivated, password_changed). Pemilik final tabel
+  masih terbuka; A3/A4 akan memanggil helper ini setelah koordinasi untuk
+  `purchase.verified`, `stock.adjusted`, dan `sale.cancelled`.
 
 ## Tanda tangan keputusan
 
@@ -81,5 +92,6 @@
 | D12 | Anggota 1 (asumsi implementasi) | 2026-11-18 |
 | D13 | Anggota 1 (pemilik sementara) | 2026-11-18 |
 | D14 | Anggota 1 + persetujuan tim | 2026-11-23 |
+| D15 | Anggota 4 + persetujuan tim | 2026-11-23 |
 | D15 | Anggota 3 (asumsi implementasi) | 2026-11-24 |
 | D1, D3, D4, D5, D6 | Anggota 3 (usulan implementasi, belum final tim) | 2026-11-23 |

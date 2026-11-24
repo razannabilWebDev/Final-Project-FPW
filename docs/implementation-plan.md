@@ -22,6 +22,8 @@
 - [x] Role + middleware/policy dari `docs/permissions.md` (Anggota 1 — 19 gate, alias `role`/`active`)
 - [x] Kelola Pengguna: CRUD + nonaktifkan akun oleh Admin (Anggota 1 — guard self-role/self-deactivate)
 - [x] Lupa password: reset link via email + notifikasi Bahasa Indonesia (Anggota 1 — FR-AUTH-06/D14, 10 test baru)
+- [x] Audit aktivitas A1 via `LogActivityAction` untuk aksi `user.*` (D13, 9 test baru); A3/A4 menyusul setelah koordinasi
+- [ ] Master menu + harga jual (Anggota 2)
 - [x] Master menu + harga jual (Anggota 2 — 2026-11-24: CRUD/foto/status + UI v2)
 - [x] Master bahan baku + satuan dasar (Anggota 3 — 2026-11-23; tanpa tabel konversi, D5 menunggu A2)
 - [x] Service stok terpusat + `stock_movements` ledger (Anggota 3 — 2026-11-23; deduct/reversal untuk A4)
@@ -32,6 +34,7 @@
 ## Tahap 2 — Pengembangan Paralel (boleh mulai setelah kontrak disepakati)
 
 - **Anggota 1:** kelola pengguna, rekomendasi produksi
+  - [x] Rekomendasi produksi: prediksi rata-rata bergerak, penyesuaian Admin, estimasi bahan via kontrak `RecipeCostService`, route & view (10 test baru: `MovingAverageTest` + `ForecastTest`)
 - **Anggota 2:** resep & HPP per porsi, snapshot/versi resep
 - **Anggota 3:** pembelian + verifikasi → stok masuk, stok susut/rusak, penyesuaian stok fisik
   - [x] Fondasi selesai (CRUD bahan, ledger, penyesuaian, susut/rusak, service stok, 21 test baru)
@@ -68,7 +71,7 @@
 3. [~] Penjualan ↔ menu, HPP, service stok — stub aktif, menunggu service A2/A3
 4. [x] Pembelian ↔ stok masuk (Anggota 3) — verifikasi memanggil `StockService::recordIn` (ledger `purchase_in` + `average_cost`)
 5. [x] Biaya & penjualan → laporan keuntungan — commit `20253ea`
-6. [ ] Penjualan + resep + stok → rekomendasi produksi (Anggota 1)
+6. [x] Penjualan + kontrak resep → rekomendasi produksi (Anggota 1) — stok tidak dipakai langsung; kebutuhan bahan dari `RecipeCostService` (A4) sambil menunggu resep A2
 
 ## Tahap 4 — Pengujian Sistem
 
@@ -77,7 +80,7 @@
 - [~] Pembatalan → reversal stok (idempotent) — sudah di-test dengan stub (SalesTest), perlu test ulang dengan service A3
 - [x] Pembelian → verifikasi → stok masuk (Anggota 3) — `PurchaseTest` (7 test: input+nota, rekap 403 untuk Staf, setuju→ledger, tolak→stok tetap, verifikasi ganda, gate, kode urut)
 - [x] Biaya operasional & laporan keuntungan benar — ExpenseTest + ProfitReportTest
-- [ ] Rekomendasi produksi (abaikan penjualan manual) — kontrak D8 final, implementasi Anggota 1
+- [x] Rekomendasi produksi (abaikan penjualan manual) — `ForecastTest` + `MovingAverageTest`, kontrak D8 final (implementasi Anggota 1)
 
 ## Tahap 5 — Stabilitas & Dokumentasi
 

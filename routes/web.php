@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ForecastController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\MenuController;
@@ -158,4 +159,15 @@ Route::middleware(['auth', 'active', 'can:view-reports'])->group(function (): vo
 Route::middleware(['auth', 'active', 'can:export-reports'])->group(function (): void {
     Route::get('/reports/profit/export/excel', [ProfitReportController::class, 'exportExcel'])->name('reports.profit.excel');
     Route::get('/reports/profit/export/pdf', [ProfitReportController::class, 'exportPdf'])->name('reports.profit.pdf');
+});
+
+Route::middleware(['auth', 'active', 'can:view-forecast'])->group(function (): void {
+    Route::get('/forecast', [ForecastController::class, 'index'])->name('forecast.index');
+
+    Route::post('/forecast/generate', [ForecastController::class, 'generate'])
+        ->name('forecast.generate')
+        ->middleware('can:manage-forecast');
+    Route::put('/forecast/items/{item}', [ForecastController::class, 'adjust'])
+        ->name('forecast.adjust')
+        ->middleware('can:manage-forecast');
 });

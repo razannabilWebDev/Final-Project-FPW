@@ -83,6 +83,8 @@
 - Route lupa password (guest): `password.request`, `password.email`, `password.reset`, `password.reset.store`. `password.update` tetap dipakai untuk ganti password setelah login, sehingga aksi reset memakai nama berbeda (FR-AUTH-06/D14).
 - Layout bersama: `layouts.auth` (halaman login) dan `layouts.app` (sidebar role-filtered). Navigasi memakai `Route::has()` sehingga tidak error sebelum modul lain terpasang; nama route modul lain mengikuti konvensi §3 (`menus.index`, `recipes.index`, `ingredients.index`, `purchases.index`, `sales.index`, `expenses.index`, `reports.profit`, `forecast.index`) — koordinasikan bila berbeda.
 - Gate baru di luar usulan awal: `manage-recipe-costs`, `manage-stock`, `view-sales-summary`, `view-forecast` (lihat `docs/permissions.md` §3).
+- Route rekomendasi produksi: `forecast.index` (`can:view-forecast`, semua role), `forecast.generate` & `forecast.adjust` (`can:manage-forecast`, Admin). Implementasi: `CalculateMovingAverageAction`, `GenerateForecastAction`, `AdjustForecastAction`, `ForecastIngredientService`, model `ProductionForecast`/`ProductionForecastItem`, `config/forecast.php`.
+- Audit aktivitas: `LogActivityAction` dipanggil dari `UserService` dan `ChangePasswordAction`; format action `user.*`, metadata JSON. A3/A4 menyusul setelah koordinasi D13.
 
 ## 10. Kontrak service stok (Anggota 3, 2026-11-23 — menunggu konfirmasi A2/A4)
 
