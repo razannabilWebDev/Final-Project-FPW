@@ -12,6 +12,15 @@ Log prompt yang dikirim ke AI coding agent (OpenCode) selama mengerjakan proyek 
 
 ---
 
+## [2026-11-25 12:00 WIB] — Anggota 4
+- **Model AI:** Hy4 flash Free (`opencode/hy4-flash-free`) via OpenCode
+- **Prompt:**
+  ```text
+  buatkan aku dockerfile dan lainnya untuk keperluan deploy ke vps
+  ```
+- **Jawaban via form pertanyaan:** (1) MySQL di dalam compose; (2) queue worker + log mail; (3) siapkan konfigurasi + catatan Certbot.
+- **Hasil:** Sedang berjalan — membuat Dockerfile multi-stage, docker-compose, nginx.conf, entrypoint, php.ini, .env.production.example, .dockerignore, DEPLOYMENT.md.
+
 ## [2026-11-25 11:30 WIB] — Anggota 4
 - **Model AI:** Hy4 flash Free (opencode/hy4-flash-free) via OpenCode
 - **Prompt:**

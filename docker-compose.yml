@@ -1,0 +1,121 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: smartfood-home:latest
+    container_name: smartfood-app
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - app_storage:/var/www/html/storage
+      - app_public:/var/www/html/public
+    healthcheck:
+      test: ["CMD-SHELL", "php -r 'exit(@fsockopen(\"127.0.0.1\", 9000) ? 0 : 1);'"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks:
+      - smartfood
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: smartfood-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - app_public:/var/www/html/public:ro
+      - certbot_webroot:/var/www/certbot
+      - ./docker/certs:/etc/letsencrypt:ro
+    depends_on:
+      - app
+    networks:
+      - smartfood
+
+  db:
+    image: mysql:8.0
+    container_name: smartfood-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-smartfood}
+      MYSQL_USER: ${DB_USERNAME:-smartfood}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-smartfood_secret}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_secret}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p${DB_ROOT_PASSWORD:-root_secret} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - smartfood
+
+  redis:
+    image: redis:7-alpine
+    container_name: smartfood-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - smartfood
+
+  queue:
+    image: smartfood-home:latest
+    container_name: smartfood-queue
+    restart: unless-stopped
+    env_file:
+      - .env
+    entrypoint: []
+    command: php artisan queue:work --tries=3 --restart-on-failure --sleep=3
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - app_storage:/var/www/html/storage
+      - app_public:/var/www/html/public
+    networks:
+      - smartfood
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: smartfood-certbot
+    profiles:
+      - certbot
+    volumes:
+      - certbot_webroot:/var/www/certbot
+      - ./docker/certs:/etc/letsencrypt
+    entrypoint: /bin/sh -c
+    command: 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done;'
+    depends_on:
+      - nginx
+    networks:
+      - smartfood
+
+volumes:
+  db_data:
+  redis_data:
+  app_storage:
+  app_public:
+  certbot_webroot:
+
+networks:
+  smartfood:
+    driver: bridge
