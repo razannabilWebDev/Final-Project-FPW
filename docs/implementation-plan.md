@@ -84,9 +84,9 @@
 
 ## Tahap 5 — Stabilitas & Dokumentasi
 
-- [ ] Perbaikan bug integrasi; seluruh test lulus
-- [ ] Keamanan permission & upload; responsive
-- [ ] README + dokumentasi teknis; backup/deployment
+- [x] Perbaikan bug integrasi; seluruh test lulus (169/169, 902 assertion —包括 perbaikan E2E 19 temuan, dropdown menu, state machine sales, notifikasi navbar)
+- [x] Keamanan permission & upload; responsive (verifikasi 403 per role via Chrome; tanpa overflow horizontal; console bersih)
+- [~] README + dokumentasi teknis; backup/deployment (README & docs sudah ada; backup/deployment belum diverifikasi)
 
 ## Keputusan yang Menahan Integrasi
 

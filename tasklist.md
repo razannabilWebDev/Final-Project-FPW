@@ -10,7 +10,7 @@
 
 ---
 
-## [2026-11-24 22:05] — Anggota 1 — Pengujian E2E via Chrome DevTools MCP
+## [2026-11-24 22:05] — Anggota 4 — Pengujian E2E via Chrome DevTools MCP
 
 - [x] Catat prompt sesi ini ke `prompt_history.md` (termasuk jawaban form pertanyaan)
 - [x] Persiapan: migrasi+seed (MySQL), `php artisan serve` port 8000, Chrome dibuka
@@ -23,7 +23,28 @@
 - [x] Susun feedback akhir (19 temuan: 5 kritis, 8 sedang, 6 minor/catatan)
 - [x] Perbaikan bug — selesai (diminta user: perbaiki seluruhnya lalu tes ulang)
 
-## [2026-11-25 09:30] — Anggota 1 — Dropdown notifikasi navbar
+## [2026-11-25 11:00] — Anggota 4 — Finalisasi: cleanup data uji + dokumen + atribusi
+
+- [x] Koreksi atribusi `prompt_history.md` & `tasklist.md`: Anggota 1 → Anggota 4 untuk entri sesi ini
+- [x] Bersihkan data uji dari DB dev (user/menu/purchase/sale/expense/forecast + reset stok & harga modal via seeder)
+- [x] Konfirmasi file asing: `login.blade.php` perubahan user (tidak di-commit), `graphify-out/` artifact (tidak di-commit)
+- [x] Update README (status, akun demo, catatan DB) & implementation-plan (Tahap 5)
+- [x] Test 169/169 lulus, pint bersih, dashboard kembali ke data dummy (Rp874.000)
+- [x] Commit `a59bdc3` — `docs: finalisasi status proyek dan koreksi atribusi Anggota 4`
+- [ ] Push commit ini (user yang push sebelumnya)
+
+## [2026-11-25 10:00] — Anggota 4 — Uji E2E ulang semua fitur via Chrome
+
+- [x] Catat prompt ke `prompt_history.md`
+- [x] Persiapan server/DB/Chrome (migrate --seed, server :8000 masih aktif)
+- [x] Uji auth & permission 3 role (Admin: 13 halaman OK; Staf/Pengelola 403 sesuai matrix; logout klik OK)
+- [x] Uji master data (13 route Admin terbuka, HPP realistis, harga modal tidak Rp0)
+- [x] Uji transaksi (dropdown menu auto-fill, snapshot master, deduksi saat Diproses, reversal saat Batal, state machine; pembelian → verifikasi → stok+ledger)
+- [x] Uji biaya, laporan + ekspor (PDF/Excel 200, tren 19 tanggal), forecast (generate idempoten + adjust 39→40)
+- [x] Uji notifikasi navbar (badce count, panel, link, empty state), UI/console bersih, responsive tanpa overflow, screenshot
+- [x] Susun feedback akhir — tidak ada bug baru ditemukan
+
+## [2026-11-25 09:30] — Anggota 4 — Dropdown notifikasi navbar
 
 - [x] Catat prompt ke `prompt_history.md`
 - [x] `NotificationService` ringkasan real-time per role (pembelian pending, pesanan masuk, stok menipis)
@@ -31,9 +52,9 @@
 - [x] Komponen dropdown: badge jumlah, daftar item + link, empty state, klik luar & Escape
 - [x] 4 test baru (`NotificationTest`); 169/169 lulus, pint & build sukses
 - [x] Uji Chrome: badge 3, panel terbuka, 2 link benar, Escape menutup, console bersih
-- [ ] Commit (hash menyusul)
+- [x] Commit `7106989` — `feat(ui): tambahkan dropdown notifikasi ringkasan kondisi aplikasi`
 
-## [2026-11-25 08:20] — Anggota 1 — Form input pesanan pakai dropdown menu
+## [2026-11-25 08:20] — Anggota 4 — Form input pesanan pakai dropdown menu
 
 - [x] Catat prompt ke `prompt_history.md`
 - [x] Controller kirim daftar menu aktif ke index & create
@@ -44,7 +65,7 @@
 - [x] Uji ulang Chrome: dropdown terisi, auto-fill harga, add-item, toggle manual, transaksi tersimpan benar
 - [x] Commit `922fe5f` — `fix(sales): ganti input manual dengan dropdown menu di form pesanan`
 
-## [2026-11-25 07:10] — Anggota 1 — Perbaiki temuan E2E + uji ulang
+## [2026-11-25 07:10] — Anggota 4 — Perbaiki temuan E2E + uji ulang
 
 - [x] Catat prompt ke `prompt_history.md`
 - [x] Perbaiki format harga satuan / HPP tampil Rp0 (migration presisi 4 desimal, `App\Support\Rupiah`, seeder harga realistis)
