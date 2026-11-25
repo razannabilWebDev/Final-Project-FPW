@@ -23,6 +23,16 @@
 - [x] Susun feedback akhir (19 temuan: 5 kritis, 8 sedang, 6 minor/catatan)
 - [x] Perbaikan bug — selesai (diminta user: perbaiki seluruhnya lalu tes ulang)
 
+## [2026-11-25 11:30] — Anggota 4 — Penutupan administratif
+
+- [x] Konfirmasi commit `86d2bee` sudah ter-push (tidak perlu push)
+- [x] `login.blade.php` (prefill email dihapus) di-commit sebagai `47840c8` — `fix(auth)`
+- [x] `graphify-out/` di-commit oleh hook git ("Commit Git Unsika" `3e5aa14`)
+- [x] Perbaiki churn encoding `prompt_history.md` → `c36293f` (diff bersih 7 baris)
+- [x] `config/app.php` timezone UTC → Asia/Jakarta → `18e04c4`; test 169/169 lulus
+- [x] Server background :8000 dihentikan; hanya `boost:mcp` yang tetap jalan
+- [ ] Push commit baru (user yang biasa push)
+
 ## [2026-11-25 11:00] — Anggota 4 — Finalisasi: cleanup data uji + dokumen + atribusi
 
 - [x] Koreksi atribusi `prompt_history.md` & `tasklist.md`: Anggota 1 → Anggota 4 untuk entri sesi ini
