@@ -16,6 +16,29 @@ produksi. Dibangun dengan Laravel 13 + Blade + Tailwind CSS 4.
 > - `docs/design_system.md` — token & komponen UI dari Figma
 > - `docs/implementation-plan.md` — status & checklist progres tim
 
+## Status saat ini (update 2026-11-25)
+
+Seluruh modul sudah terintegrasi dan diuji end-to-end via Chrome. Test suite:
+**169/169 lulus (902 assertion)**; `npm run build` sukses.
+
+**Akun demo** ( password: `password` ):
+
+| Role | Email |
+|---|---|
+| Admin | `admin@smartfood.test` |
+| Pengelola | `pengelola@smartfood.test` |
+| Staf | `staf@smartfood.test` |
+
+Fitur utama: auth & permission per role, CRUD menu/resep/HPP/bahan baku,
+stok terpusat + ledger `stock_movements`, pembelian & verifikasi, pencatatan
+penjualan (pilih menu dari dropdown; harga snapshot dari master), biaya
+operasional, laporan keuntungan + ekspor PDF/Excel, rekomendasi produksi,
+serta notifikasi ringkasan kondisi aplikasi di navbar.
+
+> Catatan lingkungan: mesin ini memakai **MySQL** (`smartfood`) untuk dev;
+> test memakai SQLite `:memory:` via `phpunit.xml` (lihat `docs/database.md` §5).
+> `php artisan migrate --seed` menghasilkan data dummy idempoten.
+
 ## Setup (sekali per mesin)
 
 1. `git clone` → `composer setup` (install deps, buat `.env`, app key, migrate, npm build)

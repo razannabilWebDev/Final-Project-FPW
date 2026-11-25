@@ -1,9 +1,11 @@
 # Database Contract — SmartFood Home
 
-> **STATUS: DRAFT — perlu disepakati tim sebelum migration pertama di-merge.**
-> Sumber baseline: PRD §7 (rancangan database awal). PRD §7 membolehkan
-> penyesuaian nama tabel/kolom, tetapi relasi dan aturan integritas wajib
-> dipertahankan. Perubahan dokumen ini hanya boleh lewat kesepakatan tim
+> **STATUS: Diimplementasikan (2026-11-18).** Seluruh tabel baseline sudah
+> memiliki migration di `database/migrations/` dan seeder dummy di
+> `database/seeders/`. Sumber baseline: PRD §7 (rancangan database awal).
+> PRD §7 membolehkan penyesuaian nama tabel/kolom, tetapi relasi dan aturan
+> integritas wajib dipertahankan. Keputusan yang masih terbuka ditandai
+> sebagai asumsi implementasi dan perlu konfirmasi tim
 > (TASK_INSTRUCTIONS §4.2, §5).
 
 ## 1. Kepemilikan Schema (TASK_INSTRUCTIONS §5.1)
@@ -33,7 +35,7 @@ disebut eksplisit.
 - `name` string
 - `email` string unique (identitas login unik — PRD §3.3)
 - `password` string (hash bcrypt)
-- `role` enum: `admin`, `pengelola`, `staf` *(usulan nilai enum — final Anggota 1)*
+- `role` enum: `admin`, `pengelola`, `staf` *(FINAL Anggota 1, 2026-11-18; diimplementasikan sebagai PHP enum `App\UserRole` dengan cast di model)*
 - `is_active` boolean default `true` — akun nonaktif tidak bisa login
 
 ### Anggota 2
@@ -168,8 +170,25 @@ disebut eksplisit.
 
 ## 5. Keputusan Terbuka (harus diputuskan tim sebelum migration pertama)
 
-- [ ] Driver database: MySQL (PRD §9.1) vs SQLite untuk dev lokal — **belum ada migration, sekarang waktunya memutuskan**. Usulan: dev MySQL, test SQLite `:memory:`.
-- [ ] Nilai enum `role` di `users` (usulan: `admin|pengelola|staf`).
-- [ ] Penamaan kolom idempotensi penjualan (`stock_deducted_at` dll.) — final Anggota 3 & 4 bersama.
-- [ ] Format `transaction_code`.
-- [ ] Desain detail `settings`/`activity_logs` + pemiliknya.
+- [x] Driver database: dev **MySQL** (sesuai PRD §9.1, `database.default=mysql`), test **SQLite `:memory:`** (`phpunit.xml`). Migration ditulis cross-driver.
+- [x] Nilai enum `role` di `users`: `admin|pengelola|staf` (Anggota 1, 2026-11-18).
+- [x] Penamaan kolom idempotensi penjualan: `stock_deducted_at`, `reversal_done_at` — **asumsi Anggota 1 (2026-11-18), perlu konfirmasi A3 & A4**.
+- [x] Format `transaction_code`: `TRX-YYYYMMDD-XXXX` — **asumsi Anggota 1, perlu konfirmasi A4**.
+- [x] `settings` & `activity_logs` dibuat sesuai struktur baseline; **pemilik sementara Anggota 1** sampai tim menetapkan.
+
+## 6. Seeder dummy (2026-11-18)
+
+`php artisan db:seed` mengisi: 4 akun (`admin@smartfood.test`, `pengelola@smartfood.test`, `staf@smartfood.test`, `staf-nonaktif@smartfood.test`; password `password`), 8 kategori biaya, 6 menu, 8 bahan, resep + takaran, 2 pembelian (1 approved + 1 rejected), stok awal/waste/penyesuaian + `stock_movements`, 8 penjualan (6 menu, 1 manual, 1 cancelled + reversal), 5 biaya, 2 forecast, 4 setting, dan activity log.
+
+Semua seeder **idempoten** (dicek oleh kunci unik) dan ledger stok konsisten (`SUM(in) - SUM(out) = current_stock`).
+
+⚠️ Kredensial di atas adalah **dummy untuk development**. Ganti password/email sebelum produksi; jangan commit kredensial asli.
+
+## 7. Keputusan implementasi Anggota 3 (2026-11-23)
+
+- `current_stock` hanya ditulis oleh `App\Services\StockService` (masuk, keluar, penyesuaian, susut, reversal). Seeder dummy lama tetap memakai query builder dan tidak diubah.
+- Setiap perubahan stok menulis `stock_movements` dengan `balance_before`/`balance_after`; movement bertipe `purchase_in`, `sale_out`, `waste`, `adjustment`, atau `reversal`.
+- Idempotensi penjualan memakai pasangan `reference_type='Sale'` + `reference_id` + `movement_type`. Kolom `sales.stock_deducted_at` dan `sales.reversal_done_at` tetap milik Anggota 4.
+- Tidak ada tabel `unit_conversions`; semua kuantitas dan harga modal bahan berada dalam `base_unit` bahan (D5, menunggu konfirmasi Anggota 2).
+- `average_cost` diperbarui dengan rata-rata tertimbang saat stok masuk dengan `unit_cost` (D4).
+- Stok awal bahan baru dicatat sebagai movement `adjustment` dengan `reference_type='Ingredient'`, bukan update kolom langsung.

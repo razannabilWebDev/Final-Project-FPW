@@ -3,19 +3,23 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\ResetPasswordNotification;
+use App\UserRole;
 use Database\Factories\UserFactory;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use SensitiveParameter;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use CanResetPassword, HasFactory, Notifiable;
 
     /**
      * Get the attributes that should be cast.
@@ -27,6 +31,13 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => UserRole::class,
+            'is_active' => 'boolean',
         ];
+    }
+
+    public function sendPasswordResetNotification(#[SensitiveParameter] $token): void
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

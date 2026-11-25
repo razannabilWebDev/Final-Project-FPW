@@ -72,7 +72,45 @@
 
 | Kontrak | Pemilik keputusan | Dipakai oleh |
 |---|---|---|
-| Signature service stok (deduksi/reversal) | Anggota 3 | Anggota 4 |
+| ~~Signature service stok (deduksi/reversal)~~ ✅ A3 (2026-11-23), kontrak di §10 | Anggota 3 | Anggota 4 |
 | Format HPP & konversi satuan | Anggota 2 (+3) | Anggota 4 (snapshot) |
-| Middleware/gate final | Anggota 1 | Semua |
+| ~~Middleware/gate final~~ ✅ Selesai (2026-11-18): 19 gate di `AuthServiceProvider`, alias `role`/`active` di `bootstrap/app.php` | Anggota 1 | Semua |
 | Format `transaction_code` | Anggota 4 (diusulkan di `docs/database.md`) | Anggota 1 (prediksi) |
+
+### Konvensi tambahan yang sudah tersedia (Anggota 1, 2026-11-18)
+
+- Route auth/users: `login`, `login.store`, `logout`, `password.edit`, `password.update`, `dashboard`, `users.{index,create,store,edit,update,status}`.
+- Route lupa password (guest): `password.request`, `password.email`, `password.reset`, `password.reset.store`. `password.update` tetap dipakai untuk ganti password setelah login, sehingga aksi reset memakai nama berbeda (FR-AUTH-06/D14).
+- Layout bersama: `layouts.auth` (halaman login) dan `layouts.app` (sidebar role-filtered). Navigasi memakai `Route::has()` sehingga tidak error sebelum modul lain terpasang; nama route modul lain mengikuti konvensi §3 (`menus.index`, `recipes.index`, `ingredients.index`, `purchases.index`, `sales.index`, `expenses.index`, `reports.profit`, `forecast.index`) — koordinasikan bila berbeda.
+- Gate baru di luar usulan awal: `manage-recipe-costs`, `manage-stock`, `view-sales-summary`, `view-forecast` (lihat `docs/permissions.md` §3).
+- Route rekomendasi produksi: `forecast.index` (`can:view-forecast`, semua role), `forecast.generate` & `forecast.adjust` (`can:manage-forecast`, Admin). Implementasi: `CalculateMovingAverageAction`, `GenerateForecastAction`, `AdjustForecastAction`, `ForecastIngredientService`, model `ProductionForecast`/`ProductionForecastItem`, `config/forecast.php`.
+- Audit aktivitas: `LogActivityAction` dipanggil dari `UserService` dan `ChangePasswordAction`; format action `user.*`, metadata JSON. A3/A4 menyusul setelah koordinasi D13.
+
+## 10. Kontrak service stok (Anggota 3, 2026-11-23 — menunggu konfirmasi A2/A4)
+
+- `StockService::deductForSale(int $saleId, array $requirements, ?User $actor = null): void`
+  - `$requirements` = `list<array{ingredient_id: int, quantity: string}>`; kuantitas adalah string desimal (3 angka di belakang koma) dalam `base_unit` bahan.
+  - Anggota 4 menghitung kebutuhan dari resep Anggota 2, lalu memanggil service **di dalam `DB::transaction` yang sama** dengan perubahan status ke `processing` (D1).
+  - Anggota 3 hanya menulis `ingredients.current_stock` dan `stock_movements` bertipe `sale_out`; **tidak** menulis `sales.stock_deducted_at` / `reversal_done_at` (milik Anggota 4).
+  - Idempotensi: bila sudah ada movement `reference_type='Sale'`, `reference_id=$saleId`, `movement_type='sale_out'`, panggilan berikutnya tidak melakukan apa pun.
+  - Kekurangan stok melempar `InsufficientStockException` (dengan daftar bahan, kebutuhan, dan saldo) sebelum ada tulisan; tidak ada deduksi sebagian.
+- `StockService::reverseForSale(int $saleId, ?User $actor = null): void`
+  - Jumlah pembalikan dibaca dari baris ledger `sale_out` untuk transaksi tersebut, bukan dari argumen, sehingga reversal selalu mencerminkan stok yang benar-benar dipotong.
+  - Tidak ada reversal ganda; tidak ada reversal bila belum pernah ada deduksi.
+- `recordIn`, `recordOpeningStock`, `recordWaste`, dan `adjustPhysical` adalah satu-satunya jalur perubahan `current_stock`. Semua menulis `balance_before`/`balance_after`.
+- D5: tidak ada tabel `unit_conversions`; semua kuantitas disimpan dalam `base_unit` bahan. Anggota 2 wajib mengonversi takaran resep ke `base_unit` sebelum memanggil service.
+- D4: `average_cost` diperbarui dengan rata-rata tertimbang ketika `recordIn` menerima `unit_cost` (dipakai saat verifikasi pembelian oleh Anggota 3).
+- Penyesuaian fisik menyimpan `system_quantity`, `physical_quantity`, `difference`, `reason`, `created_by`, lalu satu movement `adjustment` dengan `reference_type='StockAdjustment'`.
+
+## 11. Kontrak modul pembelian (Anggota 3, 2026-11-24)
+
+- Route: `purchases.index` (`/pembelian`, gate `manage-stock`), `purchases.show`, `purchases.receipt`, `purchases.store` (gate `create-purchases`), `purchases.verify` (gate `verify-purchases`).
+- **Keputusan 2026-11-24:** rekap, detail, dan bukti nota pembelian **khusus Admin & Pengelola**. Staf hanya menginput; setelah simpan diarahkan ke dashboard dengan toast sukses (tidak diberi akses rekap).
+- `PurchaseService::create(array $data, User $actor): Purchase` — minimal satu item; `subtotal = quantity × unit_cost` (decimal 12,3 × 12,2 → 12,2), `total` = jumlah subtotal, status awal `pending`.
+- `purchase_code`: `PUR-YYYYMMDD-XXXX` (tanggal `Asia/Jakarta`), urut dan unik — asumsi implementasi mengikuti pola `TRX-...` (D12), menunggu konfirmasi tim.
+- D5: `items.*.unit` wajib sama dengan `ingredient.base_unit`; tidak ada tabel konversi satuan.
+- `PurchaseService::verify(Purchase $purchase, bool $approve, ?string $note, User $actor): Purchase` — hanya boleh dari status `pending`, baris di-`lockForUpdate`, seluruh proses dalam satu `DB::transaction`.
+  - Disetujui: tiap item memanggil `StockService::recordIn(... referenceType='Purchase', referenceId=$purchase->id, unitCost=...)`; `verified_by`/`verified_at` ditulis.
+  - Ditolak: `rejection_note` wajib; **tidak ada pergerakan stok**; `verified_by`/`verified_at` tetap ditulis.
+  - Verifikasi kedua kali ditolak (idempoten) — tidak ada stok masuk ganda.
+- Bukti nota disimpan di disk privat `local` (`purchases/receipts`) dan hanya dapat diakses lewat `purchases.receipt` oleh Admin/Pengelola.
