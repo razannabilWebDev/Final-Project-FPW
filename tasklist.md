@@ -23,6 +23,17 @@
 - [x] Susun feedback akhir (19 temuan: 5 kritis, 8 sedang, 6 minor/catatan)
 - [x] Perbaikan bug — selesai (diminta user: perbaiki seluruhnya lalu tes ulang)
 
+## [2026-11-25 12:00] — Anggota 4 — Paket deploy Docker untuk VPS
+
+- [x] Catat prompt & jawaban form ke `prompt_history.md`
+- [x] `Dockerfile` multi-stage (Vite build + Composer no-dev + PHP-FPM 8.3 + bcmath/gd/intl/redis/opcache)
+- [x] `docker-compose.yml`: app, nginx, MySQL 8, Redis, queue worker, profil certbot; volume persisten
+- [x] `docker/nginx.conf`: `/health`, upload 12M, ACME webroot, deny file sensitif, gzip
+- [x] `docker/entrypoint.sh`: tunggu DB → migrate → storage:link → cache → php-fpm
+- [x] `docker/php.ini`, `.env.production.example`, `.dockerignore`, `DEPLOYMENT.md`
+- [x] `docker compose config --quiet` valid; Docker daemon lokal tidak aktif → build di VPS
+- [x] Commit `c8af7b5` — `feat(deploy): tambahkan paket Docker Compose untuk deploy VPS`
+
 ## [2026-11-25 11:30] — Anggota 4 — Penutupan administratif
 
 - [x] Konfirmasi commit `86d2bee` sudah ter-push (tidak perlu push)
