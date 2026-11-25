@@ -19,7 +19,7 @@
             <span class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">
                 <x-icon name="user" :size="17" />
             </span>
-            <input id="email" name="email" type="email" value="{{ old('email', 'admin@smartfood.test') }}" autocomplete="username" autofocus
+            <input id="email" name="email" type="email" value="" autocomplete="username" autofocus
                 class="h-12 w-full rounded-[10px] border border-[#dfe3e8] bg-white pl-10 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-brand focus:ring-4 focus:ring-[#dbeafe] @error('email') border-danger @enderror"
                 placeholder="nama@email.com" required>
         </div>
@@ -47,13 +47,13 @@
         @enderror
     </div>
 
-        <div class="flex items-center justify-between gap-3">
-            <label class="flex items-center gap-2 text-xs text-[#4b5563]">
-                <input type="checkbox" name="remember" value="1" class="h-4 w-4 rounded border-slate-300 text-brand focus:ring-blue-200">
-                Ingat saya
-            </label>
-            <a href="{{ route('password.request') }}" class="text-xs font-bold text-brand hover:text-brand-hover">Lupa password?</a>
-        </div>
+    <div class="flex items-center justify-between gap-3">
+        <label class="flex items-center gap-2 text-xs text-[#4b5563]">
+            <input type="checkbox" name="remember" value="1" class="h-4 w-4 rounded border-slate-300 text-brand focus:ring-blue-200">
+            Ingat saya
+        </label>
+        <a href="{{ route('password.request') }}" class="text-xs font-bold text-brand hover:text-brand-hover">Lupa password?</a>
+    </div>
 
     <button type="submit"
         class="flex h-[49px] w-full items-center justify-center gap-2 rounded-[10px] bg-brand px-4 text-sm font-bold text-white shadow-lg shadow-blue-200 transition hover:-translate-y-px hover:bg-brand-hover focus:outline-none focus:ring-4 focus:ring-blue-200">

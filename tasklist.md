@@ -30,7 +30,7 @@
 - [x] Konfirmasi file asing: `login.blade.php` perubahan user (tidak di-commit), `graphify-out/` artifact (tidak di-commit)
 - [x] Update README (status, akun demo, catatan DB) & implementation-plan (Tahap 5)
 - [x] Test 169/169 lulus, pint bersih, dashboard kembali ke data dummy (Rp874.000)
-- [x] Commit `a59bdc3` — `docs: finalisasi status proyek dan koreksi atribusi Anggota 4`
+- [x] Commit `86d2bee` — `docs: finalisasi status proyek dan koreksi atribusi Anggota 4`
 - [ ] Push commit ini (user yang push sebelumnya)
 
 ## [2026-11-25 10:00] — Anggota 4 — Uji E2E ulang semua fitur via Chrome
